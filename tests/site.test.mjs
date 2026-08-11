@@ -101,6 +101,33 @@ test("ships a reusable, progressively enhanced renderer", async () => {
     css,
     /family-chart-branch:last-child::after\s*\{[\s\S]*?border-left:\s*0;/,
   );
+  assert.match(css, /--paper:\s*#fcfcfb;/);
+  assert.match(css, /--ink:\s*#171717;/);
+  assert.match(css, /--muted:\s*#666662;/);
+  assert.match(css, /--rule:\s*#d7d7d2;/);
+  assert.match(css, /--rule-strong:\s*#9b9b95;/);
+  assert.match(css, /--focus:\s*#8f2028;/);
+  assert.doesNotMatch(css, /#f6f3eb|#eee9de|#cfc8ba/i);
+});
+
+test("uses the same neutral paper palette across browser and sharing assets", async () => {
+  const [html, favicon, socialImage] = await Promise.all([
+    readFile(new URL("index.html", docs), "utf8"),
+    readFile(new URL("favicon.svg", publicRoot), "utf8"),
+    readFile(new URL("og.svg", publicRoot), "utf8"),
+  ]);
+
+  assert.match(html, /name="theme-color" content="#fcfcfb"/);
+  assert.match(favicon, /fill="#fcfcfb"/);
+  assert.match(favicon, /stroke="#202020"/);
+  assert.match(favicon, /fill="#171717">李</);
+  assert.match(socialImage, /fill="#fcfcfb"/);
+  assert.match(socialImage, /stroke="#202020"/);
+  assert.match(socialImage, /fill="#171717">李家族谱</);
+
+  for (const artifact of [html, favicon, socialImage]) {
+    assert.doesNotMatch(artifact, /#f6f3eb|#eee9de|#cfc8ba/i);
+  }
 });
 
 test("includes every GitHub Pages artifact", async () => {

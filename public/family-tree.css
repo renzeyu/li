@@ -1,12 +1,11 @@
 :root {
   color-scheme: light;
-  --paper: #f6f3eb;
-  --paper-deep: #eee9de;
-  --ink: #1c1b19;
-  --muted: #69645e;
-  --rule: #cfc8ba;
-  --rule-strong: #777169;
-  --focus: #7b301d;
+  --paper: #fcfcfb;
+  --ink: #171717;
+  --muted: #666662;
+  --rule: #d7d7d2;
+  --rule-strong: #9b9b95;
+  --focus: #8f2028;
   --serif: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", STSong, serif;
   --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
 }
@@ -167,7 +166,7 @@ h1 {
 }
 
 .family-chart-action:disabled {
-  color: #aaa39a;
+  color: color-mix(in srgb, var(--muted) 45%, transparent);
   cursor: default;
 }
 

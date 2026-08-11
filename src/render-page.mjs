@@ -57,7 +57,7 @@ export function renderPage(document) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f6f3eb">
+  <meta name="theme-color" content="#fcfcfb">
   <meta name="description" content="${escapeHtml(document.intro)}">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="zh_CN">
@@ -128,4 +128,3 @@ export function renderPage(document) {
 </body>
 </html>`;
 }
-
