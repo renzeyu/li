@@ -75,6 +75,17 @@ test("builds the complete normalized Li family genealogy", async () => {
     /[，。！？；：、][ \t]+|[ \t]+[，。！？；：、]/u,
   );
   assert.match(html, /朱守芝在娘家与成家两处出现，均指同一人/);
+  assert.match(html, /id="family-migration"/);
+  assert.match(html, />家族迁徙</);
+  assert.match(html, /data-migration-stop-id="zhu-ming-migration"/);
+  assert.match(html, /data-migration-stop-id="zhu-daoan-shouxian"/);
+  assert.match(html, /山东老鸹巷至寿县/);
+  assert.match(html, /朱守芝的父亲朱道安曾任寿县县令/);
+  assert.match(html, /河南寿县，晏口集杨家岗／淮南朱家岗/);
+  assert.match(html, /淮南蔡家岗谢家集区建井西村63幢西头第二户/);
+  assert.match(html, /宿州三十三处四工区安装机电/);
+  assert.ok(html.indexOf('id="family-tree"') < html.indexOf('id="family-migration"'));
+  assert.ok(html.indexOf('id="family-migration"') < html.indexOf('class="reading-note"'));
   assert.match(html, /href="https:\/\/renzeyu\.github\.io\/li\/"/);
   assert.match(html, /src="\.\/family-tree\.js"/);
   assert.match(html, /href="\.\/family-tree\.css"/);
@@ -155,6 +166,51 @@ test("ships one validated schema v2 genealogy graph", async () => {
   const docsData = await readFile(new URL("family-tree.json", docs), "utf8");
   assert.equal(docsData, dataSource);
   assert.doesNotMatch(dataSource, /李克霞|信息不公开|家人口述补名|存活排行/);
+});
+
+test("records the family migration without duplicating genealogy identities", async () => {
+  const document = await readFamilyDocument();
+  const migration = document.migration;
+
+  assert.equal(migration.title, "家族迁徙");
+  assert.equal(migration.routes.length, 1);
+  assert.equal(migration.routes[0].id, "li-zhu-family-route");
+  assert.equal(migration.routes[0].stops.length, 8);
+
+  const stops = new Map(migration.routes[0].stops.map((stop) => [stop.id, stop]));
+  const mingMigration = stops.get("zhu-ming-migration");
+  assert.equal(mingMigration.period, "明初大移民");
+  assert.equal(mingMigration.place, "山东老鸹巷至寿县");
+  assert.equal(mingMigration.summary, "朱氏先祖由山东老鸹巷迁至寿县。");
+  assert.equal(Object.hasOwn(mingMigration, "personIds"), false);
+
+  const zhuDaoanShouxian = stops.get("zhu-daoan-shouxian");
+  assert.equal(zhuDaoanShouxian.period, "后世");
+  assert.equal(zhuDaoanShouxian.place, "寿县");
+  assert.equal(zhuDaoanShouxian.summary, "朱守芝的父亲朱道安曾任寿县县令。");
+  assert.deepEqual(zhuDaoanShouxian.personIds, ["zhu-daoan"]);
+  assert.equal(
+    document.people.find((person) => person.id === "zhu-daoan")?.note,
+    "曾任寿县县令",
+  );
+
+  assert.equal(
+    stops.get("parents-birthplaces").place,
+    "河南寿县，晏口集杨家岗／淮南朱家岗",
+  );
+  assert.deepEqual(stops.get("parents-birthplaces").personIds, ["li-kaixun", "zhu-shouzhi"]);
+  assert.deepEqual(stops.get("caijiagang-birthplace").personIds, [
+    "li-kexia",
+    "li-yuzhen",
+    "li-kun",
+    "li-yuxia",
+    "li-ping",
+    "li-hui",
+  ]);
+  assert.equal(stops.get("suzhou-installation").place, "宿州三十三处四工区安装机电");
+  assert.equal(stops.get("installation-office").place, "机电安装处");
+  assert.match(stops.get("regional-dispersal").place, /淮北、合肥与昆山/);
+  assert.match(stops.get("recent-settlement").summary, /李玉霞.*宿州安装处.*苏州昆山/);
 });
 
 test("preserves the confirmed Wu, Xu, Li Kun, Peng, and Zhao branches", async () => {
@@ -279,6 +335,23 @@ test("rejects invalid normalized genealogy data", async () => {
   tooManyPartners.families[0].partners.push({ personId: "li-keli", relation: "成员" });
   assert.throws(() => validateFamilyDocument(tooManyPartners), /more than two partners/);
 
+  const duplicateMigrationStop = structuredClone(document);
+  duplicateMigrationStop.migration.routes[0].stops[1].id =
+    duplicateMigrationStop.migration.routes[0].stops[0].id;
+  assert.throws(() => validateFamilyDocument(duplicateMigrationStop), /duplicate migration stop id/);
+
+  const emptyMigrationPlace = structuredClone(document);
+  emptyMigrationPlace.migration.routes[0].stops[0].place = "";
+  assert.throws(() => validateFamilyDocument(emptyMigrationPlace), /requires place/);
+
+  const unknownMigrationPerson = structuredClone(document);
+  unknownMigrationPerson.migration.routes[0].stops[1].personIds.push("missing-person");
+  assert.throws(() => validateFamilyDocument(unknownMigrationPerson), /references unknown person/);
+
+  const duplicateMigrationPerson = structuredClone(document);
+  duplicateMigrationPerson.migration.routes[0].stops[1].personIds.push("zhu-daoan");
+  assert.throws(() => validateFamilyDocument(duplicateMigrationPerson), /repeats person zhu-daoan/);
+
   const unreachableFamily = structuredClone(document);
   unreachableFamily.people.push({ id: "unreachable-person", name: "测试人物" });
   unreachableFamily.families.push({
@@ -309,6 +382,9 @@ test("ships a reusable, progressively enhanced renderer", async () => {
   assert.match(css, /\[data-li-family-tree\]/);
   assert.match(css, /@media \(max-width: 700px\)/);
   assert.match(css, /prefers-reduced-motion: reduce/);
+  assert.match(css, /\.migration-section/);
+  assert.match(css, /\.migration-stop\s*\{[\s\S]*?break-inside:\s*avoid;/);
+  assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.migration-stop/);
   assert.match(css, /family-chart-details:not\(\[open\]\) > \.family-chart-children/);
   assert.match(
     css,

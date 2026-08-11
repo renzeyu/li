@@ -54,12 +54,54 @@ function formatUpdatedAt(value) {
   return `${year}年${Number(month)}月${Number(day)}日更新`;
 }
 
+function renderMigration(migration, peopleById) {
+  if (!migration?.routes?.length) return "";
+
+  const routes = migration.routes
+    .map((route) => {
+      const stops = route.stops
+        .map((stop) => {
+          const people = (stop.personIds ?? [])
+            .map((personId) => peopleById.get(personId)?.name)
+            .filter(Boolean);
+          const relatedPeople = people.length
+            ? `<p class="migration-people"><span>相关人物：</span>${escapeHtml(people.join("、"))}</p>`
+            : "";
+
+          return `<li class="migration-stop" data-migration-stop-id="${escapeHtml(stop.id)}">
+            <p class="migration-period">${escapeHtml(stop.period)}</p>
+            <div class="migration-stop-copy">
+              <h4 class="migration-place">${escapeHtml(stop.place)}</h4>
+              <p class="migration-summary">${escapeHtml(stop.summary)}</p>
+${relatedPeople}
+            </div>
+          </li>`;
+        })
+        .join("");
+
+      return `<div class="migration-route" data-migration-route-id="${escapeHtml(route.id)}">
+        <h3 class="migration-route-title">${escapeHtml(route.label)}</h3>
+        <ol class="migration-stops" role="list">${stops}</ol>
+      </div>`;
+    })
+    .join("");
+
+  return `<section class="migration-section" id="family-migration" aria-labelledby="migration-title">
+    <div class="migration-heading">
+      <h2 id="migration-title">${escapeHtml(migration.title)}</h2>
+      <p>${escapeHtml(migration.intro)}</p>
+    </div>
+    ${routes}
+  </section>`;
+}
+
 export function renderPage(document) {
   const viewId = "li-family";
   const treeId = `${viewId}-interactive-tree`;
   const titleId = `${viewId}-chart-title`;
   const noteId = `${viewId}-chart-note`;
   const roots = materializeFamilyForest(document);
+  const peopleById = new Map(document.people.map((person) => [person.id, person]));
 
   return `<!doctype html>
 <html lang="zh-CN">
@@ -122,6 +164,8 @@ export function renderPage(document) {
         </div>
       </div>
     </section>
+
+    ${renderMigration(document.migration, peopleById)}
 
     <section class="reading-note" aria-labelledby="reading-note-title">
       <h2 id="reading-note-title">阅读说明</h2>

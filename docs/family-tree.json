@@ -4,10 +4,99 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-10",
-  "revision": "2026.08.10.3",
+  "revision": "2026.08.10.5",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "现有族谱从李开训的奶奶一代，以及朱道安与朱刘氏一代展开。李开训与朱守芝成家后育有五女一子；李开训的妹妹孃孃、弟弟李开工与李开庭及其后代也已纳入。",
+  "migration": {
+    "title": "家族迁徙",
+    "intro": "这条迁徙路线从明初延续至今，连接着朱、李两家几代人的生活。",
+    "routes": [
+      {
+        "id": "li-zhu-family-route",
+        "label": "居住与迁徙",
+        "stops": [
+          {
+            "id": "zhu-ming-migration",
+            "period": "明初大移民",
+            "place": "山东老鸹巷至寿县",
+            "summary": "朱氏先祖由山东老鸹巷迁至寿县。"
+          },
+          {
+            "id": "zhu-daoan-shouxian",
+            "period": "后世",
+            "place": "寿县",
+            "summary": "朱守芝的父亲朱道安曾任寿县县令。",
+            "personIds": [
+              "zhu-daoan"
+            ]
+          },
+          {
+            "id": "parents-birthplaces",
+            "period": "早年",
+            "place": "河南寿县，晏口集杨家岗／淮南朱家岗",
+            "summary": "李开训出生于河南寿县，晏口集杨家岗；朱守芝出生于淮南朱家岗。",
+            "personIds": [
+              "li-kaixun",
+              "zhu-shouzhi"
+            ]
+          },
+          {
+            "id": "caijiagang-birthplace",
+            "period": "子女出生",
+            "place": "淮南蔡家岗谢家集区建井西村63幢西头第二户",
+            "summary": "六名子女均出生于此；这里是当地的三十三处留守处。",
+            "personIds": [
+              "li-kexia",
+              "li-yuzhen",
+              "li-kun",
+              "li-yuxia",
+              "li-ping",
+              "li-hui"
+            ]
+          },
+          {
+            "id": "suzhou-installation",
+            "period": "迁居宿州",
+            "place": "宿州三十三处四工区安装机电",
+            "summary": "一家后来迁至此处。"
+          },
+          {
+            "id": "installation-office",
+            "period": "单位沿革",
+            "place": "机电安装处",
+            "summary": "三十三处四工区安装机电后来分离为机电安装处。"
+          },
+          {
+            "id": "regional-dispersal",
+            "period": "其后",
+            "place": "淮北、合肥与昆山",
+            "summary": "兄弟姐妹曾分散在这些地区。",
+            "personIds": [
+              "li-yuzhen",
+              "li-kun",
+              "li-yuxia",
+              "li-ping",
+              "li-hui"
+            ]
+          },
+          {
+            "id": "recent-settlement",
+            "period": "近十年",
+            "place": "宿州安装处／苏州昆山",
+            "summary": "李玉霞仍居宿州安装处；李玉珍、李坤、李平和李惠安居苏州昆山。",
+            "personIds": [
+              "li-yuxia",
+              "li-yuzhen",
+              "li-kun",
+              "li-ping",
+              "li-hui"
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "rootFamilyIds": [
     "li-grandmother-family",
     "zhu-daoan-family"
@@ -26,7 +115,7 @@
     {
       "id": "li-kaixun",
       "name": "李开训",
-      "note": "井下采煤30年"
+      "note": "出生于河南寿县，晏口集杨家岗；井下采煤30年"
     },
     {
       "id": "li-nianiang",
@@ -50,7 +139,8 @@
     },
     {
       "id": "zhu-daoan",
-      "name": "朱道安"
+      "name": "朱道安",
+      "note": "曾任寿县县令"
     },
     {
       "id": "zhu-liushi",
@@ -59,7 +149,7 @@
     {
       "id": "zhu-shouzhi",
       "name": "朱守芝",
-      "note": "幼年读过4年私塾"
+      "note": "出生于淮南朱家岗；幼年读过4年私塾"
     },
     {
       "id": "zhu-shourong",
@@ -74,7 +164,7 @@
     {
       "id": "li-yuzhen",
       "name": "李玉珍",
-      "note": "李克珍的双胞胎妹妹"
+      "note": "李克珍的双胞胎妹妹；目前安居苏州昆山"
     },
     {
       "id": "wu-qinghua",
@@ -99,7 +189,7 @@
     {
       "id": "li-kun",
       "name": "李坤",
-      "note": "出生在李玉珍之后；李平的哥哥"
+      "note": "出生在李玉珍之后；李平的哥哥；目前安居苏州昆山"
     },
     {
       "id": "li-zirong",
@@ -123,7 +213,8 @@
     },
     {
       "id": "li-yuxia",
-      "name": "李玉霞"
+      "name": "李玉霞",
+      "note": "目前仍在宿州安装处"
     },
     {
       "id": "peng-xuejian",
@@ -144,12 +235,13 @@
     {
       "id": "li-ping",
       "name": "李平",
-      "note": "1965年生",
+      "note": "1965年生；目前安居苏州昆山",
       "href": "https://renzeyu.github.io/liping/"
     },
     {
       "id": "li-hui",
-      "name": "李惠"
+      "name": "李惠",
+      "note": "目前安居苏州昆山"
     },
     {
       "id": "ren-dongfeng",

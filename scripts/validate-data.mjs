@@ -24,6 +24,75 @@ function validateReference(reference, context, errors, referencedPersonIds) {
   }
 }
 
+function validateMigration(migration, errors, personIds) {
+  if (!migration || typeof migration !== "object" || Array.isArray(migration)) {
+    errors.push("migration must be an object");
+    return;
+  }
+  for (const field of ["title", "intro"]) {
+    if (!isNonEmptyString(migration[field])) errors.push(`migration requires ${field}`);
+  }
+
+  const routes = Array.isArray(migration.routes) ? migration.routes : [];
+  if (!Array.isArray(migration.routes) || routes.length === 0) {
+    errors.push("migration routes must be a non-empty array");
+  }
+  const routeIds = new Set();
+  const stopIds = new Set();
+  for (const [routeIndex, route] of routes.entries()) {
+    const routeContext = `migration route at index ${routeIndex}`;
+    if (!route || typeof route !== "object" || Array.isArray(route)) {
+      errors.push(`${routeContext} must be an object`);
+      continue;
+    }
+    for (const field of ["id", "label"]) {
+      if (!isNonEmptyString(route[field])) errors.push(`${routeContext} requires ${field}`);
+    }
+    if (isNonEmptyString(route.id)) {
+      if (routeIds.has(route.id)) errors.push(`duplicate migration route id: ${route.id}`);
+      routeIds.add(route.id);
+    }
+
+    const stops = Array.isArray(route.stops) ? route.stops : [];
+    if (!Array.isArray(route.stops) || stops.length === 0) {
+      errors.push(`migration route ${route.id ?? routeIndex} stops must be a non-empty array`);
+    }
+    for (const [stopIndex, stop] of stops.entries()) {
+      const stopContext = `migration stop ${stopIndex} in route ${route.id ?? routeIndex}`;
+      if (!stop || typeof stop !== "object" || Array.isArray(stop)) {
+        errors.push(`${stopContext} must be an object`);
+        continue;
+      }
+      for (const field of ["id", "period", "place", "summary"]) {
+        if (!isNonEmptyString(stop[field])) errors.push(`${stopContext} requires ${field}`);
+      }
+      if (isNonEmptyString(stop.id)) {
+        if (stopIds.has(stop.id)) errors.push(`duplicate migration stop id: ${stop.id}`);
+        stopIds.add(stop.id);
+      }
+      if (stop.personIds === undefined) continue;
+      if (!Array.isArray(stop.personIds)) {
+        errors.push(`${stopContext} personIds must be an array`);
+        continue;
+      }
+      const stopPersonIds = new Set();
+      for (const personId of stop.personIds) {
+        if (!isNonEmptyString(personId)) {
+          errors.push(`${stopContext} has an invalid person id`);
+          continue;
+        }
+        if (stopPersonIds.has(personId)) {
+          errors.push(`${stopContext} repeats person ${personId}`);
+        }
+        stopPersonIds.add(personId);
+        if (!personIds.has(personId)) {
+          errors.push(`${stopContext} references unknown person ${personId}`);
+        }
+      }
+    }
+  }
+}
+
 export function validateFamilyDocument(document) {
   const errors = [];
   const personIds = new Set();
@@ -78,6 +147,10 @@ export function validateFamilyDocument(document) {
     if (person.href !== undefined && !/^https:\/\//.test(person.href)) {
       errors.push(`person ${person.id ?? index} href must use https`);
     }
+  }
+
+  if (document.migration !== undefined) {
+    validateMigration(document.migration, errors, personIds);
   }
 
   const families = Array.isArray(document.families) ? document.families : [];

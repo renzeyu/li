@@ -71,6 +71,10 @@ main {
 .family-panel-heading p,
 .family-chart-toolbar,
 .family-chart-note,
+.migration-heading p,
+.migration-period,
+.migration-summary,
+.migration-people,
 .reading-note p,
 footer {
   font-family: var(--sans);
@@ -450,6 +454,99 @@ a:focus-visible {
   line-height: 1.7;
 }
 
+.migration-section {
+  width: min(900px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: 68px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.migration-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 1.5fr);
+  align-items: end;
+  gap: 48px;
+}
+
+.migration-heading h2 {
+  margin: 0;
+  font-size: clamp(30px, 3.8vw, 50px);
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.migration-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.migration-route {
+  margin-top: 48px;
+}
+
+.migration-route-title {
+  margin: 0 0 20px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.migration-stops {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule-strong);
+  list-style: none;
+}
+
+.migration-stop {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 28px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--rule);
+  break-inside: avoid;
+}
+
+.migration-period {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.migration-place {
+  margin: 0 0 8px;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.migration-stop-copy {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.migration-summary {
+  margin: 0;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.migration-people {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.migration-people span {
+  margin-right: 10px;
+  color: var(--ink);
+  font-weight: 600;
+}
+
 .reading-note {
   display: grid;
   grid-template-columns: 1fr minmax(320px, 2fr);
@@ -663,6 +760,33 @@ footer p {
     margin-top: 26px;
   }
 
+  .migration-section {
+    width: calc(100% - 36px);
+    padding: 46px 0;
+  }
+
+  .migration-heading {
+    display: block;
+  }
+
+  .migration-heading p {
+    margin-top: 14px;
+  }
+
+  .migration-route {
+    margin-top: 34px;
+  }
+
+  .migration-stop {
+    display: block;
+    padding: 20px 0;
+  }
+
+  .migration-place {
+    margin-top: 5px;
+    font-size: 19px;
+  }
+
   .reading-note {
     display: block;
     width: calc(100% - 36px);
@@ -697,6 +821,12 @@ footer p {
   .family-chart-person + .family-chart-person::before {
     border-color: CanvasText;
   }
+
+  .migration-section,
+  .migration-stops,
+  .migration-stop {
+    border-color: CanvasText;
+  }
 }
 
 @media print {
@@ -709,6 +839,7 @@ footer p {
   .site-header,
   .family-panel-heading,
   .family-chart-note,
+  .migration-section,
   .reading-note,
   footer {
     width: 100%;
