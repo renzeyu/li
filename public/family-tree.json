@@ -4,10 +4,10 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-11",
-  "revision": "2026.08.11.3",
+  "revision": "2026.08.11.4",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
-  "intro": "现有族谱从李开训的父母一代，以及朱守芝的爷爷一代展开。李开训与朱守芝成家后育有五女一子；李开训的妹妹孃孃、弟弟李开工与李开庭及其后代也已纳入。",
+  "intro": "李开训与朱守芝成家后育有五女一子。",
   "migration": {
     "title": "家族迁徙",
     "intro": "这些记录包括李氏自明初以来的迁徙、朱氏在淮南朱家岗的世居经历，以及两家后来的生活足迹。",
@@ -415,7 +415,7 @@
     {
       "id": "li-kaiting-wife",
       "name": "李开庭的妻子",
-      "note": "在江淮汽修公司任售货员"
+      "note": "在淮南市公交公司工作"
     },
     {
       "id": "zhu-shouzhi-grandfather",
@@ -519,13 +519,13 @@
     {
       "id": "li-ping",
       "name": "李平",
-      "note": "1965年生；目前安居苏州昆山",
+      "note": "1965年生；淮北市商务局会计师；目前安居苏州昆山",
       "href": "https://renzeyu.github.io/liping/"
     },
     {
       "id": "li-hui",
       "name": "李惠",
-      "note": "目前安居苏州昆山"
+      "note": "昆山市中医医院护士；目前安居苏州昆山"
     },
     {
       "id": "ren-dongfeng",

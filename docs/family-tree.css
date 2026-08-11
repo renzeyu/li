@@ -70,7 +70,6 @@ main {
 .site-updated,
 .family-panel-heading p,
 .family-chart-toolbar,
-.family-chart-note,
 .migration-heading p,
 .migration-map-heading,
 .family-map-status,
@@ -80,7 +79,6 @@ main {
 .migration-period,
 .migration-summary,
 .migration-people,
-.reading-note p,
 footer {
   font-family: var(--sans);
 }
@@ -457,16 +455,6 @@ a:focus-visible {
 .family-chart-children > .family-chart-branch:only-child::before,
 .family-chart-children > .family-chart-branch:only-child::after {
   display: none;
-}
-
-.family-chart-note {
-  width: min(1180px, calc(100% - 64px));
-  margin: 36px auto 0;
-  padding-top: 18px;
-  border-top: 1px solid var(--rule);
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.7;
 }
 
 .migration-section {
@@ -945,27 +933,6 @@ a:focus-visible {
   font-weight: 600;
 }
 
-.reading-note {
-  display: grid;
-  grid-template-columns: 1fr minmax(320px, 2fr);
-  gap: 48px;
-  width: min(900px, calc(100% - 64px));
-  margin: 0 auto;
-  padding: 68px 0;
-}
-
-.reading-note h2 {
-  margin: 0;
-  font-size: 22px;
-}
-
-.reading-note p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.85;
-}
-
 footer {
   display: flex;
   justify-content: space-between;
@@ -1153,11 +1120,6 @@ footer p {
     display: none;
   }
 
-  .family-chart-note {
-    width: calc(100% - 36px);
-    margin-top: 26px;
-  }
-
   .migration-section {
     width: calc(100% - 36px);
     padding: 46px 0;
@@ -1249,16 +1211,6 @@ footer p {
     font-size: 19px;
   }
 
-  .reading-note {
-    display: block;
-    width: calc(100% - 36px);
-    padding: 46px 0;
-  }
-
-  .reading-note p {
-    margin-top: 14px;
-  }
-
   footer {
     width: calc(100% - 36px);
     padding-bottom: 34px;
@@ -1315,9 +1267,7 @@ footer p {
 
   .site-header,
   .family-panel-heading,
-  .family-chart-note,
   .migration-section,
-  .reading-note,
   footer {
     width: 100%;
   }

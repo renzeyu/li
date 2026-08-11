@@ -77,7 +77,13 @@ test("builds the complete normalized Li family genealogy", async () => {
     visibleText(html),
     /[，。！？；：、][ \t]+|[ \t]+[，。！？；：、]/u,
   );
-  assert.match(html, /朱守芝在娘家与成家两处出现，均指同一人/);
+  assert.doesNotMatch(
+    visibleText(html),
+    /朱守芝在娘家与成家两处出现|线条表示已经确认|未注明长幼|不作推断|也已纳入|阅读说明|中央数据|稳定人物编号/,
+  );
+  assert.match(html, /淮北市商务局会计师/);
+  assert.match(html, /昆山市中医医院护士/);
+  assert.match(html, /淮南市公交公司工作/);
   assert.match(html, /id="family-migration"/);
   assert.match(html, />家族迁徙</);
   assert.match(html, /data-migration-stop-id="li-ming-migration"/);
@@ -97,7 +103,7 @@ test("builds the complete normalized Li family genealogy", async () => {
   assert.match(html, /淮南蔡家岗谢家集区建井西村63幢西头第二户/);
   assert.match(html, /宿州三十三处四工区安装机电/);
   assert.ok(html.indexOf('id="family-tree"') < html.indexOf('id="family-migration"'));
-  assert.ok(html.indexOf('id="family-migration"') < html.indexOf('class="reading-note"'));
+  assert.ok(html.indexOf('id="family-migration"') < html.indexOf("<footer>"));
   assert.match(html, /href="https:\/\/renzeyu\.github\.io\/li\/"/);
   assert.match(html, /src="\.\/family-tree\.js"/);
   assert.match(html, /src="\.\/family-map\.mjs"/);
@@ -145,7 +151,12 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(people.has("li-kaixun-grandmother"), false);
   assert.equal(people.get("li-kexia")?.note, "李玉珍的双胞胎姐姐；1960年去世，时年4岁");
   assert.match(people.get("li-kaiting")?.note ?? "", /老叔.*好姥爷.*电焊工/);
-  assert.match(people.get("li-kaiting-wife")?.note ?? "", /江淮汽修公司.*售货员/);
+  assert.equal(people.get("li-kaiting-wife")?.note, "在淮南市公交公司工作");
+  assert.equal(
+    people.get("li-ping")?.note,
+    "1965年生；淮北市商务局会计师；目前安居苏州昆山",
+  );
+  assert.equal(people.get("li-hui")?.note, "昆山市中医医院护士；目前安居苏州昆山");
   assert.match(people.get("li-keli")?.note ?? "", /银行/);
   assert.match(people.get("li-kelei-son")?.note ?? "", /江淮汽车制造厂/);
 
