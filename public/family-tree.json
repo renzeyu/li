@@ -4,7 +4,7 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-11",
-  "revision": "2026.08.11.7",
+  "revision": "2026.08.11.8",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "李开训与朱守芝成家后育有五女一子。",
@@ -76,6 +76,17 @@
           "li-yuxia",
           "li-ping",
           "li-hui"
+        ],
+        "media": [
+          {
+            "id": "suzhou-anzhuangchu-xiaoqu-entrance",
+            "src": "./images/suzhou-anzhuangchu-xiaoqu.jpg",
+            "width": 1800,
+            "height": 988,
+            "alt": "安装处小区入口，左侧建筑屋顶标有“工人俱乐部”，右侧为住宅楼。",
+            "caption": "宿州市埇桥区建设路安装处小区入口。图像来源：百度地图全景。",
+            "placeId": "suzhou-installation-residence"
+          }
         ]
       },
       {
@@ -238,14 +249,14 @@
         },
         {
           "id": "suzhou-installation-residence",
-          "name": "宿州安装处",
+          "name": "宿州市埇桥区建设路安装处小区",
           "locationStatus": "located",
           "coordinates": [
             117.010564,
             33.626139
           ],
           "coordinateSource": "高德地图：中煤三建机电安装处总仓库（GCJ-02坐标转换为WGS84）",
-          "coordinateNote": "公开地图中的宿州安装处位置，位于安徽省宿州市埇桥区建设路、东城康居苑北区北侧约230米；不表示个人住宅。"
+          "coordinateNote": "安装处小区位于宿州市埇桥区建设路；本图标注小区位置，不表示个人住宅。"
         },
         {
           "id": "huaibei-region",
@@ -412,8 +423,8 @@
           {
             "id": "recent-yuxia-settlement",
             "period": "近十年",
-            "place": "宿州安装处",
-            "summary": "李玉霞近年居住在宿州安装处，位于安徽省宿州市埇桥区建设路、东城康居苑北区北侧约230米。",
+            "place": "宿州市埇桥区建设路安装处小区",
+            "summary": "李玉霞近年居住在宿州市埇桥区建设路安装处小区。",
             "placeIds": [
               "suzhou-installation-residence"
             ],
@@ -564,7 +575,7 @@
     {
       "id": "li-yuxia",
       "name": "李玉霞",
-      "note": "毕业于徐州煤矿工业学校；从事会计工作；近年居住在宿州安装处"
+      "note": "毕业于徐州煤矿工业学校；从事会计工作；近年居住在宿州市埇桥区建设路安装处小区"
     },
     {
       "id": "peng-xuejian",

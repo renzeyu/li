@@ -117,7 +117,31 @@ test("builds the complete normalized Li family genealogy", async () => {
   assert.match(html, /淮南市谢家集区朱家岗/);
   assert.match(html, /淮南市谢家集区建井西村63号楼西头第二户/);
   assert.match(html, /宿州市埇桥区汴河东路27号中煤三建第三十三工程处/);
-  assert.match(html, /东城康居苑北区北侧约230米/);
+  assert.match(html, /宿州市埇桥区建设路安装处小区/);
+  assert.equal(
+    countMatches(
+      html,
+      /data-family-history-media-id="suzhou-anzhuangchu-xiaoqu-entrance"/g,
+    ),
+    1,
+  );
+  assert.match(
+    html,
+    /<img src="\.\/images\/suzhou-anzhuangchu-xiaoqu\.jpg" width="1800" height="988" alt="安装处小区入口，左侧建筑屋顶标有“工人俱乐部”，右侧为住宅楼。" loading="lazy" decoding="async">/,
+  );
+  assert.match(html, /宿州市埇桥区建设路安装处小区入口。图像来源：百度地图全景。/);
+  const historyPhotoIndex = html.indexOf(
+    'data-family-history-media-id="suzhou-anzhuangchu-xiaoqu-entrance"',
+  );
+  const installationHistoryIndex = html.indexOf(
+    'data-family-history-id="suzhou-life-and-exams"',
+  );
+  const nextHistoryIndex = html.indexOf(
+    'data-family-history-id="education-and-careers"',
+    installationHistoryIndex,
+  );
+  assert.ok(installationHistoryIndex < historyPhotoIndex);
+  assert.ok(historyPhotoIndex < nextHistoryIndex);
   assert.ok(html.indexOf('id="family-tree"') < html.indexOf('id="family-history"'));
   assert.ok(html.indexOf('id="family-history"') < html.indexOf('id="family-migration"'));
   assert.ok(html.indexOf('id="family-migration"') < html.indexOf("<footer>"));
@@ -186,7 +210,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(people.get("li-kun")?.note, "家中长子；曾下乡约4年；现居昆山");
   assert.equal(
     people.get("li-yuxia")?.note,
-    "毕业于徐州煤矿工业学校；从事会计工作；近年居住在宿州安装处",
+    "毕业于徐州煤矿工业学校；从事会计工作；近年居住在宿州市埇桥区建设路安装处小区",
   );
   assert.match(people.get("li-kaiting")?.note ?? "", /老叔.*好姥爷.*电焊工/);
   assert.equal(people.get("li-kaiting-wife")?.note, "在淮南市公交公司工作");
@@ -286,6 +310,19 @@ test("records an objective family history linked to stable people", async () => 
   assert.match(JSON.stringify(history), /时年4岁/);
   assert.match(JSON.stringify(history), /徐州煤矿工业学校/);
   assert.match(JSON.stringify(history), /昆山市中医医院护士/);
+  const installationSection = history.sections.find(
+    (section) => section.id === "suzhou-life-and-exams",
+  );
+  assert.equal(installationSection.media.length, 1);
+  assert.deepEqual(installationSection.media[0], {
+    id: "suzhou-anzhuangchu-xiaoqu-entrance",
+    src: "./images/suzhou-anzhuangchu-xiaoqu.jpg",
+    width: 1800,
+    height: 988,
+    alt: "安装处小区入口，左侧建筑屋顶标有“工人俱乐部”，右侧为住宅楼。",
+    caption: "宿州市埇桥区建设路安装处小区入口。图像来源：百度地图全景。",
+    placeId: "suzhou-installation-residence",
+  });
   assert.doesNotMatch(
     JSON.stringify(history),
     /时年6岁|昆山胸科医院|逃难到了安徽淮南|掌上明珠|终身性格心结|体制飞地|两地嫌弃|混子|白菜|铁血|硬核|神圣不可侵犯|[—–]/,
@@ -358,6 +395,14 @@ test("records the family migration without duplicating genealogy identities", as
   assert.match(stops.get("regional-dispersal").place, /淮北、合肥与昆山/);
   assert.equal(Object.hasOwn(stops.get("regional-dispersal"), "personIds"), false);
   assert.deepEqual(stops.get("recent-yuxia-settlement").personIds, ["li-yuxia"]);
+  assert.equal(
+    stops.get("recent-yuxia-settlement").place,
+    "宿州市埇桥区建设路安装处小区",
+  );
+  assert.equal(
+    stops.get("recent-yuxia-settlement").summary,
+    "李玉霞近年居住在宿州市埇桥区建设路安装处小区。",
+  );
   assert.deepEqual(stops.get("recent-kunshan-settlement").personIds, [
     "li-yuzhen",
     "li-kun",
@@ -410,6 +455,10 @@ test("renders a progressive OpenFreeMap migration map without replacing the writ
   assert.match(
     places.get("suzhou-installation-residence")?.coordinateNote ?? "",
     /不表示个人住宅/,
+  );
+  assert.equal(
+    places.get("suzhou-installation-residence")?.name,
+    "宿州市埇桥区建设路安装处小区",
   );
   assert.deepEqual(places.get("jianjing-xicun-address")?.coordinates, [
     116.865969,
@@ -662,6 +711,36 @@ test("rejects invalid normalized genealogy data", async () => {
     /history section.*repeats person zhu-shouzhi/,
   );
 
+  const duplicateHistoryMedia = structuredClone(document);
+  duplicateHistoryMedia.history.sections[0].media = [
+    { ...duplicateHistoryMedia.history.sections[3].media[0] },
+  ];
+  assert.throws(
+    () => validateFamilyDocument(duplicateHistoryMedia),
+    /duplicate history media id/,
+  );
+
+  const unsafeHistoryMediaPath = structuredClone(document);
+  unsafeHistoryMediaPath.history.sections[3].media[0].src = "/images/photo.jpg";
+  assert.throws(
+    () => validateFamilyDocument(unsafeHistoryMediaPath),
+    /src must be a safe local image path/,
+  );
+
+  const invalidHistoryMediaWidth = structuredClone(document);
+  invalidHistoryMediaWidth.history.sections[3].media[0].width = 0;
+  assert.throws(
+    () => validateFamilyDocument(invalidHistoryMediaWidth),
+    /width must be a positive integer/,
+  );
+
+  const unknownHistoryMediaPlace = structuredClone(document);
+  unknownHistoryMediaPlace.history.sections[3].media[0].placeId = "missing-place";
+  assert.throws(
+    () => validateFamilyDocument(unknownHistoryMediaPlace),
+    /references unknown map place missing-place/,
+  );
+
   const insecureMapStyle = structuredClone(document);
   insecureMapStyle.migration.map.styleUrl = "http://tiles.example.com/style";
   assert.throws(() => validateFamilyDocument(insecureMapStyle), /styleUrl must use https/);
@@ -731,6 +810,8 @@ test("ships a reusable, progressively enhanced renderer", async () => {
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(css, /\.history-section/);
   assert.match(css, /\.history-entry\s*\{[\s\S]*?break-inside:\s*avoid;/);
+  assert.match(css, /\.history-photo\s*\{[\s\S]*?break-inside:\s*avoid;/);
+  assert.match(css, /\.history-photo img\s*\{[\s\S]*?width:\s*100%;[\s\S]*?height:\s*auto;/);
   assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.history-entry/);
   assert.match(css, /@media print[\s\S]*?\.history-entry/);
   assert.match(css, /\.migration-section/);
@@ -787,6 +868,11 @@ test("includes every GitHub Pages artifact", async () => {
       "maplibre-license.txt",
       "favicon.svg",
       "og.svg",
+      "images/suzhou-anzhuangchu-xiaoqu.jpg",
     ].map((path) => access(new URL(path, docs))),
+  );
+  assert.deepEqual(
+    await readFile(new URL("images/suzhou-anzhuangchu-xiaoqu.jpg", docs)),
+    await readFile(new URL("images/suzhou-anzhuangchu-xiaoqu.jpg", publicRoot)),
   );
 });

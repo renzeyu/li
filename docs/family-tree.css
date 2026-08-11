@@ -533,6 +533,25 @@ a:focus-visible {
   margin-top: 14px;
 }
 
+.history-photo {
+  margin: 24px 0 0;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.history-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+}
+
+.history-photo figcaption {
+  margin-top: 9px;
+  color: var(--muted);
+  font: 11px/1.7 var(--sans);
+}
+
 .migration-section {
   width: min(900px, calc(100% - 64px));
   margin: 0 auto;
@@ -1242,6 +1261,10 @@ footer p {
     line-height: 1.9;
   }
 
+  .history-photo {
+    margin-top: 20px;
+  }
+
   .migration-section {
     width: calc(100% - 36px);
     padding: 46px 0;
@@ -1412,5 +1435,10 @@ footer p {
 
   .history-entry {
     break-inside: avoid;
+  }
+
+  .history-photo {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }

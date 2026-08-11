@@ -258,7 +258,7 @@ function validateMigration(migration, errors, personIds) {
   validateMigrationMap(migration.map, errors, stopPlaceReferences);
 }
 
-function validateHistory(history, errors, personIds) {
+function validateHistory(history, errors, personIds, mapPlaceIds) {
   if (!history || typeof history !== "object" || Array.isArray(history)) {
     errors.push("history must be an object");
     return;
@@ -272,6 +272,7 @@ function validateHistory(history, errors, personIds) {
     errors.push("history sections must be a non-empty array");
   }
   const sectionIds = new Set();
+  const mediaIds = new Set();
   for (const [sectionIndex, section] of sections.entries()) {
     const context = `history section at index ${sectionIndex}`;
     if (!section || typeof section !== "object" || Array.isArray(section)) {
@@ -293,6 +294,42 @@ function validateHistory(history, errors, personIds) {
     for (const [paragraphIndex, paragraph] of paragraphs.entries()) {
       if (!isNonEmptyString(paragraph)) {
         errors.push(`${context} paragraph ${paragraphIndex} must be a non-empty string`);
+      }
+    }
+
+    if (section.media !== undefined) {
+      if (!Array.isArray(section.media) || section.media.length === 0) {
+        errors.push(`${context} media must be a non-empty array`);
+      } else {
+        for (const [mediaIndex, item] of section.media.entries()) {
+          const mediaContext = `${context} media at index ${mediaIndex}`;
+          if (!item || typeof item !== "object" || Array.isArray(item)) {
+            errors.push(`${mediaContext} must be an object`);
+            continue;
+          }
+          for (const field of ["id", "src", "alt", "caption", "placeId"]) {
+            if (!isNonEmptyString(item[field])) errors.push(`${mediaContext} requires ${field}`);
+          }
+          if (isNonEmptyString(item.id)) {
+            if (mediaIds.has(item.id)) errors.push(`duplicate history media id: ${item.id}`);
+            mediaIds.add(item.id);
+          }
+          if (
+            isNonEmptyString(item.src) &&
+            (!/^\.\/images\/[a-z0-9][a-z0-9._/-]*\.(?:avif|jpe?g|png|webp)$/i.test(item.src) ||
+              item.src.includes(".."))
+          ) {
+            errors.push(`${mediaContext} src must be a safe local image path`);
+          }
+          for (const field of ["width", "height"]) {
+            if (!Number.isInteger(item[field]) || item[field] <= 0) {
+              errors.push(`${mediaContext} ${field} must be a positive integer`);
+            }
+          }
+          if (isNonEmptyString(item.placeId) && !mapPlaceIds.has(item.placeId)) {
+            errors.push(`${mediaContext} references unknown map place ${item.placeId}`);
+          }
+        }
       }
     }
 
@@ -373,7 +410,12 @@ export function validateFamilyDocument(document) {
     }
   }
 
-  validateHistory(document.history, errors, personIds);
+  const mapPlaceIds = new Set(
+    Array.isArray(document.migration?.map?.places)
+      ? document.migration.map.places.map((place) => place.id)
+      : [],
+  );
+  validateHistory(document.history, errors, personIds, mapPlaceIds);
   if (document.migration !== undefined) validateMigration(document.migration, errors, personIds);
 
   const families = Array.isArray(document.families) ? document.families : [];

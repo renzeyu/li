@@ -160,12 +160,21 @@ function renderHistory(history) {
       const paragraphs = section.paragraphs
         .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
         .join("");
+      const media = (section.media ?? [])
+        .map(
+          (item) => `<figure class="history-photo" data-family-history-media-id="${escapeHtml(item.id)}">
+            <img src="${escapeHtml(item.src)}" width="${escapeHtml(item.width)}" height="${escapeHtml(item.height)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async">
+            <figcaption>${escapeHtml(item.caption)}</figcaption>
+          </figure>`,
+        )
+        .join("");
+      const content = `${paragraphs}${media ? `\n          ${media}` : ""}`;
 
       return `<article class="history-entry" data-family-history-id="${escapeHtml(section.id)}">
         <p class="history-period">${escapeHtml(section.period)}</p>
         <div class="history-copy">
           <h3>${escapeHtml(section.title)}</h3>
-          ${paragraphs}
+          ${content}
         </div>
       </article>`;
     })
