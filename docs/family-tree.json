@@ -4,10 +4,10 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-10",
-  "revision": "2026.08.10.5",
+  "revision": "2026.08.10.6",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
-  "intro": "现有族谱从李开训的奶奶一代，以及朱道安与朱刘氏一代展开。李开训与朱守芝成家后育有五女一子；李开训的妹妹孃孃、弟弟李开工与李开庭及其后代也已纳入。",
+  "intro": "现有族谱从李开训的父母一代，以及朱道安与朱刘氏一代展开。李开训与朱守芝成家后育有五女一子；李开训的妹妹孃孃、弟弟李开工与李开庭及其后代也已纳入。",
   "migration": {
     "title": "家族迁徙",
     "intro": "这条迁徙路线从明初延续至今，连接着朱、李两家几代人的生活。",
@@ -98,19 +98,19 @@
     ]
   },
   "rootFamilyIds": [
-    "li-grandmother-family",
+    "li-father-family",
     "zhu-daoan-family"
   ],
   "people": [
     {
-      "id": "li-kaixun-grandmother",
-      "name": "李开训的奶奶",
-      "note": "活到80多岁"
-    },
-    {
       "id": "li-kaixun-father",
       "name": "李开训的父亲",
       "note": "40多岁去世"
+    },
+    {
+      "id": "li-kaixun-mother",
+      "name": "李开训的母亲",
+      "note": "活到80多岁"
     },
     {
       "id": "li-kaixun",
@@ -159,7 +159,7 @@
     {
       "id": "li-kexia",
       "name": "李克珍",
-      "note": "李玉珍的双胞胎姐姐；1960年去世，时年6岁"
+      "note": "李玉珍的双胞胎姐姐；1960年去世，时年4岁"
     },
     {
       "id": "li-yuzhen",
@@ -319,33 +319,15 @@
   ],
   "families": [
     {
-      "id": "li-grandmother-family",
-      "partners": [
-        {
-          "personId": "li-kaixun-grandmother",
-          "relation": "第一代"
-        }
-      ],
-      "childrenGroups": [
-        {
-          "id": "li-grandmother-children",
-          "label": "子女",
-          "ordered": true,
-          "children": [
-            {
-              "personId": "li-kaixun-father",
-              "relation": "儿子"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": "li-father-family",
       "partners": [
         {
           "personId": "li-kaixun-father",
-          "relation": "儿子／父亲"
+          "relation": "父亲"
+        },
+        {
+          "personId": "li-kaixun-mother",
+          "relation": "母亲"
         }
       ],
       "childrenGroups": [

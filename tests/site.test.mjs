@@ -67,7 +67,10 @@ test("builds the complete normalized Li family genealogy", async () => {
     countMatches(html, /class="family-chart-name">李克珍<\/span>/g),
     2,
   );
+  assert.match(html, /李开训的母亲/);
+  assert.match(html, /1960年去世，时年4岁/);
   assert.doesNotMatch(visibleText(html), /李克霞/);
+  assert.doesNotMatch(visibleText(html), /李开训的奶奶|时年6岁/);
   assert.doesNotMatch(html, /信息不公开|家人口述补名|存活排行/);
   assert.doesNotMatch(html, /<a\b[^>]*>李平<\/a>|<a\b[^>]*>任东风<\/a>/);
   assert.doesNotMatch(
@@ -98,7 +101,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
 
   assert.deepEqual(counts, {
     personCount: 48,
-    familyCount: 15,
+    familyCount: 14,
     rootFamilyCount: 2,
     relationshipCount: 1,
   });
@@ -106,10 +109,10 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(document.treeId, "li-zhu-family");
   assert.equal(document.defaultFocusPersonId, "li-ping");
   assert.equal(document.focusFamilyId, "li-kaixun-zhu-shouzhi-family");
-  assert.deepEqual(document.rootFamilyIds, ["li-grandmother-family", "zhu-daoan-family"]);
+  assert.deepEqual(document.rootFamilyIds, ["li-father-family", "zhu-daoan-family"]);
   assert.equal(
     document.families.flatMap((family) => family.childrenGroups ?? []).length,
-    16,
+    15,
   );
 
   const { people, families } = indexFamilyDocument(document);
@@ -118,7 +121,10 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.notEqual("li-kexia", "li-kezhen-kaigong");
   assert.equal([...people.values()].filter((person) => person.name === "李克珍").length, 2);
   assert.equal(people.get("li-kaixun-father")?.note, "40多岁去世");
-  assert.equal(people.get("li-kaixun-grandmother")?.note, "活到80多岁");
+  assert.equal(people.get("li-kaixun-mother")?.name, "李开训的母亲");
+  assert.equal(people.get("li-kaixun-mother")?.note, "活到80多岁");
+  assert.equal(people.has("li-kaixun-grandmother"), false);
+  assert.equal(people.get("li-kexia")?.note, "李玉珍的双胞胎姐姐；1960年去世，时年4岁");
   assert.match(people.get("li-kaiting")?.note ?? "", /老叔.*好姥爷.*电焊工/);
   assert.match(people.get("li-kaiting-wife")?.note ?? "", /江淮汽修公司.*售货员/);
   assert.match(people.get("li-keli")?.note ?? "", /银行/);
@@ -132,6 +138,11 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(twinRelationship?.olderPersonId, "li-kexia");
 
   const fatherChildren = childGroup(families.get("li-father-family"), "li-father-children");
+  assert.deepEqual(personIds(families.get("li-father-family").partners), [
+    "li-kaixun-father",
+    "li-kaixun-mother",
+  ]);
+  assert.equal(families.has("li-grandmother-family"), false);
   assert.deepEqual(personIds(fatherChildren.children), [
     "li-kaixun",
     "li-nianiang",
