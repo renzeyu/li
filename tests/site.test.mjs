@@ -184,7 +184,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(people.get("li-kaixun-mother")?.note, "活到80多岁");
   assert.equal(
     people.get("li-kaixun")?.note,
-    "出生于安徽省淮南市寿县堰口镇；井下采煤30年；后随单位迁居宿州",
+    "出生于安徽省淮南市寿县堰口镇；井下采煤30多年；后随单位迁居宿州",
   );
   assert.equal(people.get("zhu-shouzhi-grandfather")?.name, "朱守芝的爷爷");
   assert.equal(
@@ -308,6 +308,18 @@ test("records an objective family history linked to stable people", async () => 
   );
   assert.match(JSON.stringify(history), /1960年饥荒期间/);
   assert.match(JSON.stringify(history), /时年4岁/);
+  assert.match(JSON.stringify(history), /前后在井下采煤30多年/);
+  assert.doesNotMatch(
+    JSON.stringify(history),
+    /这段经历成为全家共同的记忆|1965年，四女李平出生|父母在她的童年生活中给予了较多照顾|前后在井下采煤30年。/,
+  );
+  const bereavementSection = history.sections.find(
+    (section) => section.id === "famine-and-bereavement",
+  );
+  assert.equal(bereavementSection.period, "1960年");
+  assert.equal(bereavementSection.title, "饥荒与丧亲");
+  assert.equal(bereavementSection.paragraphs.length, 1);
+  assert.equal(bereavementSection.personIds.includes("li-ping"), false);
   assert.match(JSON.stringify(history), /徐州煤矿工业学校/);
   assert.match(JSON.stringify(history), /昆山市中医医院护士/);
   const installationSection = history.sections.find(
@@ -809,6 +821,7 @@ test("ships a reusable, progressively enhanced renderer", async () => {
   assert.match(css, /@media \(max-width: 700px\)/);
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(css, /\.history-section/);
+  assert.doesNotMatch(css, /\.history-section\s*\{[^}]*border-bottom:/);
   assert.match(css, /\.history-entry\s*\{[\s\S]*?break-inside:\s*avoid;/);
   assert.match(css, /\.history-photo\s*\{[\s\S]*?break-inside:\s*avoid;/);
   assert.match(css, /\.history-photo img\s*\{[\s\S]*?width:\s*100%;[\s\S]*?height:\s*auto;/);

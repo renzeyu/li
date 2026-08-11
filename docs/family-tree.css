@@ -463,7 +463,6 @@ a:focus-visible {
   width: min(900px, calc(100% - 64px));
   margin: 0 auto;
   padding: 68px 0;
-  border-bottom: 1px solid var(--rule);
 }
 
 .history-heading {
