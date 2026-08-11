@@ -4,7 +4,7 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-11",
-  "revision": "2026.08.11.1",
+  "revision": "2026.08.11.2",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "现有族谱从李开训的父母一代，以及朱道安与朱刘氏一代展开。李开训与朱守芝成家后育有五女一子；李开训的妹妹孃孃、弟弟李开工与李开庭及其后代也已纳入。",
@@ -23,7 +23,7 @@
           "label": "迁徙主线",
           "placeIds": [
             "shandong-region",
-            "shouxian-region",
+            "huainan-region",
             "caijiagang-region",
             "anhui-suzhou-region"
           ],
@@ -46,7 +46,7 @@
           "label": "全部区域锚点",
           "placeIds": [
             "shandong-region",
-            "shouxian-region",
+            "huainan-region",
             "caijiagang-region",
             "anhui-suzhou-region",
             "huaibei-region",
@@ -59,11 +59,10 @@
       "routes": [
         {
           "id": "zhu-ancestral-route",
-          "label": "朱氏先祖与后世家庭足迹",
+          "label": "朱氏先祖由山东迁至淮南",
           "placeIds": [
             "shandong-region",
-            "shouxian-region",
-            "caijiagang-region"
+            "huainan-region"
           ]
         },
         {
@@ -88,15 +87,15 @@
           "coordinateNote": "只表示山东区域；“老鸹巷”的具体位置仍待考。"
         },
         {
-          "id": "shouxian-region",
-          "name": "寿县",
+          "id": "huainan-region",
+          "name": "淮南",
           "locationStatus": "regional-anchor",
           "coordinates": [
-            116.7929043,
-            32.5475121
+            117.0130019,
+            32.5866826
           ],
-          "coordinateSource": "OpenStreetMap Nominatim：寿县行政区中心",
-          "coordinateNote": "只表示寿县区域，不表示朱氏旧居或旧县衙位置。"
+          "coordinateSource": "OpenStreetMap Nominatim：淮南市行政区中心（relation 3262360）",
+          "coordinateNote": "只表示淮南市区域，作为朱家岗的区域锚点，不表示朱家岗或县衙的具体位置。"
         },
         {
           "id": "caijiagang-region",
@@ -169,7 +168,7 @@
           "id": "huainan-zhujiagang",
           "name": "淮南朱家岗",
           "locationStatus": "unlocated",
-          "coordinateNote": "尚未找到能够唯一对应的现代坐标。"
+          "coordinateNote": "朱氏先祖迁入地，也是朱道安任职地和朱守芝出生地；尚未找到能够唯一对应的现代坐标。"
         },
         {
           "id": "jianjing-xicun-address",
@@ -205,21 +204,23 @@
           {
             "id": "zhu-ming-migration",
             "period": "明初大移民",
-            "place": "山东老鸹巷至寿县",
-            "summary": "朱氏先祖由山东老鸹巷迁至寿县。",
+            "place": "山东老鸹巷至淮南朱家岗",
+            "summary": "朱氏先祖由山东老鸹巷迁至淮南朱家岗。",
             "placeIds": [
               "shandong-region",
               "shandong-laoguaxiang",
-              "shouxian-region"
+              "huainan-region",
+              "huainan-zhujiagang"
             ]
           },
           {
-            "id": "zhu-daoan-shouxian",
+            "id": "zhu-daoan-zhujiagang",
             "period": "后世",
-            "place": "寿县",
-            "summary": "朱守芝的父亲朱道安曾任寿县县令。",
+            "place": "淮南朱家岗",
+            "summary": "朱守芝的父亲朱道安曾任淮南朱家岗县令。",
             "placeIds": [
-              "shouxian-region"
+              "huainan-region",
+              "huainan-zhujiagang"
             ],
             "personIds": [
               "zhu-daoan"
@@ -243,6 +244,7 @@
             "place": "淮南朱家岗",
             "summary": "朱守芝出生于此。",
             "placeIds": [
+              "huainan-region",
               "huainan-zhujiagang"
             ],
             "personIds": [
@@ -372,7 +374,7 @@
     {
       "id": "zhu-daoan",
       "name": "朱道安",
-      "note": "曾任寿县县令"
+      "note": "曾任淮南朱家岗县令"
     },
     {
       "id": "zhu-liushi",

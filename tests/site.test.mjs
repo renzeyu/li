@@ -81,9 +81,13 @@ test("builds the complete normalized Li family genealogy", async () => {
   assert.match(html, /id="family-migration"/);
   assert.match(html, />家族迁徙</);
   assert.match(html, /data-migration-stop-id="zhu-ming-migration"/);
-  assert.match(html, /data-migration-stop-id="zhu-daoan-shouxian"/);
-  assert.match(html, /山东老鸹巷至寿县/);
-  assert.match(html, /朱守芝的父亲朱道安曾任寿县县令/);
+  assert.match(html, /data-migration-stop-id="zhu-daoan-zhujiagang"/);
+  assert.match(html, /山东老鸹巷至淮南朱家岗/);
+  assert.match(html, /朱守芝的父亲朱道安曾任淮南朱家岗县令/);
+  assert.doesNotMatch(
+    html,
+    /zhu-daoan-shouxian|shouxian-region|山东老鸹巷至寿县|朱氏先祖由山东老鸹巷迁至寿县。|曾任寿县县令/,
+  );
   assert.match(html, /河南寿县，晏口集杨家岗/);
   assert.match(html, /淮南朱家岗/);
   assert.match(html, /淮南蔡家岗谢家集区建井西村63幢西头第二户/);
@@ -195,24 +199,35 @@ test("records the family migration without duplicating genealogy identities", as
   const stops = new Map(migration.routes[0].stops.map((stop) => [stop.id, stop]));
   const mingMigration = stops.get("zhu-ming-migration");
   assert.equal(mingMigration.period, "明初大移民");
-  assert.equal(mingMigration.place, "山东老鸹巷至寿县");
-  assert.equal(mingMigration.summary, "朱氏先祖由山东老鸹巷迁至寿县。");
+  assert.equal(mingMigration.place, "山东老鸹巷至淮南朱家岗");
+  assert.equal(mingMigration.summary, "朱氏先祖由山东老鸹巷迁至淮南朱家岗。");
   assert.equal(Object.hasOwn(mingMigration, "personIds"), false);
+  assert.deepEqual(mingMigration.placeIds, [
+    "shandong-region",
+    "shandong-laoguaxiang",
+    "huainan-region",
+    "huainan-zhujiagang",
+  ]);
 
-  const zhuDaoanShouxian = stops.get("zhu-daoan-shouxian");
-  assert.equal(zhuDaoanShouxian.period, "后世");
-  assert.equal(zhuDaoanShouxian.place, "寿县");
-  assert.equal(zhuDaoanShouxian.summary, "朱守芝的父亲朱道安曾任寿县县令。");
-  assert.deepEqual(zhuDaoanShouxian.personIds, ["zhu-daoan"]);
+  const zhuDaoanZhujiagang = stops.get("zhu-daoan-zhujiagang");
+  assert.equal(zhuDaoanZhujiagang.period, "后世");
+  assert.equal(zhuDaoanZhujiagang.place, "淮南朱家岗");
+  assert.equal(zhuDaoanZhujiagang.summary, "朱守芝的父亲朱道安曾任淮南朱家岗县令。");
+  assert.deepEqual(zhuDaoanZhujiagang.placeIds, ["huainan-region", "huainan-zhujiagang"]);
+  assert.deepEqual(zhuDaoanZhujiagang.personIds, ["zhu-daoan"]);
   assert.equal(
     document.people.find((person) => person.id === "zhu-daoan")?.note,
-    "曾任寿县县令",
+    "曾任淮南朱家岗县令",
   );
 
   assert.equal(stops.get("li-kaixun-birthplace").place, "河南寿县，晏口集杨家岗");
   assert.deepEqual(stops.get("li-kaixun-birthplace").personIds, ["li-kaixun"]);
   assert.equal(stops.get("zhu-shouzhi-birthplace").place, "淮南朱家岗");
   assert.deepEqual(stops.get("zhu-shouzhi-birthplace").personIds, ["zhu-shouzhi"]);
+  assert.deepEqual(stops.get("zhu-shouzhi-birthplace").placeIds, [
+    "huainan-region",
+    "huainan-zhujiagang",
+  ]);
   assert.deepEqual(stops.get("caijiagang-birthplace").personIds, [
     "li-kexia",
     "li-yuzhen",
@@ -253,9 +268,13 @@ test("renders a progressive OpenFreeMap migration map without replacing the writ
   assert.equal(map.places.length, 14);
   assert.equal(located.length, 7);
   assert.equal(unlocated.length, 7);
-  assert.deepEqual(places.get("shouxian-region")?.coordinates, [116.7929043, 32.5475121]);
+  assert.equal(places.has("shouxian-region"), false);
+  assert.deepEqual(places.get("huainan-region")?.coordinates, [117.0130019, 32.5866826]);
   assert.deepEqual(places.get("caijiagang-region")?.coordinates, [116.8653371, 32.6063101]);
   assert.equal(places.get("shandong-laoguaxiang")?.coordinates, undefined);
+  assert.equal(places.get("huainan-zhujiagang")?.locationStatus, "unlocated");
+  assert.equal(places.get("huainan-zhujiagang")?.coordinates, undefined);
+  assert.equal(places.get("huainan-zhujiagang")?.coordinateSource, undefined);
   assert.equal(places.get("henan-shouxian-yankouji-yangjiagang")?.coordinates, undefined);
   assert.equal(
     places.get("henan-shouxian-yankouji-yangjiagang")?.name,
@@ -265,6 +284,18 @@ test("renders a progressive OpenFreeMap migration map without replacing the writ
     document.migration.routes[0].stops.find((stop) => stop.id === "regional-dispersal")
       ?.placeIds,
     ["huaibei-region", "hefei-region", "kunshan-region"],
+  );
+  assert.deepEqual(map.routes.find((route) => route.id === "zhu-ancestral-route")?.placeIds, [
+    "shandong-region",
+    "huainan-region",
+  ]);
+  assert.equal(
+    map.views.some((view) => view.placeIds.includes("shouxian-region")),
+    false,
+  );
+  assert.equal(
+    map.routes.some((route) => route.placeIds.includes("shouxian-region")),
+    false,
   );
 
   assert.match(html, /class="migration-map-block"/);
