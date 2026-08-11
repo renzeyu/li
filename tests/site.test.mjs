@@ -10,6 +10,8 @@ import {
 
 const docs = new URL("../docs/", import.meta.url);
 const publicRoot = new URL("../public/", import.meta.url);
+const expectedSiteIntro =
+  "李氏先祖于明初由山东迁至寿县堰口镇，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。";
 
 function countMatches(value, pattern) {
   return value.match(pattern)?.length ?? 0;
@@ -47,6 +49,10 @@ test("builds the complete normalized Li family genealogy", async () => {
   assert.match(html, /<title>李家族谱<\/title>/);
   assert.match(html, /李氏／朱氏家族档案/);
   assert.match(html, /李开训与朱守芝一家/);
+  assert.equal(document.intro, expectedSiteIntro);
+  assert.ok(html.includes(`<p class="site-intro">${expectedSiteIntro}</p>`));
+  assert.equal(countMatches(document.intro, /。/g), 4);
+  assert.doesNotMatch(html, />李开训与朱守芝成家后育有五女一子。</);
   assert.match(html, /data-family-default-expand="all"/);
   assert.match(html, /data-family-profile-links="false"/);
   assert.match(html, />完整族谱</);
@@ -518,6 +524,8 @@ test("renders a progressive OpenFreeMap migration map without replacing the writ
   );
 
   assert.match(html, /class="migration-map-block"/);
+  assert.match(html, /class="migration-layout"/);
+  assert.match(html, /class="migration-directory" aria-label="居住与迁徙记录"/);
   assert.match(html, /data-family-map-source="\.\/family-tree\.json"/);
   assert.match(html, /aria-label="李家迁徙与朱家足迹交互地图"/);
   assert.match(html, />迁徙主线</);
@@ -527,7 +535,8 @@ test("renders a progressive OpenFreeMap migration map without replacing the writ
   assert.doesNotMatch(html, />尚待定位的地点|地点待定位</);
   assert.match(html, />安徽省淮南市寿县堰口镇</);
   assert.match(html, />淮南市谢家集区朱家岗</);
-  assert.ok(html.indexOf('class="migration-map-block"') < html.indexOf('class="migration-route"'));
+  assert.ok(html.indexOf('class="migration-map-block"') < html.indexOf('class="migration-directory"'));
+  assert.ok(html.indexOf('class="migration-directory"') < html.indexOf('class="migration-route"'));
   assert.equal(countMatches(html, /data-migration-stop-id=/g), 13);
   assert.equal(countMatches(html, /data-family-map-unlocated=/g), 0);
   assert.match(visibleText(html), /底图.*下方迁徙记录无需地图即可阅读/);
@@ -539,6 +548,7 @@ test("renders a progressive OpenFreeMap migration map without replacing the writ
   assert.match(script, /family-migration-routes/);
   assert.match(script, /prefers-reduced-motion/);
   assert.match(script, /ResizeObserver/);
+  assert.match(script, /canvasIsVisible/);
   assert.doesNotMatch(script, /innerHTML|setHTML\(|unpkg|jsdelivr/);
   assert.match(css, /\.family-map-shell/);
   assert.match(css, /\.family-map-canvas/);
@@ -828,6 +838,11 @@ test("ships a reusable, progressively enhanced renderer", async () => {
   assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.history-entry/);
   assert.match(css, /@media print[\s\S]*?\.history-entry/);
   assert.match(css, /\.migration-section/);
+  assert.match(css, /\.migration-section\s*\{[\s\S]*?width:\s*min\(1180px,/);
+  assert.match(css, /\.migration-layout\s*\{[\s\S]*?display:\s*grid;[\s\S]*?grid-template-columns:\s*minmax\(0, 1\.55fr\) minmax\(320px, 0\.8fr\);/);
+  assert.match(css, /\.migration-map-block\s*\{[\s\S]*?position:\s*sticky;[\s\S]*?top:\s*20px;/);
+  assert.match(css, /@media \(max-width: 860px\)[\s\S]*?\.migration-map-block\s*\{[\s\S]*?position:\s*static;/);
+  assert.match(css, /@media print[\s\S]*?\.migration-layout\s*\{[\s\S]*?display:\s*block;/);
   assert.match(css, /\.migration-stop\s*\{[\s\S]*?break-inside:\s*avoid;/);
   assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.migration-stop/);
   assert.match(css, /family-chart-details:not\(\[open\]\) > \.family-chart-children/);

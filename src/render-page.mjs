@@ -146,8 +146,12 @@ ${relatedPeople}
       <h2 id="migration-title">${escapeHtml(migration.title)}</h2>
       <p>${escapeHtml(migration.intro)}</p>
     </div>
-    ${renderMigrationMap(migration.map)}
-    ${routes}
+    <div class="migration-layout">
+      ${renderMigrationMap(migration.map)}
+      <div class="migration-directory" aria-label="居住与迁徙记录">
+        ${routes}
+      </div>
+    </div>
     <script type="module" src="./family-map.mjs" defer data-static-interaction></script>
   </section>`;
 }

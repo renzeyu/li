@@ -248,10 +248,15 @@ async function enhanceFamilyMap(root) {
       }
       if (focusMarker) {
         marker.focus({ preventScroll: true });
-        canvas.scrollIntoView({
-          block: "center",
-          behavior: reducedMotion.matches ? "auto" : "smooth",
-        });
+        const canvasBounds = canvas.getBoundingClientRect();
+        const canvasIsVisible =
+          canvasBounds.top >= 0 && canvasBounds.bottom <= window.innerHeight;
+        if (!canvasIsVisible) {
+          canvas.scrollIntoView({
+            block: "center",
+            behavior: reducedMotion.matches ? "auto" : "smooth",
+          });
+        }
       }
       if (announcement instanceof HTMLElement) {
         announcement.textContent = `已在地图中定位至${place.name}`;
