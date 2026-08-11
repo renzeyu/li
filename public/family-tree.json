@@ -4,19 +4,19 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-11",
-  "revision": "2026.08.11.4",
+  "revision": "2026.08.11.6",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "李开训与朱守芝成家后育有五女一子。",
   "migration": {
     "title": "家族迁徙",
-    "intro": "这些记录包括李氏自明初以来的迁徙、朱氏在淮南朱家岗的世居经历，以及两家后来的生活足迹。",
+    "intro": "这些记录包括李氏自明初以来由山东至堰口镇的迁徙、朱氏在淮南市谢家集区朱家岗的生活经历，以及两家后来的生活足迹。",
     "map": {
       "title": "迁徙地图",
-      "intro": "地图以现代行政区或聚落中心作为区域锚点，帮助理解几代人的迁徙方向。它不表示任何人的具体住址；尚未唯一定位的地点继续保留在下方。",
+      "intro": "地图同时展示能够明确定位的具体地点与较大范围的区域锚点，帮助理解几代人的迁徙方向。",
       "styleUrl": "https://tiles.openfreemap.org/styles/positron",
       "coordinateSystem": "WGS84",
-      "researchNote": "区域锚点来自OpenStreetMap地名检索，均不代表具体住宅、旧县衙或单位原址。",
+      "researchNote": "地点经公开地图核对并统一记录为WGS84坐标；区域锚点不表示旧址或具体住宅。",
       "views": [
         {
           "id": "migration-route",
@@ -25,9 +25,9 @@
             "shandong-region",
             "shouxian-yankou-region",
             "zhecheng-region",
-            "huainan-region",
-            "caijiagang-region",
-            "anhui-suzhou-region"
+            "huainan-zhujiagang",
+            "jianjing-xicun-address",
+            "suzhou-fourth-work-area"
           ],
           "maxZoom": 5.8
         },
@@ -35,8 +35,9 @@
           "id": "later-distribution",
           "label": "其后分布",
           "placeIds": [
-            "caijiagang-region",
-            "anhui-suzhou-region",
+            "jianjing-xicun-address",
+            "suzhou-fourth-work-area",
+            "suzhou-installation-residence",
             "huaibei-region",
             "hefei-region",
             "kunshan-region"
@@ -45,14 +46,15 @@
         },
         {
           "id": "all-located",
-          "label": "全部区域锚点",
+          "label": "全部地点",
           "placeIds": [
             "shandong-region",
             "shouxian-yankou-region",
             "zhecheng-region",
-            "huainan-region",
-            "caijiagang-region",
-            "anhui-suzhou-region",
+            "huainan-zhujiagang",
+            "jianjing-xicun-address",
+            "suzhou-fourth-work-area",
+            "suzhou-installation-residence",
             "huaibei-region",
             "hefei-region",
             "kunshan-region"
@@ -63,7 +65,7 @@
       "routes": [
         {
           "id": "li-ancestral-route",
-          "label": "李氏先祖由山东迁至寿县堰口",
+          "label": "李氏先祖由山东迁至寿县堰口镇",
           "placeIds": [
             "shandong-region",
             "shouxian-yankou-region"
@@ -73,8 +75,8 @@
           "id": "family-move-to-anhui-suzhou",
           "label": "从淮南迁往宿州",
           "placeIds": [
-            "caijiagang-region",
-            "anhui-suzhou-region"
+            "jianjing-xicun-address",
+            "suzhou-fourth-work-area"
           ]
         }
       ],
@@ -88,18 +90,18 @@
             36.398987
           ],
           "coordinateSource": "OpenStreetMap Nominatim：山东省行政区中心",
-          "coordinateNote": "只表示山东区域；“老鸹巷”的具体位置仍待考。"
+          "coordinateNote": "“老鸹巷”为明初历史地名，本图以山东区域表示。"
         },
         {
           "id": "shouxian-yankou-region",
-          "name": "淮南寿县堰口镇",
+          "name": "安徽省淮南市寿县堰口镇",
           "locationStatus": "regional-anchor",
           "coordinates": [
             116.7889309,
             32.3848132
           ],
           "coordinateSource": "OpenStreetMap Nominatim：堰口镇行政区中心（relation 13904356）",
-          "coordinateNote": "只作为堰口集杨家岗的区域锚点，不表示杨家岗旧址或住宅。"
+          "coordinateNote": "李氏先祖明初迁入地，也是李开训出生地；邮编232242。"
         },
         {
           "id": "zhecheng-region",
@@ -113,37 +115,48 @@
           "coordinateNote": "只表示柘城县区域，不表示旧县衙或任职地点的具体位置。"
         },
         {
-          "id": "huainan-region",
-          "name": "淮南",
+          "id": "huainan-zhujiagang",
+          "name": "淮南市谢家集区朱家岗",
           "locationStatus": "regional-anchor",
           "coordinates": [
-            117.0130019,
-            32.5866826
+            116.8378307,
+            32.6062584
           ],
-          "coordinateSource": "OpenStreetMap Nominatim：淮南市行政区中心（relation 3262360）",
-          "coordinateNote": "只表示淮南市区域，作为朱家岗的区域锚点，不表示朱家岗或旧宅邸的具体位置。"
+          "coordinateSource": "OpenStreetMap Nominatim：八公山镇朱岗村区域中心（relation 13665336）",
+          "coordinateNote": "现代地图中的八公山镇朱岗村仅作为家族记录中“朱家岗”的区域锚点；不表示旧聚落边界、朱家旧宅、朱道安任职处或朱守芝出生地的具体位置。"
         },
         {
-          "id": "caijiagang-region",
-          "name": "蔡家岗／谢家集",
+          "id": "jianjing-xicun-address",
+          "name": "淮南市谢家集区建井西村",
           "locationStatus": "regional-anchor",
           "coordinates": [
-            116.8653371,
-            32.6063101
+            116.865969,
+            32.599344
           ],
-          "coordinateSource": "OpenStreetMap Nominatim：蔡家岗聚落中心",
-          "coordinateNote": "作为建井西村和三十三处留守处的区域锚点，不表示63幢的具体位置。"
+          "coordinateSource": "高德地图：建井西村4号楼（GCJ-02坐标转换为WGS84）",
+          "coordinateNote": "家族门牌记录为63号楼西头第二户；本图以同社区可定位的4号楼作为片区锚点，不表示63号楼的具体位置。"
         },
         {
-          "id": "anhui-suzhou-region",
-          "name": "安徽宿州",
-          "locationStatus": "regional-anchor",
+          "id": "suzhou-fourth-work-area",
+          "name": "中煤三建第三十三工程处（三十三处机关）",
+          "locationStatus": "located",
           "coordinates": [
-            116.9588062,
-            33.6482366
+            117.01467,
+            33.63119
           ],
-          "coordinateSource": "OpenStreetMap Nominatim：宿州市行政区中心",
-          "coordinateNote": "作为四工区安装机电、机电安装处和宿州安装处的区域锚点，不表示单位原址或住宅。"
+          "coordinateSource": "高德地图：中煤三建第三十三工程处（GCJ-02坐标转换为WGS84）",
+          "coordinateNote": "位于安徽省宿州市埇桥区汴河东路27号；三十三处四工区安装机电与后来分离的机电安装处均在此处。"
+        },
+        {
+          "id": "suzhou-installation-residence",
+          "name": "宿州安装处",
+          "locationStatus": "located",
+          "coordinates": [
+            117.010564,
+            33.626139
+          ],
+          "coordinateSource": "高德地图：中煤三建机电安装处总仓库（GCJ-02坐标转换为WGS84）",
+          "coordinateNote": "公开地图中的宿州安装处位置，位于安徽省宿州市埇桥区建设路、东城康居苑北区北侧约230米；不表示个人住宅。"
         },
         {
           "id": "huaibei-region",
@@ -177,48 +190,6 @@
           ],
           "coordinateSource": "OpenStreetMap Nominatim：昆山市行政区中心",
           "coordinateNote": "只表示近年的居住区域，不表示具体住宅。"
-        },
-        {
-          "id": "shandong-laoguaxiang",
-          "name": "山东老鸹巷",
-          "locationStatus": "unlocated",
-          "coordinateNote": "李氏先祖明初迁出地，具体位置仍待考。"
-        },
-        {
-          "id": "huainan-shouxian-yankouji-yangjiagang",
-          "name": "淮南寿县堰口集杨家岗",
-          "locationStatus": "unlocated",
-          "coordinateNote": "家族记录中的迁入地与李开训出生地；现代堰口镇仅作为区域锚点，杨家岗旧址尚未唯一定位。"
-        },
-        {
-          "id": "huainan-zhujiagang",
-          "name": "淮南朱家岗",
-          "locationStatus": "unlocated",
-          "coordinateNote": "朱氏世居地，也是朱守芝的出生地；后来朱家宅邸在打地主时期被人抢夺。具体位置尚未唯一定位。"
-        },
-        {
-          "id": "jianjing-xicun-address",
-          "name": "建井西村63幢西头第二户",
-          "locationStatus": "unlocated",
-          "coordinateNote": "门牌记录明确，但公开地图尚不能核实具体楼幢位置。"
-        },
-        {
-          "id": "suzhou-fourth-work-area",
-          "name": "宿州三十三处四工区安装机电",
-          "locationStatus": "unlocated",
-          "coordinateNote": "单位旧址尚待确认。"
-        },
-        {
-          "id": "suzhou-installation-office",
-          "name": "机电安装处",
-          "locationStatus": "unlocated",
-          "coordinateNote": "这是单位沿革记录，尚未确认其与旧址的空间关系。"
-        },
-        {
-          "id": "suzhou-installation-residence",
-          "name": "宿州安装处",
-          "locationStatus": "unlocated",
-          "coordinateNote": "李玉霞近年的居住地点名称，具体位置未在公开地图上标注。"
         }
       ]
     },
@@ -230,23 +201,32 @@
           {
             "id": "li-ming-migration",
             "period": "明初大移民",
-            "place": "山东老鸹巷至淮南寿县堰口集杨家岗",
-            "summary": "李氏先祖由山东老鸹巷迁至淮南寿县堰口集杨家岗。",
+            "place": "山东老鸹巷至安徽省淮南市寿县堰口镇",
+            "summary": "李氏先祖由山东老鸹巷迁至安徽省淮南市寿县堰口镇。",
             "placeIds": [
               "shandong-region",
-              "shandong-laoguaxiang",
-              "shouxian-yankou-region",
-              "huainan-shouxian-yankouji-yangjiagang"
+              "shouxian-yankou-region"
             ]
           },
           {
             "id": "zhu-family-zhujiagang",
-            "period": "世居",
-            "place": "淮南朱家岗",
-            "summary": "朱氏一家世代居于淮南朱家岗，并没有迁徙。",
+            "period": "先祖迁入",
+            "place": "淮南市谢家集区朱家岗",
+            "summary": "朱氏先祖迁入淮南市谢家集区朱家岗。",
             "placeIds": [
-              "huainan-region",
               "huainan-zhujiagang"
+            ]
+          },
+          {
+            "id": "zhu-daoan-zhujiagang",
+            "period": "后世",
+            "place": "淮南市谢家集区朱家岗",
+            "summary": "朱道安曾在此任职。",
+            "placeIds": [
+              "huainan-zhujiagang"
+            ],
+            "personIds": [
+              "zhu-daoan"
             ]
           },
           {
@@ -264,21 +244,19 @@
           {
             "id": "zhu-home-seized",
             "period": "后来",
-            "place": "淮南朱家岗",
+            "place": "淮南市谢家集区朱家岗",
             "summary": "朱家在打地主时期被人抢夺了宅邸。",
             "placeIds": [
-              "huainan-region",
               "huainan-zhujiagang"
             ]
           },
           {
             "id": "li-kaixun-birthplace",
             "period": "早年",
-            "place": "淮南寿县堰口集杨家岗",
+            "place": "安徽省淮南市寿县堰口镇",
             "summary": "李开训出生于此。",
             "placeIds": [
-              "shouxian-yankou-region",
-              "huainan-shouxian-yankouji-yangjiagang"
+              "shouxian-yankou-region"
             ],
             "personIds": [
               "li-kaixun"
@@ -287,10 +265,9 @@
           {
             "id": "zhu-shouzhi-birthplace",
             "period": "早年",
-            "place": "淮南朱家岗",
+            "place": "淮南市谢家集区朱家岗",
             "summary": "朱守芝出生于此。",
             "placeIds": [
-              "huainan-region",
               "huainan-zhujiagang"
             ],
             "personIds": [
@@ -300,10 +277,9 @@
           {
             "id": "caijiagang-birthplace",
             "period": "子女出生",
-            "place": "淮南蔡家岗谢家集区建井西村63幢西头第二户",
+            "place": "淮南市谢家集区建井西村63号楼西头第二户",
             "summary": "六名子女均出生于此；这里是当地的三十三处留守处。",
             "placeIds": [
-              "caijiagang-region",
               "jianjing-xicun-address"
             ],
             "personIds": [
@@ -318,10 +294,9 @@
           {
             "id": "suzhou-installation",
             "period": "迁居宿州",
-            "place": "宿州三十三处四工区安装机电",
-            "summary": "一家后来迁至此处。",
+            "place": "宿州市埇桥区汴河东路27号中煤三建第三十三工程处",
+            "summary": "一家后来迁至三十三处机关，当时所在单位为三十三处四工区安装机电。",
             "placeIds": [
-              "anhui-suzhou-region",
               "suzhou-fourth-work-area"
             ]
           },
@@ -329,9 +304,9 @@
             "id": "installation-office",
             "period": "单位沿革",
             "place": "机电安装处",
-            "summary": "三十三处四工区安装机电后来分离为机电安装处。",
+            "summary": "三十三处四工区安装机电后来分离为机电安装处，单位地址仍在此处。",
             "placeIds": [
-              "suzhou-installation-office"
+              "suzhou-fourth-work-area"
             ]
           },
           {
@@ -349,9 +324,8 @@
             "id": "recent-yuxia-settlement",
             "period": "近十年",
             "place": "宿州安装处",
-            "summary": "李玉霞仍居宿州安装处。",
+            "summary": "李玉霞近年居住在宿州安装处，位于安徽省宿州市埇桥区建设路、东城康居苑北区北侧约230米。",
             "placeIds": [
-              "anhui-suzhou-region",
               "suzhou-installation-residence"
             ],
             "personIds": [
@@ -395,7 +369,7 @@
     {
       "id": "li-kaixun",
       "name": "李开训",
-      "note": "出生于淮南寿县堰口集杨家岗；井下采煤30年"
+      "note": "出生于安徽省淮南市寿县堰口镇；井下采煤30年"
     },
     {
       "id": "li-nianiang",
@@ -424,7 +398,8 @@
     },
     {
       "id": "zhu-daoan",
-      "name": "朱道安"
+      "name": "朱道安",
+      "note": "曾在淮南市谢家集区朱家岗任职"
     },
     {
       "id": "zhu-liushi",
@@ -433,7 +408,7 @@
     {
       "id": "zhu-shouzhi",
       "name": "朱守芝",
-      "note": "出生于淮南朱家岗；幼年读过4年私塾"
+      "note": "出生于淮南市谢家集区朱家岗；幼年读过4年私塾"
     },
     {
       "id": "zhu-shourong",
@@ -498,7 +473,7 @@
     {
       "id": "li-yuxia",
       "name": "李玉霞",
-      "note": "目前仍在宿州安装处"
+      "note": "近年居住在宿州安装处"
     },
     {
       "id": "peng-xuejian",

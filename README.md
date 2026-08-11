@@ -12,7 +12,7 @@
 
 `migration.routes[].stops[]` 保存家族出生地、迁居与单位沿革。`personIds` 只引用 `people` 中已有的稳定 ID，页面据此生成相关人物姓名，不另存第二份姓名。
 
-迁徙地图也读取同一份文件。`migration.map.places` 记录现代区域锚点与尚待定位的地点，`stops[].placeIds` 把故事连接到地点，`migration.map.views` 控制地图范围。坐标必须使用WGS84，并记录`coordinateSource`；城市或行政区中心只能标为区域锚点，不能写成具体住址。地图使用本地保存的MapLibre运行时与OpenFreeMap底图，底图不可用时，迁徙文字记录仍会完整显示。
+迁徙地图也读取同一份文件。`migration.map.places` 用`located`、`regional-anchor`与`unlocated`区分具体地点、区域锚点和尚待定位的地点，`stops[].placeIds` 把故事连接到地点，`migration.map.views` 控制地图范围。坐标必须使用WGS84，并记录`coordinateSource`；城市或行政区中心只能标为区域锚点，不能写成具体住址。地图使用本地保存的MapLibre运行时与OpenFreeMap底图，底图不可用时，迁徙文字记录仍会完整显示。
 
 每次更新时：
 

@@ -646,6 +646,12 @@ a:focus-visible {
 
 .family-map-dot-anchor {
   border: 1px solid var(--focus);
+  background: transparent;
+}
+
+.family-map-dot-located {
+  border: 1px solid var(--focus);
+  border-radius: 1px;
   background: var(--focus);
 }
 
@@ -746,6 +752,10 @@ a:focus-visible {
   border-radius: 50%;
   background: var(--focus);
   box-shadow: 0 0 0 1px var(--focus);
+}
+
+.family-map-marker-located .family-map-marker-dot {
+  border-radius: 1px;
 }
 
 .family-map-marker-label {

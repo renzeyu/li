@@ -44,7 +44,7 @@ function assertDocument(documentData) {
       throw new Error("Invalid family map place");
     }
     placeIds.add(place.id);
-    if (place.locationStatus === "regional-anchor") {
+    if (place.locationStatus === "located" || place.locationStatus === "regional-anchor") {
       const validCoordinates =
         Array.isArray(place.coordinates) &&
         place.coordinates.length === 2 &&
@@ -106,7 +106,11 @@ function indexStories(documentData) {
 function popupContent(place, stories) {
   const content = element("article", "family-map-popup");
   content.append(
-    element("p", "family-map-popup-status", "区域锚点"),
+    element(
+      "p",
+      "family-map-popup-status",
+      place.locationStatus === "located" ? "具体地点" : "区域锚点",
+    ),
     element("h3", "family-map-popup-title", place.name),
   );
 
@@ -129,7 +133,10 @@ function popupContent(place, stories) {
 }
 
 function markerElement(place) {
-  const marker = element("button", "family-map-marker");
+  const marker = element(
+    "button",
+    `family-map-marker family-map-marker-${place.locationStatus}`,
+  );
   marker.type = "button";
   marker.setAttribute("aria-label", `查看${place.name}的家族迁徙记录`);
   marker.dataset.familyMapMarker = place.id;
@@ -185,7 +192,7 @@ async function enhanceFamilyMap(root) {
     const storiesByPlaceId = indexStories(documentData);
     const placesById = new Map(mapData.places.map((place) => [place.id, place]));
     const mappedPlaces = mapData.places.filter(
-      (place) => place.locationStatus === "regional-anchor",
+      (place) => place.locationStatus === "located" || place.locationStatus === "regional-anchor",
     );
     const viewsById = new Map(mapData.views.map((view) => [view.id, view]));
 
@@ -235,7 +242,7 @@ async function enhanceFamilyMap(root) {
       if (move) {
         map.easeTo({
           center: place.coordinates,
-          zoom: Math.max(map.getZoom(), 8.2),
+          zoom: Math.max(map.getZoom(), place.locationStatus === "located" ? 14.8 : 8.2),
           duration: reducedMotion.matches ? 0 : 420,
         });
       }

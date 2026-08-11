@@ -62,7 +62,7 @@ function validateMigrationMap(map, errors, stopPlaceReferences) {
       if (placeIds.has(place.id)) errors.push(`duplicate migration map place id: ${place.id}`);
       placeIds.add(place.id);
     }
-    if (!['regional-anchor', 'unlocated'].includes(place.locationStatus)) {
+    if (!['located', 'regional-anchor', 'unlocated'].includes(place.locationStatus)) {
       errors.push(`${context} has invalid locationStatus`);
     }
 
@@ -70,7 +70,7 @@ function validateMigrationMap(map, errors, stopPlaceReferences) {
       Array.isArray(place.coordinates) &&
       place.coordinates.length === 2 &&
       place.coordinates.every(Number.isFinite);
-    if (place.locationStatus === "regional-anchor") {
+    if (place.locationStatus === "located" || place.locationStatus === "regional-anchor") {
       if (!hasCoordinates) {
         errors.push(`${context} requires WGS84 coordinates`);
       } else {

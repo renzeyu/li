@@ -71,6 +71,19 @@ function renderMigrationMap(map) {
       </li>`,
     )
     .join("");
+  const hasLocatedPlaces = map.places.some((place) => place.locationStatus === "located");
+  const exactLegend = hasLocatedPlaces
+    ? '<span><i class="family-map-dot family-map-dot-located" aria-hidden="true"></i>具体地点</span>'
+    : "";
+  const pendingLegend = unlocatedPlaces.length
+    ? '<span><i class="family-map-dot family-map-dot-pending" aria-hidden="true"></i>地点待定位</span>'
+    : "";
+  const unlocatedSection = unlocatedPlaces.length
+    ? `<div class="family-map-unlocated" aria-labelledby="family-map-unlocated-title">
+      <h4 id="family-map-unlocated-title">尚待定位的地点</h4>
+      <ol role="list">${unlocatedList}</ol>
+    </div>`
+    : "";
 
   return `<div class="migration-map-block" aria-labelledby="migration-map-title">
     <div class="migration-map-heading">
@@ -87,13 +100,10 @@ function renderMigrationMap(map) {
       <p class="visually-hidden" data-family-map-announcement aria-live="polite" aria-atomic="true"></p>
     </div>
     <div class="family-map-meta">
-      <p class="family-map-legend"><span><i class="family-map-dot family-map-dot-anchor" aria-hidden="true"></i>区域锚点</span><span><i class="family-map-dot family-map-dot-pending" aria-hidden="true"></i>地点待定位</span></p>
+      <p class="family-map-legend">${exactLegend}<span><i class="family-map-dot family-map-dot-anchor" aria-hidden="true"></i>区域锚点</span>${pendingLegend}</p>
       <p class="family-map-note">${escapeHtml(map.researchNote)}若底图暂时无法访问，下方地点与故事仍会完整保留。</p>
     </div>
-    <div class="family-map-unlocated" aria-labelledby="family-map-unlocated-title">
-      <h4 id="family-map-unlocated-title">尚待定位的地点</h4>
-      <ol role="list">${unlocatedList}</ol>
-    </div>
+${unlocatedSection}
   </div>`;
 }
 
