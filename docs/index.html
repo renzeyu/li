@@ -13,6 +13,7 @@
   <meta property="og:image" content="https://renzeyu.github.io/li/og.svg">
   <link rel="canonical" href="https://renzeyu.github.io/li/">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./maplibre-gl.css">
   <link rel="stylesheet" href="./family-tree.css">
   <title>李家族谱</title>
 </head>
@@ -24,7 +25,7 @@
       <h1>李家族谱</h1>
       <p class="site-subtitle">李开训与朱守芝一家</p>
       <p class="site-intro">现有族谱从李开训的父母一代，以及朱道安与朱刘氏一代展开。李开训与朱守芝成家后育有五女一子；李开训的妹妹孃孃、弟弟李开工与李开庭及其后代也已纳入。</p>
-      <p class="site-updated" data-family-updated>2026年8月10日更新</p>
+      <p class="site-updated" data-family-updated>2026年8月11日更新</p>
     </header>
 
     <section class="tree-section" id="family-tree" aria-labelledby="li-family-chart-title">
@@ -433,66 +434,135 @@
       <h2 id="migration-title">家族迁徙</h2>
       <p>这条迁徙路线从明初延续至今，连接着朱、李两家几代人的生活。</p>
     </div>
+    <div class="migration-map-block" aria-labelledby="migration-map-title">
+    <div class="migration-map-heading">
+      <p class="migration-map-kicker">家族地理</p>
+      <h3 id="migration-map-title">迁徙地图</h3>
+      <p>地图以现代行政区或聚落中心作为区域锚点，帮助理解几代人的迁徙方向。它不表示任何人的具体住址；尚未唯一定位的地点继续保留在下方。</p>
+    </div>
+    <div class="family-map-shell" data-family-map data-family-map-source="./family-tree.json" data-family-map-state="loading">
+      <div class="family-map-view-controls" data-family-map-view-controls role="group" aria-label="选择地图范围">
+        <button type="button" data-family-map-view="migration-route" aria-pressed="true">迁徙主线</button><button type="button" data-family-map-view="later-distribution" aria-pressed="false">其后分布</button><button type="button" data-family-map-view="all-located" aria-pressed="false">全部区域锚点</button>
+      </div>
+      <div class="family-map-canvas" data-family-map-canvas role="region" aria-label="李家与朱家迁徙交互地图"></div>
+      <p class="family-map-status" data-family-map-status aria-live="polite" aria-atomic="true">正在加载OpenFreeMap底图。下方迁徙记录无需地图即可阅读。</p>
+      <p class="visually-hidden" data-family-map-announcement aria-live="polite" aria-atomic="true"></p>
+    </div>
+    <div class="family-map-meta">
+      <p class="family-map-legend"><span><i class="family-map-dot family-map-dot-anchor" aria-hidden="true"></i>区域锚点</span><span><i class="family-map-dot family-map-dot-pending" aria-hidden="true"></i>地点待定位</span></p>
+      <p class="family-map-note">区域锚点来自OpenStreetMap地名检索，均不代表具体住宅、旧县衙或单位原址。若底图暂时无法访问，下方地点与故事仍会完整保留。</p>
+    </div>
+    <div class="family-map-unlocated" aria-labelledby="family-map-unlocated-title">
+      <h4 id="family-map-unlocated-title">尚待定位的地点</h4>
+      <ol role="list"><li data-family-map-unlocated="shandong-laoguaxiang">
+        <strong>山东老鸹巷</strong>
+        <span>明初历史地名，具体位置仍待考。</span>
+      </li><li data-family-map-unlocated="henan-shouxian-yankouji-yangjiagang">
+        <strong>河南寿县，晏口集杨家岗</strong>
+        <span>原地名照录，尚未找到能够唯一对应的现代坐标。</span>
+      </li><li data-family-map-unlocated="huainan-zhujiagang">
+        <strong>淮南朱家岗</strong>
+        <span>尚未找到能够唯一对应的现代坐标。</span>
+      </li><li data-family-map-unlocated="jianjing-xicun-address">
+        <strong>建井西村63幢西头第二户</strong>
+        <span>门牌记录明确，但公开地图尚不能核实具体楼幢位置。</span>
+      </li><li data-family-map-unlocated="suzhou-fourth-work-area">
+        <strong>宿州三十三处四工区安装机电</strong>
+        <span>单位旧址尚待确认。</span>
+      </li><li data-family-map-unlocated="suzhou-installation-office">
+        <strong>机电安装处</strong>
+        <span>这是单位沿革记录，尚未确认其与旧址的空间关系。</span>
+      </li><li data-family-map-unlocated="suzhou-installation-residence">
+        <strong>宿州安装处</strong>
+        <span>李玉霞近年的居住地点名称，具体位置未在公开地图上标注。</span>
+      </li></ol>
+    </div>
+  </div>
     <div class="migration-route" data-migration-route-id="li-zhu-family-route">
         <h3 class="migration-route-title">居住与迁徙</h3>
-        <ol class="migration-stops" role="list"><li class="migration-stop" data-migration-stop-id="zhu-ming-migration">
+        <ol class="migration-stops" role="list"><li class="migration-stop" data-migration-stop-id="zhu-ming-migration" data-family-map-place-ids="shandong-region shandong-laoguaxiang shouxian-region">
             <p class="migration-period">明初大移民</p>
             <div class="migration-stop-copy">
               <h4 class="migration-place">山东老鸹巷至寿县</h4>
               <p class="migration-summary">朱氏先祖由山东老鸹巷迁至寿县。</p>
 
+              <div class="migration-map-actions" data-family-map-actions></div>
             </div>
-          </li><li class="migration-stop" data-migration-stop-id="zhu-daoan-shouxian">
+          </li><li class="migration-stop" data-migration-stop-id="zhu-daoan-shouxian" data-family-map-place-ids="shouxian-region">
             <p class="migration-period">后世</p>
             <div class="migration-stop-copy">
               <h4 class="migration-place">寿县</h4>
               <p class="migration-summary">朱守芝的父亲朱道安曾任寿县县令。</p>
 <p class="migration-people"><span>相关人物：</span>朱道安</p>
+              <div class="migration-map-actions" data-family-map-actions></div>
             </div>
-          </li><li class="migration-stop" data-migration-stop-id="parents-birthplaces">
+          </li><li class="migration-stop" data-migration-stop-id="li-kaixun-birthplace" data-family-map-place-ids="henan-shouxian-yankouji-yangjiagang">
             <p class="migration-period">早年</p>
             <div class="migration-stop-copy">
-              <h4 class="migration-place">河南寿县，晏口集杨家岗／淮南朱家岗</h4>
-              <p class="migration-summary">李开训出生于河南寿县，晏口集杨家岗；朱守芝出生于淮南朱家岗。</p>
-<p class="migration-people"><span>相关人物：</span>李开训、朱守芝</p>
+              <h4 class="migration-place">河南寿县，晏口集杨家岗</h4>
+              <p class="migration-summary">李开训出生于此。</p>
+<p class="migration-people"><span>相关人物：</span>李开训</p>
+              <div class="migration-map-actions" data-family-map-actions></div>
             </div>
-          </li><li class="migration-stop" data-migration-stop-id="caijiagang-birthplace">
+          </li><li class="migration-stop" data-migration-stop-id="zhu-shouzhi-birthplace" data-family-map-place-ids="huainan-zhujiagang">
+            <p class="migration-period">早年</p>
+            <div class="migration-stop-copy">
+              <h4 class="migration-place">淮南朱家岗</h4>
+              <p class="migration-summary">朱守芝出生于此。</p>
+<p class="migration-people"><span>相关人物：</span>朱守芝</p>
+              <div class="migration-map-actions" data-family-map-actions></div>
+            </div>
+          </li><li class="migration-stop" data-migration-stop-id="caijiagang-birthplace" data-family-map-place-ids="caijiagang-region jianjing-xicun-address">
             <p class="migration-period">子女出生</p>
             <div class="migration-stop-copy">
               <h4 class="migration-place">淮南蔡家岗谢家集区建井西村63幢西头第二户</h4>
               <p class="migration-summary">六名子女均出生于此；这里是当地的三十三处留守处。</p>
 <p class="migration-people"><span>相关人物：</span>李克珍、李玉珍、李坤、李玉霞、李平、李惠</p>
+              <div class="migration-map-actions" data-family-map-actions></div>
             </div>
-          </li><li class="migration-stop" data-migration-stop-id="suzhou-installation">
+          </li><li class="migration-stop" data-migration-stop-id="suzhou-installation" data-family-map-place-ids="anhui-suzhou-region suzhou-fourth-work-area">
             <p class="migration-period">迁居宿州</p>
             <div class="migration-stop-copy">
               <h4 class="migration-place">宿州三十三处四工区安装机电</h4>
               <p class="migration-summary">一家后来迁至此处。</p>
 
+              <div class="migration-map-actions" data-family-map-actions></div>
             </div>
-          </li><li class="migration-stop" data-migration-stop-id="installation-office">
+          </li><li class="migration-stop" data-migration-stop-id="installation-office" data-family-map-place-ids="suzhou-installation-office">
             <p class="migration-period">单位沿革</p>
             <div class="migration-stop-copy">
               <h4 class="migration-place">机电安装处</h4>
               <p class="migration-summary">三十三处四工区安装机电后来分离为机电安装处。</p>
 
+              <div class="migration-map-actions" data-family-map-actions></div>
             </div>
-          </li><li class="migration-stop" data-migration-stop-id="regional-dispersal">
+          </li><li class="migration-stop" data-migration-stop-id="regional-dispersal" data-family-map-place-ids="huaibei-region hefei-region kunshan-region">
             <p class="migration-period">其后</p>
             <div class="migration-stop-copy">
               <h4 class="migration-place">淮北、合肥与昆山</h4>
               <p class="migration-summary">兄弟姐妹曾分散在这些地区。</p>
-<p class="migration-people"><span>相关人物：</span>李玉珍、李坤、李玉霞、李平、李惠</p>
+
+              <div class="migration-map-actions" data-family-map-actions></div>
             </div>
-          </li><li class="migration-stop" data-migration-stop-id="recent-settlement">
+          </li><li class="migration-stop" data-migration-stop-id="recent-yuxia-settlement" data-family-map-place-ids="anhui-suzhou-region suzhou-installation-residence">
             <p class="migration-period">近十年</p>
             <div class="migration-stop-copy">
-              <h4 class="migration-place">宿州安装处／苏州昆山</h4>
-              <p class="migration-summary">李玉霞仍居宿州安装处；李玉珍、李坤、李平和李惠安居苏州昆山。</p>
-<p class="migration-people"><span>相关人物：</span>李玉霞、李玉珍、李坤、李平、李惠</p>
+              <h4 class="migration-place">宿州安装处</h4>
+              <p class="migration-summary">李玉霞仍居宿州安装处。</p>
+<p class="migration-people"><span>相关人物：</span>李玉霞</p>
+              <div class="migration-map-actions" data-family-map-actions></div>
+            </div>
+          </li><li class="migration-stop" data-migration-stop-id="recent-kunshan-settlement" data-family-map-place-ids="kunshan-region">
+            <p class="migration-period">近十年</p>
+            <div class="migration-stop-copy">
+              <h4 class="migration-place">苏州昆山</h4>
+              <p class="migration-summary">李玉珍、李坤、李平和李惠安居苏州昆山。</p>
+<p class="migration-people"><span>相关人物：</span>李玉珍、李坤、李平、李惠</p>
+              <div class="migration-map-actions" data-family-map-actions></div>
             </div>
           </li></ol>
       </div>
+    <script type="module" src="./family-map.mjs" defer data-static-interaction></script>
   </section>
 
     <section class="reading-note" aria-labelledby="reading-note-title">

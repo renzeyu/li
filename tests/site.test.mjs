@@ -84,14 +84,18 @@ test("builds the complete normalized Li family genealogy", async () => {
   assert.match(html, /data-migration-stop-id="zhu-daoan-shouxian"/);
   assert.match(html, /山东老鸹巷至寿县/);
   assert.match(html, /朱守芝的父亲朱道安曾任寿县县令/);
-  assert.match(html, /河南寿县，晏口集杨家岗／淮南朱家岗/);
+  assert.match(html, /河南寿县，晏口集杨家岗/);
+  assert.match(html, /淮南朱家岗/);
   assert.match(html, /淮南蔡家岗谢家集区建井西村63幢西头第二户/);
   assert.match(html, /宿州三十三处四工区安装机电/);
   assert.ok(html.indexOf('id="family-tree"') < html.indexOf('id="family-migration"'));
   assert.ok(html.indexOf('id="family-migration"') < html.indexOf('class="reading-note"'));
   assert.match(html, /href="https:\/\/renzeyu\.github\.io\/li\/"/);
   assert.match(html, /src="\.\/family-tree\.js"/);
+  assert.match(html, /src="\.\/family-map\.mjs"/);
+  assert.match(html, /href="\.\/maplibre-gl\.css"/);
   assert.match(html, /href="\.\/family-tree\.css"/);
+  assert.doesNotMatch(html, /(?:src|href)="\/(?!\/)/);
 });
 
 test("ships one validated schema v2 genealogy graph", async () => {
@@ -186,7 +190,7 @@ test("records the family migration without duplicating genealogy identities", as
   assert.equal(migration.title, "家族迁徙");
   assert.equal(migration.routes.length, 1);
   assert.equal(migration.routes[0].id, "li-zhu-family-route");
-  assert.equal(migration.routes[0].stops.length, 8);
+  assert.equal(migration.routes[0].stops.length, 10);
 
   const stops = new Map(migration.routes[0].stops.map((stop) => [stop.id, stop]));
   const mingMigration = stops.get("zhu-ming-migration");
@@ -205,11 +209,10 @@ test("records the family migration without duplicating genealogy identities", as
     "曾任寿县县令",
   );
 
-  assert.equal(
-    stops.get("parents-birthplaces").place,
-    "河南寿县，晏口集杨家岗／淮南朱家岗",
-  );
-  assert.deepEqual(stops.get("parents-birthplaces").personIds, ["li-kaixun", "zhu-shouzhi"]);
+  assert.equal(stops.get("li-kaixun-birthplace").place, "河南寿县，晏口集杨家岗");
+  assert.deepEqual(stops.get("li-kaixun-birthplace").personIds, ["li-kaixun"]);
+  assert.equal(stops.get("zhu-shouzhi-birthplace").place, "淮南朱家岗");
+  assert.deepEqual(stops.get("zhu-shouzhi-birthplace").personIds, ["zhu-shouzhi"]);
   assert.deepEqual(stops.get("caijiagang-birthplace").personIds, [
     "li-kexia",
     "li-yuzhen",
@@ -221,7 +224,75 @@ test("records the family migration without duplicating genealogy identities", as
   assert.equal(stops.get("suzhou-installation").place, "宿州三十三处四工区安装机电");
   assert.equal(stops.get("installation-office").place, "机电安装处");
   assert.match(stops.get("regional-dispersal").place, /淮北、合肥与昆山/);
-  assert.match(stops.get("recent-settlement").summary, /李玉霞.*宿州安装处.*苏州昆山/);
+  assert.equal(Object.hasOwn(stops.get("regional-dispersal"), "personIds"), false);
+  assert.deepEqual(stops.get("recent-yuxia-settlement").personIds, ["li-yuxia"]);
+  assert.deepEqual(stops.get("recent-kunshan-settlement").personIds, [
+    "li-yuzhen",
+    "li-kun",
+    "li-ping",
+    "li-hui",
+  ]);
+});
+
+test("renders a progressive OpenFreeMap migration map without replacing the written record", async () => {
+  const [document, html, script, css] = await Promise.all([
+    readFamilyDocument(),
+    readFile(new URL("index.html", docs), "utf8"),
+    readFile(new URL("family-map.mjs", publicRoot), "utf8"),
+    readFile(new URL("family-tree.css", publicRoot), "utf8"),
+  ]);
+  const map = document.migration.map;
+  const places = new Map(map.places.map((place) => [place.id, place]));
+  const located = map.places.filter((place) => place.locationStatus === "regional-anchor");
+  const unlocated = map.places.filter((place) => place.locationStatus === "unlocated");
+
+  assert.equal(map.styleUrl, "https://tiles.openfreemap.org/styles/positron");
+  assert.equal(map.coordinateSystem, "WGS84");
+  assert.equal(map.views.length, 3);
+  assert.equal(map.routes.length, 2);
+  assert.equal(map.places.length, 14);
+  assert.equal(located.length, 7);
+  assert.equal(unlocated.length, 7);
+  assert.deepEqual(places.get("shouxian-region")?.coordinates, [116.7929043, 32.5475121]);
+  assert.deepEqual(places.get("caijiagang-region")?.coordinates, [116.8653371, 32.6063101]);
+  assert.equal(places.get("shandong-laoguaxiang")?.coordinates, undefined);
+  assert.equal(places.get("henan-shouxian-yankouji-yangjiagang")?.coordinates, undefined);
+  assert.equal(
+    places.get("henan-shouxian-yankouji-yangjiagang")?.name,
+    "河南寿县，晏口集杨家岗",
+  );
+  assert.deepEqual(
+    document.migration.routes[0].stops.find((stop) => stop.id === "regional-dispersal")
+      ?.placeIds,
+    ["huaibei-region", "hefei-region", "kunshan-region"],
+  );
+
+  assert.match(html, /class="migration-map-block"/);
+  assert.match(html, /data-family-map-source="\.\/family-tree\.json"/);
+  assert.match(html, /aria-label="李家与朱家迁徙交互地图"/);
+  assert.match(html, />迁徙主线</);
+  assert.match(html, />其后分布</);
+  assert.match(html, />尚待定位的地点</);
+  assert.match(html, />山东老鸹巷</);
+  assert.match(html, />河南寿县，晏口集杨家岗</);
+  assert.ok(html.indexOf('class="migration-map-block"') < html.indexOf('class="migration-route"'));
+  assert.equal(countMatches(html, /data-migration-stop-id=/g), 10);
+  assert.equal(countMatches(html, /data-family-map-unlocated=/g), 7);
+  assert.match(visibleText(html), /底图.*下方迁徙记录无需地图即可阅读/);
+
+  assert.match(script, /from "\.\/maplibre-gl\.mjs"/);
+  assert.match(script, /new URL\("\.\/family-tree\.json", import\.meta\.url\)/);
+  assert.match(script, /cooperativeGestures:\s*true/);
+  assert.match(script, /setDOMContent/);
+  assert.match(script, /family-migration-routes/);
+  assert.match(script, /prefers-reduced-motion/);
+  assert.match(script, /ResizeObserver/);
+  assert.doesNotMatch(script, /innerHTML|setHTML\(|unpkg|jsdelivr/);
+  assert.match(css, /\.family-map-shell/);
+  assert.match(css, /\.family-map-canvas/);
+  assert.match(css, /\.family-map-marker/);
+  assert.match(css, /@media print[\s\S]*?\.family-map-shell/);
+  assert.match(css, /@media \(forced-colors: active\)[\s\S]*?\.family-map-marker-dot/);
 });
 
 test("preserves the confirmed Wu, Xu, Li Kun, Peng, and Zhao branches", async () => {
@@ -363,6 +434,38 @@ test("rejects invalid normalized genealogy data", async () => {
   duplicateMigrationPerson.migration.routes[0].stops[1].personIds.push("zhu-daoan");
   assert.throws(() => validateFamilyDocument(duplicateMigrationPerson), /repeats person zhu-daoan/);
 
+  const insecureMapStyle = structuredClone(document);
+  insecureMapStyle.migration.map.styleUrl = "http://tiles.example.com/style";
+  assert.throws(() => validateFamilyDocument(insecureMapStyle), /styleUrl must use https/);
+
+  const duplicateMapPlace = structuredClone(document);
+  duplicateMapPlace.migration.map.places.push({ ...duplicateMapPlace.migration.map.places[0] });
+  assert.throws(() => validateFamilyDocument(duplicateMapPlace), /duplicate migration map place id/);
+
+  const invalidCoordinates = structuredClone(document);
+  invalidCoordinates.migration.map.places[0].coordinates = [181, 35];
+  assert.throws(() => validateFamilyDocument(invalidCoordinates), /outside WGS84 bounds/);
+
+  const coordinatesOnUnlocatedPlace = structuredClone(document);
+  coordinatesOnUnlocatedPlace.migration.map.places.find(
+    (place) => place.id === "shandong-laoguaxiang",
+  ).coordinates = [118, 36];
+  assert.throws(
+    () => validateFamilyDocument(coordinatesOnUnlocatedPlace),
+    /cannot include coordinates while unlocated/,
+  );
+
+  const unknownMapPlace = structuredClone(document);
+  unknownMapPlace.migration.routes[0].stops[0].placeIds.push("missing-place");
+  assert.throws(() => validateFamilyDocument(unknownMapPlace), /unknown map place missing-place/);
+
+  const unlocatedPlaceInView = structuredClone(document);
+  unlocatedPlaceInView.migration.map.views[0].placeIds.push("shandong-laoguaxiang");
+  assert.throws(
+    () => validateFamilyDocument(unlocatedPlaceInView),
+    /references an unlocated or unknown place shandong-laoguaxiang/,
+  );
+
   const unreachableFamily = structuredClone(document);
   unreachableFamily.people.push({ id: "unreachable-person", name: "测试人物" });
   unreachableFamily.families.push({
@@ -439,6 +542,12 @@ test("includes every GitHub Pages artifact", async () => {
       "family-tree.json",
       "family-tree.js",
       "family-tree.css",
+      "family-map.mjs",
+      "maplibre-gl.mjs",
+      "maplibre-gl-shared.mjs",
+      "maplibre-gl-worker.mjs",
+      "maplibre-gl.css",
+      "maplibre-license.txt",
       "favicon.svg",
       "og.svg",
     ].map((path) => access(new URL(path, docs))),

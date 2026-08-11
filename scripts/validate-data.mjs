@@ -24,6 +24,153 @@ function validateReference(reference, context, errors, referencedPersonIds) {
   }
 }
 
+function validateMigrationMap(map, errors, stopPlaceReferences) {
+  if (!map || typeof map !== "object" || Array.isArray(map)) {
+    errors.push("migration map must be an object");
+    return;
+  }
+  for (const field of ["title", "intro", "styleUrl", "coordinateSystem", "researchNote"]) {
+    if (!isNonEmptyString(map[field])) errors.push(`migration map requires ${field}`);
+  }
+  if (map.coordinateSystem !== "WGS84") {
+    errors.push("migration map coordinateSystem must be WGS84");
+  }
+  try {
+    if (new URL(map.styleUrl).protocol !== "https:") {
+      errors.push("migration map styleUrl must use https");
+    }
+  } catch {
+    errors.push("migration map styleUrl must be a valid URL");
+  }
+
+  const places = Array.isArray(map.places) ? map.places : [];
+  if (!Array.isArray(map.places) || places.length === 0) {
+    errors.push("migration map places must be a non-empty array");
+  }
+  const placeIds = new Set();
+  const locatedPlaceIds = new Set();
+  for (const [index, place] of places.entries()) {
+    const context = `migration map place at index ${index}`;
+    if (!place || typeof place !== "object" || Array.isArray(place)) {
+      errors.push(`${context} must be an object`);
+      continue;
+    }
+    for (const field of ["id", "name", "locationStatus", "coordinateNote"]) {
+      if (!isNonEmptyString(place[field])) errors.push(`${context} requires ${field}`);
+    }
+    if (isNonEmptyString(place.id)) {
+      if (placeIds.has(place.id)) errors.push(`duplicate migration map place id: ${place.id}`);
+      placeIds.add(place.id);
+    }
+    if (!['regional-anchor', 'unlocated'].includes(place.locationStatus)) {
+      errors.push(`${context} has invalid locationStatus`);
+    }
+
+    const hasCoordinates =
+      Array.isArray(place.coordinates) &&
+      place.coordinates.length === 2 &&
+      place.coordinates.every(Number.isFinite);
+    if (place.locationStatus === "regional-anchor") {
+      if (!hasCoordinates) {
+        errors.push(`${context} requires WGS84 coordinates`);
+      } else {
+        const [longitude, latitude] = place.coordinates;
+        if (longitude < -180 || longitude > 180 || latitude < -90 || latitude > 90) {
+          errors.push(`${context} coordinates are outside WGS84 bounds`);
+        }
+        locatedPlaceIds.add(place.id);
+      }
+      if (!isNonEmptyString(place.coordinateSource)) {
+        errors.push(`${context} requires coordinateSource`);
+      }
+    } else if (place.coordinates !== undefined) {
+      errors.push(`${context} cannot include coordinates while unlocated`);
+    }
+  }
+  if (locatedPlaceIds.size < 2) errors.push("migration map requires at least two located places");
+
+  for (const { placeId, context } of stopPlaceReferences) {
+    if (!placeIds.has(placeId)) errors.push(`${context} references unknown map place ${placeId}`);
+  }
+  const referencedByStops = new Set(stopPlaceReferences.map(({ placeId }) => placeId));
+  for (const placeId of placeIds) {
+    if (!referencedByStops.has(placeId)) {
+      errors.push(`migration map place ${placeId} is not referenced by a migration stop`);
+    }
+  }
+
+  const views = Array.isArray(map.views) ? map.views : [];
+  if (!Array.isArray(map.views) || views.length === 0) {
+    errors.push("migration map views must be a non-empty array");
+  }
+  const viewIds = new Set();
+  for (const [index, view] of views.entries()) {
+    const context = `migration map view at index ${index}`;
+    if (!view || typeof view !== "object" || Array.isArray(view)) {
+      errors.push(`${context} must be an object`);
+      continue;
+    }
+    for (const field of ["id", "label"]) {
+      if (!isNonEmptyString(view[field])) errors.push(`${context} requires ${field}`);
+    }
+    if (isNonEmptyString(view.id)) {
+      if (viewIds.has(view.id)) errors.push(`duplicate migration map view id: ${view.id}`);
+      viewIds.add(view.id);
+    }
+    if (!Number.isFinite(view.maxZoom) || view.maxZoom <= 0) {
+      errors.push(`${context} requires a positive maxZoom`);
+    }
+    const ids = Array.isArray(view.placeIds) ? view.placeIds : [];
+    if (!Array.isArray(view.placeIds) || ids.length === 0) {
+      errors.push(`${context} placeIds must be a non-empty array`);
+    }
+    const uniqueIds = new Set();
+    for (const placeId of ids) {
+      if (!isNonEmptyString(placeId)) {
+        errors.push(`${context} has an invalid place id`);
+        continue;
+      }
+      if (uniqueIds.has(placeId)) errors.push(`${context} repeats place ${placeId}`);
+      uniqueIds.add(placeId);
+      if (!locatedPlaceIds.has(placeId)) {
+        errors.push(`${context} references an unlocated or unknown place ${placeId}`);
+      }
+    }
+  }
+
+  const routes = Array.isArray(map.routes) ? map.routes : [];
+  if (!Array.isArray(map.routes) || routes.length === 0) {
+    errors.push("migration map routes must be a non-empty array");
+  }
+  const routeIds = new Set();
+  for (const [index, route] of routes.entries()) {
+    const context = `migration map route at index ${index}`;
+    if (!route || typeof route !== "object" || Array.isArray(route)) {
+      errors.push(`${context} must be an object`);
+      continue;
+    }
+    for (const field of ["id", "label"]) {
+      if (!isNonEmptyString(route[field])) errors.push(`${context} requires ${field}`);
+    }
+    if (isNonEmptyString(route.id)) {
+      if (routeIds.has(route.id)) errors.push(`duplicate migration map route id: ${route.id}`);
+      routeIds.add(route.id);
+    }
+    const ids = Array.isArray(route.placeIds) ? route.placeIds : [];
+    if (!Array.isArray(route.placeIds) || ids.length < 2) {
+      errors.push(`${context} requires at least two placeIds`);
+    }
+    const uniqueIds = new Set();
+    for (const placeId of ids) {
+      if (uniqueIds.has(placeId)) errors.push(`${context} repeats place ${placeId}`);
+      uniqueIds.add(placeId);
+      if (!locatedPlaceIds.has(placeId)) {
+        errors.push(`${context} references an unlocated or unknown place ${placeId}`);
+      }
+    }
+  }
+}
+
 function validateMigration(migration, errors, personIds) {
   if (!migration || typeof migration !== "object" || Array.isArray(migration)) {
     errors.push("migration must be an object");
@@ -39,6 +186,7 @@ function validateMigration(migration, errors, personIds) {
   }
   const routeIds = new Set();
   const stopIds = new Set();
+  const stopPlaceReferences = [];
   for (const [routeIndex, route] of routes.entries()) {
     const routeContext = `migration route at index ${routeIndex}`;
     if (!route || typeof route !== "object" || Array.isArray(route)) {
@@ -70,6 +218,22 @@ function validateMigration(migration, errors, personIds) {
         if (stopIds.has(stop.id)) errors.push(`duplicate migration stop id: ${stop.id}`);
         stopIds.add(stop.id);
       }
+      if (!Array.isArray(stop.placeIds) || stop.placeIds.length === 0) {
+        errors.push(`${stopContext} placeIds must be a non-empty array`);
+      } else {
+        const stopPlaceIds = new Set();
+        for (const placeId of stop.placeIds) {
+          if (!isNonEmptyString(placeId)) {
+            errors.push(`${stopContext} has an invalid map place id`);
+            continue;
+          }
+          if (stopPlaceIds.has(placeId)) {
+            errors.push(`${stopContext} repeats map place ${placeId}`);
+          }
+          stopPlaceIds.add(placeId);
+          stopPlaceReferences.push({ placeId, context: stopContext });
+        }
+      }
       if (stop.personIds === undefined) continue;
       if (!Array.isArray(stop.personIds)) {
         errors.push(`${stopContext} personIds must be an array`);
@@ -91,6 +255,7 @@ function validateMigration(migration, errors, personIds) {
       }
     }
   }
+  validateMigrationMap(migration.map, errors, stopPlaceReferences);
 }
 
 export function validateFamilyDocument(document) {

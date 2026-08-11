@@ -3,14 +3,200 @@
   "treeId": "li-zhu-family",
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
-  "updatedAt": "2026-08-10",
-  "revision": "2026.08.10.6",
+  "updatedAt": "2026-08-11",
+  "revision": "2026.08.11.1",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "现有族谱从李开训的父母一代，以及朱道安与朱刘氏一代展开。李开训与朱守芝成家后育有五女一子；李开训的妹妹孃孃、弟弟李开工与李开庭及其后代也已纳入。",
   "migration": {
     "title": "家族迁徙",
     "intro": "这条迁徙路线从明初延续至今，连接着朱、李两家几代人的生活。",
+    "map": {
+      "title": "迁徙地图",
+      "intro": "地图以现代行政区或聚落中心作为区域锚点，帮助理解几代人的迁徙方向。它不表示任何人的具体住址；尚未唯一定位的地点继续保留在下方。",
+      "styleUrl": "https://tiles.openfreemap.org/styles/positron",
+      "coordinateSystem": "WGS84",
+      "researchNote": "区域锚点来自OpenStreetMap地名检索，均不代表具体住宅、旧县衙或单位原址。",
+      "views": [
+        {
+          "id": "migration-route",
+          "label": "迁徙主线",
+          "placeIds": [
+            "shandong-region",
+            "shouxian-region",
+            "caijiagang-region",
+            "anhui-suzhou-region"
+          ],
+          "maxZoom": 5.8
+        },
+        {
+          "id": "later-distribution",
+          "label": "其后分布",
+          "placeIds": [
+            "caijiagang-region",
+            "anhui-suzhou-region",
+            "huaibei-region",
+            "hefei-region",
+            "kunshan-region"
+          ],
+          "maxZoom": 6.4
+        },
+        {
+          "id": "all-located",
+          "label": "全部区域锚点",
+          "placeIds": [
+            "shandong-region",
+            "shouxian-region",
+            "caijiagang-region",
+            "anhui-suzhou-region",
+            "huaibei-region",
+            "hefei-region",
+            "kunshan-region"
+          ],
+          "maxZoom": 5.5
+        }
+      ],
+      "routes": [
+        {
+          "id": "zhu-ancestral-route",
+          "label": "朱氏先祖与后世家庭足迹",
+          "placeIds": [
+            "shandong-region",
+            "shouxian-region",
+            "caijiagang-region"
+          ]
+        },
+        {
+          "id": "family-move-to-anhui-suzhou",
+          "label": "从淮南迁往宿州",
+          "placeIds": [
+            "caijiagang-region",
+            "anhui-suzhou-region"
+          ]
+        }
+      ],
+      "places": [
+        {
+          "id": "shandong-region",
+          "name": "山东",
+          "locationStatus": "regional-anchor",
+          "coordinates": [
+            118.5055691,
+            36.398987
+          ],
+          "coordinateSource": "OpenStreetMap Nominatim：山东省行政区中心",
+          "coordinateNote": "只表示山东区域；“老鸹巷”的具体位置仍待考。"
+        },
+        {
+          "id": "shouxian-region",
+          "name": "寿县",
+          "locationStatus": "regional-anchor",
+          "coordinates": [
+            116.7929043,
+            32.5475121
+          ],
+          "coordinateSource": "OpenStreetMap Nominatim：寿县行政区中心",
+          "coordinateNote": "只表示寿县区域，不表示朱氏旧居或旧县衙位置。"
+        },
+        {
+          "id": "caijiagang-region",
+          "name": "蔡家岗／谢家集",
+          "locationStatus": "regional-anchor",
+          "coordinates": [
+            116.8653371,
+            32.6063101
+          ],
+          "coordinateSource": "OpenStreetMap Nominatim：蔡家岗聚落中心",
+          "coordinateNote": "作为建井西村和三十三处留守处的区域锚点，不表示63幢的具体位置。"
+        },
+        {
+          "id": "anhui-suzhou-region",
+          "name": "安徽宿州",
+          "locationStatus": "regional-anchor",
+          "coordinates": [
+            116.9588062,
+            33.6482366
+          ],
+          "coordinateSource": "OpenStreetMap Nominatim：宿州市行政区中心",
+          "coordinateNote": "作为四工区安装机电、机电安装处和宿州安装处的区域锚点，不表示单位原址或住宅。"
+        },
+        {
+          "id": "huaibei-region",
+          "name": "淮北",
+          "locationStatus": "regional-anchor",
+          "coordinates": [
+            116.7928916,
+            33.9566098
+          ],
+          "coordinateSource": "OpenStreetMap Nominatim：淮北市行政区中心",
+          "coordinateNote": "只表示兄弟姐妹曾经分居的城市区域。"
+        },
+        {
+          "id": "hefei-region",
+          "name": "合肥",
+          "locationStatus": "regional-anchor",
+          "coordinates": [
+            117.281428,
+            31.8665676
+          ],
+          "coordinateSource": "OpenStreetMap Nominatim：合肥市行政区中心",
+          "coordinateNote": "只表示兄弟姐妹曾经分居的城市区域。"
+        },
+        {
+          "id": "kunshan-region",
+          "name": "苏州昆山",
+          "locationStatus": "regional-anchor",
+          "coordinates": [
+            120.9764683,
+            31.3869323
+          ],
+          "coordinateSource": "OpenStreetMap Nominatim：昆山市行政区中心",
+          "coordinateNote": "只表示近年的居住区域，不表示具体住宅。"
+        },
+        {
+          "id": "shandong-laoguaxiang",
+          "name": "山东老鸹巷",
+          "locationStatus": "unlocated",
+          "coordinateNote": "明初历史地名，具体位置仍待考。"
+        },
+        {
+          "id": "henan-shouxian-yankouji-yangjiagang",
+          "name": "河南寿县，晏口集杨家岗",
+          "locationStatus": "unlocated",
+          "coordinateNote": "原地名照录，尚未找到能够唯一对应的现代坐标。"
+        },
+        {
+          "id": "huainan-zhujiagang",
+          "name": "淮南朱家岗",
+          "locationStatus": "unlocated",
+          "coordinateNote": "尚未找到能够唯一对应的现代坐标。"
+        },
+        {
+          "id": "jianjing-xicun-address",
+          "name": "建井西村63幢西头第二户",
+          "locationStatus": "unlocated",
+          "coordinateNote": "门牌记录明确，但公开地图尚不能核实具体楼幢位置。"
+        },
+        {
+          "id": "suzhou-fourth-work-area",
+          "name": "宿州三十三处四工区安装机电",
+          "locationStatus": "unlocated",
+          "coordinateNote": "单位旧址尚待确认。"
+        },
+        {
+          "id": "suzhou-installation-office",
+          "name": "机电安装处",
+          "locationStatus": "unlocated",
+          "coordinateNote": "这是单位沿革记录，尚未确认其与旧址的空间关系。"
+        },
+        {
+          "id": "suzhou-installation-residence",
+          "name": "宿州安装处",
+          "locationStatus": "unlocated",
+          "coordinateNote": "李玉霞近年的居住地点名称，具体位置未在公开地图上标注。"
+        }
+      ]
+    },
     "routes": [
       {
         "id": "li-zhu-family-route",
@@ -20,24 +206,46 @@
             "id": "zhu-ming-migration",
             "period": "明初大移民",
             "place": "山东老鸹巷至寿县",
-            "summary": "朱氏先祖由山东老鸹巷迁至寿县。"
+            "summary": "朱氏先祖由山东老鸹巷迁至寿县。",
+            "placeIds": [
+              "shandong-region",
+              "shandong-laoguaxiang",
+              "shouxian-region"
+            ]
           },
           {
             "id": "zhu-daoan-shouxian",
             "period": "后世",
             "place": "寿县",
             "summary": "朱守芝的父亲朱道安曾任寿县县令。",
+            "placeIds": [
+              "shouxian-region"
+            ],
             "personIds": [
               "zhu-daoan"
             ]
           },
           {
-            "id": "parents-birthplaces",
+            "id": "li-kaixun-birthplace",
             "period": "早年",
-            "place": "河南寿县，晏口集杨家岗／淮南朱家岗",
-            "summary": "李开训出生于河南寿县，晏口集杨家岗；朱守芝出生于淮南朱家岗。",
+            "place": "河南寿县，晏口集杨家岗",
+            "summary": "李开训出生于此。",
+            "placeIds": [
+              "henan-shouxian-yankouji-yangjiagang"
+            ],
             "personIds": [
-              "li-kaixun",
+              "li-kaixun"
+            ]
+          },
+          {
+            "id": "zhu-shouzhi-birthplace",
+            "period": "早年",
+            "place": "淮南朱家岗",
+            "summary": "朱守芝出生于此。",
+            "placeIds": [
+              "huainan-zhujiagang"
+            ],
+            "personIds": [
               "zhu-shouzhi"
             ]
           },
@@ -46,6 +254,10 @@
             "period": "子女出生",
             "place": "淮南蔡家岗谢家集区建井西村63幢西头第二户",
             "summary": "六名子女均出生于此；这里是当地的三十三处留守处。",
+            "placeIds": [
+              "caijiagang-region",
+              "jianjing-xicun-address"
+            ],
             "personIds": [
               "li-kexia",
               "li-yuzhen",
@@ -59,34 +271,54 @@
             "id": "suzhou-installation",
             "period": "迁居宿州",
             "place": "宿州三十三处四工区安装机电",
-            "summary": "一家后来迁至此处。"
+            "summary": "一家后来迁至此处。",
+            "placeIds": [
+              "anhui-suzhou-region",
+              "suzhou-fourth-work-area"
+            ]
           },
           {
             "id": "installation-office",
             "period": "单位沿革",
             "place": "机电安装处",
-            "summary": "三十三处四工区安装机电后来分离为机电安装处。"
+            "summary": "三十三处四工区安装机电后来分离为机电安装处。",
+            "placeIds": [
+              "suzhou-installation-office"
+            ]
           },
           {
             "id": "regional-dispersal",
             "period": "其后",
             "place": "淮北、合肥与昆山",
             "summary": "兄弟姐妹曾分散在这些地区。",
-            "personIds": [
-              "li-yuzhen",
-              "li-kun",
-              "li-yuxia",
-              "li-ping",
-              "li-hui"
+            "placeIds": [
+              "huaibei-region",
+              "hefei-region",
+              "kunshan-region"
             ]
           },
           {
-            "id": "recent-settlement",
+            "id": "recent-yuxia-settlement",
             "period": "近十年",
-            "place": "宿州安装处／苏州昆山",
-            "summary": "李玉霞仍居宿州安装处；李玉珍、李坤、李平和李惠安居苏州昆山。",
+            "place": "宿州安装处",
+            "summary": "李玉霞仍居宿州安装处。",
+            "placeIds": [
+              "anhui-suzhou-region",
+              "suzhou-installation-residence"
+            ],
             "personIds": [
-              "li-yuxia",
+              "li-yuxia"
+            ]
+          },
+          {
+            "id": "recent-kunshan-settlement",
+            "period": "近十年",
+            "place": "苏州昆山",
+            "summary": "李玉珍、李坤、李平和李惠安居苏州昆山。",
+            "placeIds": [
+              "kunshan-region"
+            ],
+            "personIds": [
               "li-yuzhen",
               "li-kun",
               "li-ping",

@@ -54,6 +54,49 @@ function formatUpdatedAt(value) {
   return `${year}年${Number(month)}月${Number(day)}日更新`;
 }
 
+function renderMigrationMap(map) {
+  if (!map?.places?.length || !map?.views?.length) return "";
+
+  const unlocatedPlaces = map.places.filter((place) => place.locationStatus === "unlocated");
+  const viewControls = map.views
+    .map(
+      (view, index) => `<button type="button" data-family-map-view="${escapeHtml(view.id)}" aria-pressed="${index === 0 ? "true" : "false"}">${escapeHtml(view.label)}</button>`,
+    )
+    .join("");
+  const unlocatedList = unlocatedPlaces
+    .map(
+      (place) => `<li data-family-map-unlocated="${escapeHtml(place.id)}">
+        <strong>${escapeHtml(place.name)}</strong>
+        <span>${escapeHtml(place.coordinateNote)}</span>
+      </li>`,
+    )
+    .join("");
+
+  return `<div class="migration-map-block" aria-labelledby="migration-map-title">
+    <div class="migration-map-heading">
+      <p class="migration-map-kicker">家族地理</p>
+      <h3 id="migration-map-title">${escapeHtml(map.title)}</h3>
+      <p>${escapeHtml(map.intro)}</p>
+    </div>
+    <div class="family-map-shell" data-family-map data-family-map-source="./family-tree.json" data-family-map-state="loading">
+      <div class="family-map-view-controls" data-family-map-view-controls role="group" aria-label="选择地图范围">
+        ${viewControls}
+      </div>
+      <div class="family-map-canvas" data-family-map-canvas role="region" aria-label="李家与朱家迁徙交互地图"></div>
+      <p class="family-map-status" data-family-map-status aria-live="polite" aria-atomic="true">正在加载OpenFreeMap底图。下方迁徙记录无需地图即可阅读。</p>
+      <p class="visually-hidden" data-family-map-announcement aria-live="polite" aria-atomic="true"></p>
+    </div>
+    <div class="family-map-meta">
+      <p class="family-map-legend"><span><i class="family-map-dot family-map-dot-anchor" aria-hidden="true"></i>区域锚点</span><span><i class="family-map-dot family-map-dot-pending" aria-hidden="true"></i>地点待定位</span></p>
+      <p class="family-map-note">${escapeHtml(map.researchNote)}若底图暂时无法访问，下方地点与故事仍会完整保留。</p>
+    </div>
+    <div class="family-map-unlocated" aria-labelledby="family-map-unlocated-title">
+      <h4 id="family-map-unlocated-title">尚待定位的地点</h4>
+      <ol role="list">${unlocatedList}</ol>
+    </div>
+  </div>`;
+}
+
 function renderMigration(migration, peopleById) {
   if (!migration?.routes?.length) return "";
 
@@ -67,13 +110,15 @@ function renderMigration(migration, peopleById) {
           const relatedPeople = people.length
             ? `<p class="migration-people"><span>相关人物：</span>${escapeHtml(people.join("、"))}</p>`
             : "";
+          const mapPlaceIds = (stop.placeIds ?? []).join(" ");
 
-          return `<li class="migration-stop" data-migration-stop-id="${escapeHtml(stop.id)}">
+          return `<li class="migration-stop" data-migration-stop-id="${escapeHtml(stop.id)}" data-family-map-place-ids="${escapeHtml(mapPlaceIds)}">
             <p class="migration-period">${escapeHtml(stop.period)}</p>
             <div class="migration-stop-copy">
               <h4 class="migration-place">${escapeHtml(stop.place)}</h4>
               <p class="migration-summary">${escapeHtml(stop.summary)}</p>
 ${relatedPeople}
+              <div class="migration-map-actions" data-family-map-actions></div>
             </div>
           </li>`;
         })
@@ -91,7 +136,9 @@ ${relatedPeople}
       <h2 id="migration-title">${escapeHtml(migration.title)}</h2>
       <p>${escapeHtml(migration.intro)}</p>
     </div>
+    ${renderMigrationMap(migration.map)}
     ${routes}
+    <script type="module" src="./family-map.mjs" defer data-static-interaction></script>
   </section>`;
 }
 
@@ -118,6 +165,7 @@ export function renderPage(document) {
   <meta property="og:image" content="https://renzeyu.github.io/li/og.svg">
   <link rel="canonical" href="https://renzeyu.github.io/li/">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./maplibre-gl.css">
   <link rel="stylesheet" href="./family-tree.css">
   <title>${escapeHtml(document.title)}</title>
 </head>
