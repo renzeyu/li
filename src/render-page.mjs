@@ -1,3 +1,5 @@
+import { materializeFamilyForest } from "./family-graph.mjs";
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -8,11 +10,17 @@ function escapeHtml(value) {
 }
 
 function renderPerson(person) {
-  return `<span class="family-chart-person" data-family-person-id="${escapeHtml(person.id)}">
-    <span class="family-chart-relation">${escapeHtml(person.relation)}</span>
-    <span class="family-chart-name">${escapeHtml(person.name)}</span>
-    ${person.note ? `<span class="family-chart-person-note">${escapeHtml(person.note)}</span>` : ""}
-  </span>`;
+  return [
+    `<span class="family-chart-person" data-family-person-id="${escapeHtml(person.id)}">`,
+    `  <span class="family-chart-relation">${escapeHtml(person.relation)}</span>`,
+    `  <span class="family-chart-name">${escapeHtml(person.name)}</span>`,
+    person.note
+      ? `  <span class="family-chart-person-note">${escapeHtml(person.note)}</span>`
+      : "",
+    "</span>",
+  ]
+    .filter(Boolean)
+    .join("\n");
 }
 
 function renderBranch(node, viewId) {
@@ -51,6 +59,7 @@ export function renderPage(document) {
   const treeId = `${viewId}-interactive-tree`;
   const titleId = `${viewId}-chart-title`;
   const noteId = `${viewId}-chart-note`;
+  const roots = materializeFamilyForest(document);
 
   return `<!doctype html>
 <html lang="zh-CN">
@@ -106,17 +115,17 @@ export function renderPage(document) {
           </div>
           <div class="family-chart-scroll" id="${treeId}" role="region" aria-labelledby="${titleId}" aria-describedby="${noteId}" tabindex="0">
             <ol class="family-chart-level family-chart-root" data-family-root>
-              ${renderBranch(document.root, viewId)}
+              ${roots.map((root) => renderBranch(root, viewId)).join("")}
             </ol>
           </div>
-          <p class="family-chart-note" id="${noteId}">线条表示已经确认的配偶与亲子关系。同一组子女按已知出生顺序排列。</p>
+          <p class="family-chart-note" id="${noteId}">朱守芝在娘家与成家两处出现，均指同一人。线条表示已经确认的配偶与亲子关系；同一组子女按已知顺序排列，未注明长幼的不作推断。</p>
         </div>
       </div>
     </section>
 
     <section class="reading-note" aria-labelledby="reading-note-title">
       <h2 id="reading-note-title">阅读说明</h2>
-      <p>本页只记录姓名、亲属关系和必要说明。族谱会随着新的姓名与关系继续补充；已有稳定人物编号不会随页面调整而改变，便于未来个人页面共用同一份数据。</p>
+      <p>本页只记录姓名、亲属关系和必要说明。每个人只在中央数据中定义一次，族谱会随着新的姓名与关系继续补充；已有稳定人物编号不会随页面调整而改变，便于未来个人页面共用同一份数据。</p>
     </section>
 
     <footer>

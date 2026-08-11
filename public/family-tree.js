@@ -1,8 +1,8 @@
 (function () {
   "use strict";
 
-  if (window.__LI_FAMILY_TREE_RENDERER_V1__) return;
-  window.__LI_FAMILY_TREE_RENDERER_V1__ = true;
+  if (window.__LI_FAMILY_TREE_RENDERER_V2__) return;
+  window.__LI_FAMILY_TREE_RENDERER_V2__ = true;
 
   const rendererScript = document.currentScript;
   const assetBase = rendererScript?.src
@@ -27,19 +27,87 @@
   }
 
   function assertFamilyDocument(documentData) {
-    if (!documentData || documentData.schemaVersion !== 1 || !documentData.root) {
+    if (
+      !documentData ||
+      documentData.schemaVersion !== 2 ||
+      !Array.isArray(documentData.people) ||
+      !Array.isArray(documentData.families) ||
+      !Array.isArray(documentData.rootFamilyIds)
+    ) {
       throw new Error("Unsupported family data");
     }
   }
 
-  function collectPeople(node, people = new Map()) {
-    node.people.forEach((person) => people.set(person.id, person));
-    node.children?.forEach((child) => collectPeople(child, people));
-    return people;
+  function indexFamilyDocument(documentData) {
+    const people = new Map(documentData.people.map((person) => [person.id, person]));
+    const families = new Map(documentData.families.map((family) => [family.id, family]));
+    const formedFamilyByPerson = new Map();
+
+    for (const family of documentData.families) {
+      for (const partner of family.partners) {
+        formedFamilyByPerson.set(partner.personId, family.id);
+      }
+    }
+
+    return { people, families, formedFamilyByPerson };
   }
 
-  function expandedPath(root, focusPersonId) {
+  function resolvePerson(reference, people) {
+    const person = people.get(reference.personId);
+    if (!person) throw new Error(`Unknown person: ${reference.personId}`);
+    return {
+      ...person,
+      relation: reference.relation,
+      note: reference.note ?? person.note,
+    };
+  }
+
+  // Keep this projection in sync with src/family-graph.mjs. The normalized graph
+  // remains the source of truth; the projected forest preserves the established UI.
+  function materializeFamilyForest(documentData) {
+    const { people, families, formedFamilyByPerson } = indexFamilyDocument(documentData);
+    const expandedFamilies = new Set();
+
+    function materializeFamily(familyId) {
+      const family = families.get(familyId);
+      if (!family) throw new Error(`Unknown family: ${familyId}`);
+      expandedFamilies.add(familyId);
+
+      const children = [];
+      for (const group of family.childrenGroups ?? []) {
+        for (const childReference of group.children) {
+          const formedFamilyId = formedFamilyByPerson.get(childReference.personId);
+          if (
+            formedFamilyId &&
+            formedFamilyId !== family.id &&
+            !expandedFamilies.has(formedFamilyId)
+          ) {
+            children.push(materializeFamily(formedFamilyId));
+            continue;
+          }
+          children.push({
+            id: `${family.id}--${group.id}--${childReference.personId}`,
+            people: [resolvePerson(childReference, people)],
+            children: [],
+            reference: Boolean(formedFamilyId),
+          });
+        }
+      }
+
+      return {
+        id: family.id,
+        people: family.partners.map((partner) => resolvePerson(partner, people)),
+        children,
+        reference: false,
+      };
+    }
+
+    return documentData.rootFamilyIds.map(materializeFamily);
+  }
+
+  function expandedPath(roots, focusPersonId) {
     const expandedIds = new Set();
+    let foundFocus = false;
 
     function visit(node) {
       let containsFocus = node.people.some((person) => person.id === focusPersonId);
@@ -47,16 +115,28 @@
         if (visit(child)) containsFocus = true;
       });
       if (containsFocus && node.children?.length) expandedIds.add(node.id);
+      if (containsFocus) foundFocus = true;
       return containsFocus;
     }
 
-    if (!visit(root) && root.children?.length) expandedIds.add(root.id);
+    roots.forEach(visit);
+    if (!foundFocus) {
+      roots.forEach((root) => {
+        if (root.children?.length) expandedIds.add(root.id);
+      });
+    }
     return expandedIds;
   }
 
-  function expandedAll(root, ids = new Set()) {
-    if (root.children?.length) ids.add(root.id);
-    root.children?.forEach((child) => expandedAll(child, ids));
+  function expandedAll(roots) {
+    const ids = new Set();
+
+    function visit(node) {
+      if (node.children?.length) ids.add(node.id);
+      node.children?.forEach(visit);
+    }
+
+    roots.forEach(visit);
     return ids;
   }
 
@@ -97,6 +177,7 @@
       `family-chart-branch ${hasChildren ? "family-chart-branch-expandable" : "family-chart-branch-leaf"}`,
     );
     branch.dataset.familyNodeId = node.id;
+    if (node.reference) branch.dataset.familyReference = "";
     const unitClassName = `family-chart-unit${node.people.length > 1 ? " family-chart-unit-couple" : ""}`;
 
     if (!hasChildren) {
@@ -194,6 +275,14 @@
     return configured ? new URL(configured, document.baseURI) : new URL("family-tree.json", assetBase);
   }
 
+  function centerHorizontally(scroller, target) {
+    if (!scroller || !target) return;
+    const scrollerRect = scroller.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    scroller.scrollLeft +=
+      targetRect.left + targetRect.width / 2 - (scrollerRect.left + scrollerRect.width / 2);
+  }
+
   function resolveFocus(tree, documentData, people) {
     const configuredFocus = tree.dataset.familyFocusPerson || documentData.defaultFocusPersonId;
     if (!tree.hasAttribute("data-family-allow-query")) return configuredFocus;
@@ -213,7 +302,8 @@
     const documentData = await response.json();
     assertFamilyDocument(documentData);
 
-    const people = collectPeople(documentData.root);
+    const people = new Map(documentData.people.map((person) => [person.id, person]));
+    const roots = materializeFamilyForest(documentData);
     const focusPersonId = resolveFocus(tree, documentData, people);
     const hasQueryFocus =
       tree.hasAttribute("data-family-allow-query") &&
@@ -221,19 +311,32 @@
       people.has(new URLSearchParams(window.location.search).get("person"));
     const expandAllByDefault = tree.dataset.familyDefaultExpand === "all" && !hasQueryFocus;
     const expandedIds = expandAllByDefault
-      ? expandedAll(documentData.root)
-      : expandedPath(documentData.root, focusPersonId);
+      ? expandedAll(roots)
+      : expandedPath(roots, focusPersonId);
     const showProfileLinks = tree.dataset.familyProfileLinks !== "false";
     const root = tree.querySelector("[data-family-root]");
     if (!root) throw new Error("Family tree root is missing");
     root.replaceChildren(
-      renderBranch(
-        documentData.root,
-        expandedIds,
-        tree.dataset.familyTreeId || documentData.treeId,
-        showProfileLinks,
+      ...roots.map((familyRoot) =>
+        renderBranch(
+          familyRoot,
+          expandedIds,
+          tree.dataset.familyTreeId || documentData.treeId,
+          showProfileLinks,
+        ),
       ),
     );
+
+    if (!hasQueryFocus) {
+      requestAnimationFrame(() => {
+        const target = expandAllByDefault
+          ? tree.querySelector(
+              `[data-family-node-id="${CSS.escape(documentData.rootFamilyIds[0])}"] > details > summary .family-chart-people`,
+            )
+          : tree.querySelector(`[data-family-person-id="${CSS.escape(focusPersonId)}"]`);
+        centerHorizontally(tree.querySelector(".family-chart-scroll"), target);
+      });
+    }
 
     const updated = document.querySelector("[data-family-updated]");
     if (updated) {
@@ -278,4 +381,3 @@
     start();
   }
 })();
-

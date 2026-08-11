@@ -1,143 +1,697 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "treeId": "li-zhu-family",
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-10",
-  "revision": "2026.08.10.1",
+  "revision": "2026.08.10.3",
   "defaultFocusPersonId": "li-ping",
-  "intro": "现有族谱从朱道安与朱刘氏一代开始。两人的女儿朱守芝与李开训育有五女一子，依次为李克霞、李玉珍、李坤、李玉霞、李平和李惠；朱守荣为朱守芝的妹妹。",
-  "root": {
-    "id": "zhu-daoan-family",
-    "people": [
-      {
-        "id": "zhu-daoan",
-        "relation": "第一代",
-        "name": "朱道安"
-      },
-      {
-        "id": "zhu-liushi",
-        "relation": "配偶",
-        "name": "朱刘氏"
-      }
-    ],
-    "children": [
-      {
-        "id": "zhu-shouzhi-li-kaixun-family",
-        "people": [
-          {
-            "id": "zhu-shouzhi",
-            "relation": "长女",
-            "name": "朱守芝",
-            "note": "幼年读过4年私塾"
-          },
-          {
-            "id": "li-kaixun",
-            "relation": "配偶",
-            "name": "李开训",
-            "note": "井下采煤30年"
-          }
-        ],
-        "children": [
-          {
-            "id": "li-kexia",
-            "people": [
-              {
-                "id": "li-kexia",
-                "relation": "长女",
-                "name": "李克霞",
-                "note": "李玉珍的双胞胎姐姐；1960年去世，时年6岁"
-              }
-            ]
-          },
-          {
-            "id": "li-yuzhen",
-            "people": [
-              {
-                "id": "li-yuzhen",
-                "relation": "次女",
-                "name": "李玉珍",
-                "note": "李克霞的双胞胎妹妹"
-              }
-            ]
-          },
-          {
-            "id": "li-kun",
-            "people": [
-              {
-                "id": "li-kun",
-                "relation": "长子",
-                "name": "李坤",
-                "note": "出生在李玉珍之后；李平的哥哥"
-              }
-            ]
-          },
-          {
-            "id": "li-yuxia",
-            "people": [
-              {
-                "id": "li-yuxia",
-                "relation": "三女",
-                "name": "李玉霞"
-              }
-            ]
-          },
-          {
-            "id": "li-ping-ren-dongfeng-family",
-            "people": [
-              {
-                "id": "li-ping",
-                "relation": "四女",
-                "name": "李平",
-                "note": "1965年生",
-                "href": "https://renzeyu.github.io/liping/"
-              },
-              {
-                "id": "ren-dongfeng",
-                "relation": "配偶",
-                "name": "任东风",
-                "note": "1993年与李平结婚",
-                "href": "https://renzeyu.github.io/rendongfeng/"
-              }
-            ],
-            "children": [
-              {
-                "id": "ren-zeyu",
-                "people": [
-                  {
-                    "id": "ren-zeyu",
-                    "relation": "儿子",
-                    "name": "任泽宇"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "id": "li-hui",
-            "people": [
-              {
-                "id": "li-hui",
-                "relation": "五女",
-                "name": "李惠"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "zhu-shourong",
-        "people": [
-          {
-            "id": "zhu-shourong",
-            "relation": "次女",
-            "name": "朱守荣",
-            "note": "朱守芝的妹妹"
-          }
-        ]
-      }
-    ]
-  },
+  "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
+  "intro": "现有族谱从李开训的奶奶一代，以及朱道安与朱刘氏一代展开。李开训与朱守芝成家后育有五女一子；李开训的妹妹孃孃、弟弟李开工与李开庭及其后代也已纳入。",
+  "rootFamilyIds": [
+    "li-grandmother-family",
+    "zhu-daoan-family"
+  ],
+  "people": [
+    {
+      "id": "li-kaixun-grandmother",
+      "name": "李开训的奶奶",
+      "note": "活到80多岁"
+    },
+    {
+      "id": "li-kaixun-father",
+      "name": "李开训的父亲",
+      "note": "40多岁去世"
+    },
+    {
+      "id": "li-kaixun",
+      "name": "李开训",
+      "note": "井下采煤30年"
+    },
+    {
+      "id": "li-nianiang",
+      "name": "孃孃",
+      "note": "小名；李开训的妹妹"
+    },
+    {
+      "id": "li-kaigong",
+      "name": "李开工",
+      "note": "李开训两位弟弟中较长者"
+    },
+    {
+      "id": "li-kaiting",
+      "name": "李开庭",
+      "note": "李开训两位弟弟中较幼者；人称“老叔”“好姥爷”；电焊工"
+    },
+    {
+      "id": "li-kaiting-wife",
+      "name": "李开庭的妻子",
+      "note": "在江淮汽修公司任售货员"
+    },
+    {
+      "id": "zhu-daoan",
+      "name": "朱道安"
+    },
+    {
+      "id": "zhu-liushi",
+      "name": "朱刘氏"
+    },
+    {
+      "id": "zhu-shouzhi",
+      "name": "朱守芝",
+      "note": "幼年读过4年私塾"
+    },
+    {
+      "id": "zhu-shourong",
+      "name": "朱守荣",
+      "note": "朱守芝的妹妹"
+    },
+    {
+      "id": "li-kexia",
+      "name": "李克珍",
+      "note": "李玉珍的双胞胎姐姐；1960年去世，时年6岁"
+    },
+    {
+      "id": "li-yuzhen",
+      "name": "李玉珍",
+      "note": "李克珍的双胞胎妹妹"
+    },
+    {
+      "id": "wu-qinghua",
+      "name": "吴庆华"
+    },
+    {
+      "id": "wu-fang",
+      "name": "吴芳"
+    },
+    {
+      "id": "xu-dapeng",
+      "name": "许大鹏"
+    },
+    {
+      "id": "xu-jinghan",
+      "name": "许婧涵"
+    },
+    {
+      "id": "xu-lingxi",
+      "name": "许灵熙"
+    },
+    {
+      "id": "li-kun",
+      "name": "李坤",
+      "note": "出生在李玉珍之后；李平的哥哥"
+    },
+    {
+      "id": "li-zirong",
+      "name": "李自荣"
+    },
+    {
+      "id": "li-jiqing",
+      "name": "李季晴"
+    },
+    {
+      "id": "li-bulong",
+      "name": "李部龙"
+    },
+    {
+      "id": "li-yuchen",
+      "name": "李宇晨"
+    },
+    {
+      "id": "li-jiaying",
+      "name": "李珈莹"
+    },
+    {
+      "id": "li-yuxia",
+      "name": "李玉霞"
+    },
+    {
+      "id": "peng-xuejian",
+      "name": "彭学俭"
+    },
+    {
+      "id": "peng-peng",
+      "name": "彭鹏"
+    },
+    {
+      "id": "peng-peng-spouse",
+      "name": "彭鹏的配偶"
+    },
+    {
+      "id": "peng-peng-daughter",
+      "name": "彭鹏的女儿"
+    },
+    {
+      "id": "li-ping",
+      "name": "李平",
+      "note": "1965年生",
+      "href": "https://renzeyu.github.io/liping/"
+    },
+    {
+      "id": "li-hui",
+      "name": "李惠"
+    },
+    {
+      "id": "ren-dongfeng",
+      "name": "任东风",
+      "note": "1993年与李平结婚",
+      "href": "https://renzeyu.github.io/rendongfeng/"
+    },
+    {
+      "id": "ren-zeyu",
+      "name": "任泽宇"
+    },
+    {
+      "id": "li-kehuai",
+      "name": "李克淮"
+    },
+    {
+      "id": "li-kenan",
+      "name": "李克南"
+    },
+    {
+      "id": "li-kelan",
+      "name": "李克兰"
+    },
+    {
+      "id": "li-kezhen-kaigong",
+      "name": "李克珍"
+    },
+    {
+      "id": "li-kemei",
+      "name": "李克美"
+    },
+    {
+      "id": "li-keshu",
+      "name": "李克树"
+    },
+    {
+      "id": "li-kezhi",
+      "name": "李克芝"
+    },
+    {
+      "id": "li-keling",
+      "name": "李克玲"
+    },
+    {
+      "id": "li-kelei",
+      "name": "李克雷"
+    },
+    {
+      "id": "li-keli",
+      "name": "李克丽",
+      "note": "李克雷的妹妹；在银行工作"
+    },
+    {
+      "id": "li-kelei-son",
+      "name": "李克雷的儿子",
+      "note": "在江淮汽车制造厂工作"
+    },
+    {
+      "id": "zhao-jingwen",
+      "name": "赵景文"
+    },
+    {
+      "id": "zhao-xinhua",
+      "name": "赵新华"
+    },
+    {
+      "id": "zhao-xiaomei",
+      "name": "赵小梅",
+      "note": "赵新华的妹妹"
+    },
+    {
+      "id": "zhao-xiaohu",
+      "name": "赵小虎"
+    }
+  ],
+  "families": [
+    {
+      "id": "li-grandmother-family",
+      "partners": [
+        {
+          "personId": "li-kaixun-grandmother",
+          "relation": "第一代"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "li-grandmother-children",
+          "label": "子女",
+          "ordered": true,
+          "children": [
+            {
+              "personId": "li-kaixun-father",
+              "relation": "儿子"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "li-father-family",
+      "partners": [
+        {
+          "personId": "li-kaixun-father",
+          "relation": "儿子／父亲"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "li-father-children",
+          "label": "子女",
+          "ordered": true,
+          "children": [
+            {
+              "personId": "li-kaixun",
+              "relation": "儿子"
+            },
+            {
+              "personId": "li-nianiang",
+              "relation": "女儿"
+            },
+            {
+              "personId": "li-kaigong",
+              "relation": "儿子"
+            },
+            {
+              "personId": "li-kaiting",
+              "relation": "儿子"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zhu-daoan-family",
+      "partners": [
+        {
+          "personId": "zhu-daoan",
+          "relation": "第一代"
+        },
+        {
+          "personId": "zhu-liushi",
+          "relation": "配偶"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "zhu-daoan-children",
+          "label": "女儿",
+          "ordered": true,
+          "children": [
+            {
+              "personId": "zhu-shouzhi",
+              "relation": "长女"
+            },
+            {
+              "personId": "zhu-shourong",
+              "relation": "次女"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "li-kaixun-zhu-shouzhi-family",
+      "partners": [
+        {
+          "personId": "li-kaixun",
+          "relation": "儿子"
+        },
+        {
+          "personId": "zhu-shouzhi",
+          "relation": "配偶"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "li-kaixun-children",
+          "label": "子女",
+          "ordered": true,
+          "children": [
+            {
+              "personId": "li-kexia",
+              "relation": "长女"
+            },
+            {
+              "personId": "li-yuzhen",
+              "relation": "次女"
+            },
+            {
+              "personId": "li-kun",
+              "relation": "长子"
+            },
+            {
+              "personId": "li-yuxia",
+              "relation": "三女"
+            },
+            {
+              "personId": "li-ping",
+              "relation": "四女"
+            },
+            {
+              "personId": "li-hui",
+              "relation": "五女"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "li-ping-ren-dongfeng-family",
+      "partners": [
+        {
+          "personId": "li-ping",
+          "relation": "四女"
+        },
+        {
+          "personId": "ren-dongfeng",
+          "relation": "配偶"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "li-ping-children",
+          "label": "子女",
+          "ordered": true,
+          "children": [
+            {
+              "personId": "ren-zeyu",
+              "relation": "儿子"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "li-yuzhen-wu-qinghua-family",
+      "partners": [
+        {
+          "personId": "li-yuzhen",
+          "relation": "次女"
+        },
+        {
+          "personId": "wu-qinghua",
+          "relation": "配偶"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "li-yuzhen-children",
+          "label": "子女",
+          "ordered": true,
+          "children": [
+            {
+              "personId": "wu-fang",
+              "relation": "女儿"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wu-fang-xu-dapeng-family",
+      "partners": [
+        {
+          "personId": "wu-fang",
+          "relation": "女儿"
+        },
+        {
+          "personId": "xu-dapeng",
+          "relation": "配偶"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "wu-fang-children",
+          "label": "子女",
+          "ordered": false,
+          "children": [
+            {
+              "personId": "xu-jinghan",
+              "relation": "女儿"
+            },
+            {
+              "personId": "xu-lingxi",
+              "relation": "女儿"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "li-kun-li-zirong-family",
+      "partners": [
+        {
+          "personId": "li-kun",
+          "relation": "长子"
+        },
+        {
+          "personId": "li-zirong",
+          "relation": "配偶"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "li-kun-children",
+          "label": "子女",
+          "ordered": true,
+          "children": [
+            {
+              "personId": "li-jiqing",
+              "relation": "女儿"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "li-jiqing-li-bulong-family",
+      "partners": [
+        {
+          "personId": "li-jiqing",
+          "relation": "女儿"
+        },
+        {
+          "personId": "li-bulong",
+          "relation": "配偶"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "li-jiqing-children",
+          "label": "子女",
+          "ordered": false,
+          "children": [
+            {
+              "personId": "li-yuchen",
+              "relation": "长子"
+            },
+            {
+              "personId": "li-jiaying",
+              "relation": "女儿"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "li-yuxia-peng-xuejian-family",
+      "partners": [
+        {
+          "personId": "li-yuxia",
+          "relation": "三女"
+        },
+        {
+          "personId": "peng-xuejian",
+          "relation": "配偶"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "li-yuxia-children",
+          "label": "子女",
+          "ordered": true,
+          "children": [
+            {
+              "personId": "peng-peng",
+              "relation": "儿子"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "peng-peng-family",
+      "partners": [
+        {
+          "personId": "peng-peng",
+          "relation": "儿子"
+        },
+        {
+          "personId": "peng-peng-spouse",
+          "relation": "配偶"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "peng-peng-children",
+          "label": "子女",
+          "ordered": true,
+          "children": [
+            {
+              "personId": "peng-peng-daughter",
+              "relation": "女儿"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zhu-shourong-zhao-jingwen-family",
+      "partners": [
+        {
+          "personId": "zhu-shourong",
+          "relation": "次女"
+        },
+        {
+          "personId": "zhao-jingwen",
+          "relation": "配偶"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "zhu-shourong-children",
+          "label": "子女",
+          "ordered": false,
+          "children": [
+            {
+              "personId": "zhao-xinhua",
+              "relation": "长子"
+            },
+            {
+              "personId": "zhao-xiaomei",
+              "relation": "女儿"
+            },
+            {
+              "personId": "zhao-xiaohu",
+              "relation": "儿子"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "li-kaigong-family",
+      "partners": [
+        {
+          "personId": "li-kaigong",
+          "relation": "儿子"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "li-kaigong-sons",
+          "label": "儿子",
+          "ordered": false,
+          "children": [
+            {
+              "personId": "li-kehuai",
+              "relation": "儿子"
+            },
+            {
+              "personId": "li-kenan",
+              "relation": "儿子"
+            }
+          ]
+        },
+        {
+          "id": "li-kaigong-daughters",
+          "label": "女儿（按长幼）",
+          "ordered": true,
+          "children": [
+            {
+              "personId": "li-kelan",
+              "relation": "大女儿"
+            },
+            {
+              "personId": "li-kezhen-kaigong",
+              "relation": "二女儿"
+            },
+            {
+              "personId": "li-kemei",
+              "relation": "三女儿"
+            },
+            {
+              "personId": "li-keshu",
+              "relation": "四女儿"
+            },
+            {
+              "personId": "li-kezhi",
+              "relation": "五女儿"
+            },
+            {
+              "personId": "li-keling",
+              "relation": "六女儿"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "li-kaiting-family",
+      "partners": [
+        {
+          "personId": "li-kaiting",
+          "relation": "儿子"
+        },
+        {
+          "personId": "li-kaiting-wife",
+          "relation": "配偶"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "li-kaiting-children",
+          "label": "子女",
+          "ordered": true,
+          "children": [
+            {
+              "personId": "li-kelei",
+              "relation": "长子"
+            },
+            {
+              "personId": "li-keli",
+              "relation": "女儿"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "li-kelei-family",
+      "partners": [
+        {
+          "personId": "li-kelei",
+          "relation": "长子"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "li-kelei-children",
+          "label": "子女",
+          "ordered": true,
+          "children": [
+            {
+              "personId": "li-kelei-son",
+              "relation": "儿子"
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "relationships": [
     {
       "id": "li-kexia-li-yuzhen-twins",

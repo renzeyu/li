@@ -236,6 +236,11 @@ a:focus-visible {
   list-style: none;
 }
 
+.family-chart-root {
+  align-items: flex-start;
+  gap: 80px;
+}
+
 .family-chart-branch {
   position: relative;
   margin: 0;
@@ -243,7 +248,7 @@ a:focus-visible {
 }
 
 .family-chart-root > .family-chart-branch {
-  padding-inline: 0;
+  padding-inline: 24px;
 }
 
 .family-chart-details {
@@ -546,6 +551,20 @@ footer p {
     display: block;
     width: auto;
     min-width: 0;
+  }
+
+  .family-chart-root {
+    gap: 0;
+  }
+
+  .family-chart-root > .family-chart-branch {
+    padding-inline: 0;
+  }
+
+  .family-chart-root > .family-chart-branch + .family-chart-branch {
+    margin-top: 36px;
+    padding-top: 36px;
+    border-top: 1px solid var(--rule);
   }
 
   .family-chart-branch {
