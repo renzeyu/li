@@ -4,13 +4,13 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-11",
-  "revision": "2026.08.11.2",
+  "revision": "2026.08.11.3",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
-  "intro": "现有族谱从李开训的父母一代，以及朱道安与朱刘氏一代展开。李开训与朱守芝成家后育有五女一子；李开训的妹妹孃孃、弟弟李开工与李开庭及其后代也已纳入。",
+  "intro": "现有族谱从李开训的父母一代，以及朱守芝的爷爷一代展开。李开训与朱守芝成家后育有五女一子；李开训的妹妹孃孃、弟弟李开工与李开庭及其后代也已纳入。",
   "migration": {
     "title": "家族迁徙",
-    "intro": "这条迁徙路线从明初延续至今，连接着朱、李两家几代人的生活。",
+    "intro": "这些记录包括李氏自明初以来的迁徙、朱氏在淮南朱家岗的世居经历，以及两家后来的生活足迹。",
     "map": {
       "title": "迁徙地图",
       "intro": "地图以现代行政区或聚落中心作为区域锚点，帮助理解几代人的迁徙方向。它不表示任何人的具体住址；尚未唯一定位的地点继续保留在下方。",
@@ -23,6 +23,8 @@
           "label": "迁徙主线",
           "placeIds": [
             "shandong-region",
+            "shouxian-yankou-region",
+            "zhecheng-region",
             "huainan-region",
             "caijiagang-region",
             "anhui-suzhou-region"
@@ -46,6 +48,8 @@
           "label": "全部区域锚点",
           "placeIds": [
             "shandong-region",
+            "shouxian-yankou-region",
+            "zhecheng-region",
             "huainan-region",
             "caijiagang-region",
             "anhui-suzhou-region",
@@ -58,11 +62,11 @@
       ],
       "routes": [
         {
-          "id": "zhu-ancestral-route",
-          "label": "朱氏先祖由山东迁至淮南",
+          "id": "li-ancestral-route",
+          "label": "李氏先祖由山东迁至寿县堰口",
           "placeIds": [
             "shandong-region",
-            "huainan-region"
+            "shouxian-yankou-region"
           ]
         },
         {
@@ -87,6 +91,28 @@
           "coordinateNote": "只表示山东区域；“老鸹巷”的具体位置仍待考。"
         },
         {
+          "id": "shouxian-yankou-region",
+          "name": "淮南寿县堰口镇",
+          "locationStatus": "regional-anchor",
+          "coordinates": [
+            116.7889309,
+            32.3848132
+          ],
+          "coordinateSource": "OpenStreetMap Nominatim：堰口镇行政区中心（relation 13904356）",
+          "coordinateNote": "只作为堰口集杨家岗的区域锚点，不表示杨家岗旧址或住宅。"
+        },
+        {
+          "id": "zhecheng-region",
+          "name": "河南省商丘市柘城县",
+          "locationStatus": "regional-anchor",
+          "coordinates": [
+            115.2765011,
+            34.1127169
+          ],
+          "coordinateSource": "OpenStreetMap Nominatim：柘城县行政区中心（relation 3218284）",
+          "coordinateNote": "只表示柘城县区域，不表示旧县衙或任职地点的具体位置。"
+        },
+        {
           "id": "huainan-region",
           "name": "淮南",
           "locationStatus": "regional-anchor",
@@ -95,7 +121,7 @@
             32.5866826
           ],
           "coordinateSource": "OpenStreetMap Nominatim：淮南市行政区中心（relation 3262360）",
-          "coordinateNote": "只表示淮南市区域，作为朱家岗的区域锚点，不表示朱家岗或县衙的具体位置。"
+          "coordinateNote": "只表示淮南市区域，作为朱家岗的区域锚点，不表示朱家岗或旧宅邸的具体位置。"
         },
         {
           "id": "caijiagang-region",
@@ -156,19 +182,19 @@
           "id": "shandong-laoguaxiang",
           "name": "山东老鸹巷",
           "locationStatus": "unlocated",
-          "coordinateNote": "明初历史地名，具体位置仍待考。"
+          "coordinateNote": "李氏先祖明初迁出地，具体位置仍待考。"
         },
         {
-          "id": "henan-shouxian-yankouji-yangjiagang",
-          "name": "河南寿县，晏口集杨家岗",
+          "id": "huainan-shouxian-yankouji-yangjiagang",
+          "name": "淮南寿县堰口集杨家岗",
           "locationStatus": "unlocated",
-          "coordinateNote": "原地名照录，尚未找到能够唯一对应的现代坐标。"
+          "coordinateNote": "家族记录中的迁入地与李开训出生地；现代堰口镇仅作为区域锚点，杨家岗旧址尚未唯一定位。"
         },
         {
           "id": "huainan-zhujiagang",
           "name": "淮南朱家岗",
           "locationStatus": "unlocated",
-          "coordinateNote": "朱氏先祖迁入地，也是朱道安任职地和朱守芝出生地；尚未找到能够唯一对应的现代坐标。"
+          "coordinateNote": "朱氏世居地，也是朱守芝的出生地；后来朱家宅邸在打地主时期被人抢夺。具体位置尚未唯一定位。"
         },
         {
           "id": "jianjing-xicun-address",
@@ -202,37 +228,57 @@
         "label": "居住与迁徙",
         "stops": [
           {
-            "id": "zhu-ming-migration",
+            "id": "li-ming-migration",
             "period": "明初大移民",
-            "place": "山东老鸹巷至淮南朱家岗",
-            "summary": "朱氏先祖由山东老鸹巷迁至淮南朱家岗。",
+            "place": "山东老鸹巷至淮南寿县堰口集杨家岗",
+            "summary": "李氏先祖由山东老鸹巷迁至淮南寿县堰口集杨家岗。",
             "placeIds": [
               "shandong-region",
               "shandong-laoguaxiang",
+              "shouxian-yankou-region",
+              "huainan-shouxian-yankouji-yangjiagang"
+            ]
+          },
+          {
+            "id": "zhu-family-zhujiagang",
+            "period": "世居",
+            "place": "淮南朱家岗",
+            "summary": "朱氏一家世代居于淮南朱家岗，并没有迁徙。",
+            "placeIds": [
               "huainan-region",
               "huainan-zhujiagang"
             ]
           },
           {
-            "id": "zhu-daoan-zhujiagang",
+            "id": "zhu-grandfather-zhecheng",
             "period": "后世",
+            "place": "河南省商丘市柘城县",
+            "summary": "朱守芝的爷爷曾任河南省商丘市柘城县县令。",
+            "placeIds": [
+              "zhecheng-region"
+            ],
+            "personIds": [
+              "zhu-shouzhi-grandfather"
+            ]
+          },
+          {
+            "id": "zhu-home-seized",
+            "period": "后来",
             "place": "淮南朱家岗",
-            "summary": "朱守芝的父亲朱道安曾任淮南朱家岗县令。",
+            "summary": "朱家在打地主时期被人抢夺了宅邸。",
             "placeIds": [
               "huainan-region",
               "huainan-zhujiagang"
-            ],
-            "personIds": [
-              "zhu-daoan"
             ]
           },
           {
             "id": "li-kaixun-birthplace",
             "period": "早年",
-            "place": "河南寿县，晏口集杨家岗",
+            "place": "淮南寿县堰口集杨家岗",
             "summary": "李开训出生于此。",
             "placeIds": [
-              "henan-shouxian-yankouji-yangjiagang"
+              "shouxian-yankou-region",
+              "huainan-shouxian-yankouji-yangjiagang"
             ],
             "personIds": [
               "li-kaixun"
@@ -333,7 +379,7 @@
   },
   "rootFamilyIds": [
     "li-father-family",
-    "zhu-daoan-family"
+    "zhu-grandfather-family"
   ],
   "people": [
     {
@@ -349,7 +395,7 @@
     {
       "id": "li-kaixun",
       "name": "李开训",
-      "note": "出生于河南寿县，晏口集杨家岗；井下采煤30年"
+      "note": "出生于淮南寿县堰口集杨家岗；井下采煤30年"
     },
     {
       "id": "li-nianiang",
@@ -372,9 +418,13 @@
       "note": "在江淮汽修公司任售货员"
     },
     {
+      "id": "zhu-shouzhi-grandfather",
+      "name": "朱守芝的爷爷",
+      "note": "曾任河南省商丘市柘城县县令"
+    },
+    {
       "id": "zhu-daoan",
-      "name": "朱道安",
-      "note": "曾任淮南朱家岗县令"
+      "name": "朱道安"
     },
     {
       "id": "zhu-liushi",
@@ -584,6 +634,28 @@
             },
             {
               "personId": "li-kaiting",
+              "relation": "儿子"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zhu-grandfather-family",
+      "partners": [
+        {
+          "personId": "zhu-shouzhi-grandfather",
+          "relation": "祖父"
+        }
+      ],
+      "childrenGroups": [
+        {
+          "id": "zhu-grandfather-children",
+          "label": "子女",
+          "ordered": false,
+          "children": [
+            {
+              "personId": "zhu-daoan",
               "relation": "儿子"
             }
           ]

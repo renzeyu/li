@@ -80,15 +80,19 @@ test("builds the complete normalized Li family genealogy", async () => {
   assert.match(html, /朱守芝在娘家与成家两处出现，均指同一人/);
   assert.match(html, /id="family-migration"/);
   assert.match(html, />家族迁徙</);
-  assert.match(html, /data-migration-stop-id="zhu-ming-migration"/);
-  assert.match(html, /data-migration-stop-id="zhu-daoan-zhujiagang"/);
-  assert.match(html, /山东老鸹巷至淮南朱家岗/);
-  assert.match(html, /朱守芝的父亲朱道安曾任淮南朱家岗县令/);
+  assert.match(html, /data-migration-stop-id="li-ming-migration"/);
+  assert.match(html, /data-migration-stop-id="zhu-family-zhujiagang"/);
+  assert.match(html, /data-migration-stop-id="zhu-grandfather-zhecheng"/);
+  assert.match(html, /data-migration-stop-id="zhu-home-seized"/);
+  assert.match(html, /山东老鸹巷至淮南寿县堰口集杨家岗/);
+  assert.match(html, /朱守芝的爷爷曾任河南省商丘市柘城县县令/);
+  assert.match(html, /朱氏一家世代居于淮南朱家岗，并没有迁徙/);
+  assert.match(html, /朱家在打地主时期被人抢夺了宅邸/);
   assert.doesNotMatch(
     html,
-    /zhu-daoan-shouxian|shouxian-region|山东老鸹巷至寿县|朱氏先祖由山东老鸹巷迁至寿县。|曾任寿县县令/,
+    /zhu-ming-migration|zhu-daoan-zhujiagang|zhu-ancestral-route|henan-shouxian-yankouji-yangjiagang|河南寿县|晏口集|朱氏先祖由山东|朱道安[^<]*县令|朱守芝的父亲[^<]*县令/,
   );
-  assert.match(html, /河南寿县，晏口集杨家岗/);
+  assert.match(html, /淮南寿县堰口集杨家岗/);
   assert.match(html, /淮南朱家岗/);
   assert.match(html, /淮南蔡家岗谢家集区建井西村63幢西头第二户/);
   assert.match(html, /宿州三十三处四工区安装机电/);
@@ -108,8 +112,8 @@ test("ships one validated schema v2 genealogy graph", async () => {
   const counts = validateFamilyDocument(document);
 
   assert.deepEqual(counts, {
-    personCount: 48,
-    familyCount: 14,
+    personCount: 49,
+    familyCount: 15,
     rootFamilyCount: 2,
     relationshipCount: 1,
   });
@@ -117,10 +121,10 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(document.treeId, "li-zhu-family");
   assert.equal(document.defaultFocusPersonId, "li-ping");
   assert.equal(document.focusFamilyId, "li-kaixun-zhu-shouzhi-family");
-  assert.deepEqual(document.rootFamilyIds, ["li-father-family", "zhu-daoan-family"]);
+  assert.deepEqual(document.rootFamilyIds, ["li-father-family", "zhu-grandfather-family"]);
   assert.equal(
     document.families.flatMap((family) => family.childrenGroups ?? []).length,
-    15,
+    16,
   );
 
   const { people, families } = indexFamilyDocument(document);
@@ -131,6 +135,13 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(people.get("li-kaixun-father")?.note, "40多岁去世");
   assert.equal(people.get("li-kaixun-mother")?.name, "李开训的母亲");
   assert.equal(people.get("li-kaixun-mother")?.note, "活到80多岁");
+  assert.equal(people.get("li-kaixun")?.note, "出生于淮南寿县堰口集杨家岗；井下采煤30年");
+  assert.equal(people.get("zhu-shouzhi-grandfather")?.name, "朱守芝的爷爷");
+  assert.equal(
+    people.get("zhu-shouzhi-grandfather")?.note,
+    "曾任河南省商丘市柘城县县令",
+  );
+  assert.equal(people.get("zhu-daoan")?.note, undefined);
   assert.equal(people.has("li-kaixun-grandmother"), false);
   assert.equal(people.get("li-kexia")?.note, "李玉珍的双胞胎姐姐；1960年去世，时年4岁");
   assert.match(people.get("li-kaiting")?.note ?? "", /老叔.*好姥爷.*电焊工/);
@@ -157,6 +168,15 @@ test("ships one validated schema v2 genealogy graph", async () => {
     "li-kaigong",
     "li-kaiting",
   ]);
+  assert.deepEqual(personIds(families.get("zhu-grandfather-family").partners), [
+    "zhu-shouzhi-grandfather",
+  ]);
+  assert.deepEqual(
+    personIds(
+      childGroup(families.get("zhu-grandfather-family"), "zhu-grandfather-children").children,
+    ),
+    ["zhu-daoan"],
+  );
   const kaigongSons = childGroup(families.get("li-kaigong-family"), "li-kaigong-sons");
   const kaigongDaughters = childGroup(
     families.get("li-kaigong-family"),
@@ -194,33 +214,42 @@ test("records the family migration without duplicating genealogy identities", as
   assert.equal(migration.title, "家族迁徙");
   assert.equal(migration.routes.length, 1);
   assert.equal(migration.routes[0].id, "li-zhu-family-route");
-  assert.equal(migration.routes[0].stops.length, 10);
+  assert.equal(migration.routes[0].stops.length, 12);
 
   const stops = new Map(migration.routes[0].stops.map((stop) => [stop.id, stop]));
-  const mingMigration = stops.get("zhu-ming-migration");
+  const mingMigration = stops.get("li-ming-migration");
   assert.equal(mingMigration.period, "明初大移民");
-  assert.equal(mingMigration.place, "山东老鸹巷至淮南朱家岗");
-  assert.equal(mingMigration.summary, "朱氏先祖由山东老鸹巷迁至淮南朱家岗。");
+  assert.equal(mingMigration.place, "山东老鸹巷至淮南寿县堰口集杨家岗");
+  assert.equal(mingMigration.summary, "李氏先祖由山东老鸹巷迁至淮南寿县堰口集杨家岗。");
   assert.equal(Object.hasOwn(mingMigration, "personIds"), false);
   assert.deepEqual(mingMigration.placeIds, [
     "shandong-region",
     "shandong-laoguaxiang",
-    "huainan-region",
-    "huainan-zhujiagang",
+    "shouxian-yankou-region",
+    "huainan-shouxian-yankouji-yangjiagang",
   ]);
 
-  const zhuDaoanZhujiagang = stops.get("zhu-daoan-zhujiagang");
-  assert.equal(zhuDaoanZhujiagang.period, "后世");
-  assert.equal(zhuDaoanZhujiagang.place, "淮南朱家岗");
-  assert.equal(zhuDaoanZhujiagang.summary, "朱守芝的父亲朱道安曾任淮南朱家岗县令。");
-  assert.deepEqual(zhuDaoanZhujiagang.placeIds, ["huainan-region", "huainan-zhujiagang"]);
-  assert.deepEqual(zhuDaoanZhujiagang.personIds, ["zhu-daoan"]);
-  assert.equal(
-    document.people.find((person) => person.id === "zhu-daoan")?.note,
-    "曾任淮南朱家岗县令",
-  );
+  const zhuFamilyZhujiagang = stops.get("zhu-family-zhujiagang");
+  assert.equal(zhuFamilyZhujiagang.period, "世居");
+  assert.equal(zhuFamilyZhujiagang.summary, "朱氏一家世代居于淮南朱家岗，并没有迁徙。");
+  assert.deepEqual(zhuFamilyZhujiagang.placeIds, ["huainan-region", "huainan-zhujiagang"]);
+  assert.equal(Object.hasOwn(zhuFamilyZhujiagang, "personIds"), false);
 
-  assert.equal(stops.get("li-kaixun-birthplace").place, "河南寿县，晏口集杨家岗");
+  const zhuGrandfatherZhecheng = stops.get("zhu-grandfather-zhecheng");
+  assert.equal(zhuGrandfatherZhecheng.place, "河南省商丘市柘城县");
+  assert.equal(zhuGrandfatherZhecheng.summary, "朱守芝的爷爷曾任河南省商丘市柘城县县令。");
+  assert.deepEqual(zhuGrandfatherZhecheng.placeIds, ["zhecheng-region"]);
+  assert.deepEqual(zhuGrandfatherZhecheng.personIds, ["zhu-shouzhi-grandfather"]);
+
+  const zhuHomeSeized = stops.get("zhu-home-seized");
+  assert.equal(zhuHomeSeized.summary, "朱家在打地主时期被人抢夺了宅邸。");
+  assert.deepEqual(zhuHomeSeized.placeIds, ["huainan-region", "huainan-zhujiagang"]);
+
+  assert.equal(stops.get("li-kaixun-birthplace").place, "淮南寿县堰口集杨家岗");
+  assert.deepEqual(stops.get("li-kaixun-birthplace").placeIds, [
+    "shouxian-yankou-region",
+    "huainan-shouxian-yankouji-yangjiagang",
+  ]);
   assert.deepEqual(stops.get("li-kaixun-birthplace").personIds, ["li-kaixun"]);
   assert.equal(stops.get("zhu-shouzhi-birthplace").place, "淮南朱家岗");
   assert.deepEqual(stops.get("zhu-shouzhi-birthplace").personIds, ["zhu-shouzhi"]);
@@ -265,49 +294,47 @@ test("renders a progressive OpenFreeMap migration map without replacing the writ
   assert.equal(map.coordinateSystem, "WGS84");
   assert.equal(map.views.length, 3);
   assert.equal(map.routes.length, 2);
-  assert.equal(map.places.length, 14);
-  assert.equal(located.length, 7);
+  assert.equal(map.places.length, 16);
+  assert.equal(located.length, 9);
   assert.equal(unlocated.length, 7);
-  assert.equal(places.has("shouxian-region"), false);
+  assert.deepEqual(places.get("shouxian-yankou-region")?.coordinates, [
+    116.7889309,
+    32.3848132,
+  ]);
+  assert.deepEqual(places.get("zhecheng-region")?.coordinates, [115.2765011, 34.1127169]);
   assert.deepEqual(places.get("huainan-region")?.coordinates, [117.0130019, 32.5866826]);
   assert.deepEqual(places.get("caijiagang-region")?.coordinates, [116.8653371, 32.6063101]);
   assert.equal(places.get("shandong-laoguaxiang")?.coordinates, undefined);
   assert.equal(places.get("huainan-zhujiagang")?.locationStatus, "unlocated");
   assert.equal(places.get("huainan-zhujiagang")?.coordinates, undefined);
   assert.equal(places.get("huainan-zhujiagang")?.coordinateSource, undefined);
-  assert.equal(places.get("henan-shouxian-yankouji-yangjiagang")?.coordinates, undefined);
+  assert.equal(places.get("huainan-shouxian-yankouji-yangjiagang")?.coordinates, undefined);
   assert.equal(
-    places.get("henan-shouxian-yankouji-yangjiagang")?.name,
-    "河南寿县，晏口集杨家岗",
+    places.get("huainan-shouxian-yankouji-yangjiagang")?.name,
+    "淮南寿县堰口集杨家岗",
   );
   assert.deepEqual(
     document.migration.routes[0].stops.find((stop) => stop.id === "regional-dispersal")
       ?.placeIds,
     ["huaibei-region", "hefei-region", "kunshan-region"],
   );
-  assert.deepEqual(map.routes.find((route) => route.id === "zhu-ancestral-route")?.placeIds, [
+  assert.deepEqual(map.routes.find((route) => route.id === "li-ancestral-route")?.placeIds, [
     "shandong-region",
-    "huainan-region",
+    "shouxian-yankou-region",
   ]);
-  assert.equal(
-    map.views.some((view) => view.placeIds.includes("shouxian-region")),
-    false,
-  );
-  assert.equal(
-    map.routes.some((route) => route.placeIds.includes("shouxian-region")),
-    false,
-  );
+  assert.equal(map.routes.some((route) => route.id === "zhu-ancestral-route"), false);
+  assert.equal(map.routes.some((route) => route.placeIds.includes("huainan-region") && route.placeIds.includes("shandong-region")), false);
 
   assert.match(html, /class="migration-map-block"/);
   assert.match(html, /data-family-map-source="\.\/family-tree\.json"/);
-  assert.match(html, /aria-label="李家与朱家迁徙交互地图"/);
+  assert.match(html, /aria-label="李家迁徙与朱家足迹交互地图"/);
   assert.match(html, />迁徙主线</);
   assert.match(html, />其后分布</);
   assert.match(html, />尚待定位的地点</);
   assert.match(html, />山东老鸹巷</);
-  assert.match(html, />河南寿县，晏口集杨家岗</);
+  assert.match(html, />淮南寿县堰口集杨家岗</);
   assert.ok(html.indexOf('class="migration-map-block"') < html.indexOf('class="migration-route"'));
-  assert.equal(countMatches(html, /data-migration-stop-id=/g), 10);
+  assert.equal(countMatches(html, /data-migration-stop-id=/g), 12);
   assert.equal(countMatches(html, /data-family-map-unlocated=/g), 7);
   assert.match(visibleText(html), /底图.*下方迁徙记录无需地图即可阅读/);
 
@@ -458,12 +485,19 @@ test("rejects invalid normalized genealogy data", async () => {
   assert.throws(() => validateFamilyDocument(emptyMigrationPlace), /requires place/);
 
   const unknownMigrationPerson = structuredClone(document);
-  unknownMigrationPerson.migration.routes[0].stops[1].personIds.push("missing-person");
+  unknownMigrationPerson.migration.routes[0].stops
+    .find((stop) => stop.id === "zhu-grandfather-zhecheng")
+    .personIds.push("missing-person");
   assert.throws(() => validateFamilyDocument(unknownMigrationPerson), /references unknown person/);
 
   const duplicateMigrationPerson = structuredClone(document);
-  duplicateMigrationPerson.migration.routes[0].stops[1].personIds.push("zhu-daoan");
-  assert.throws(() => validateFamilyDocument(duplicateMigrationPerson), /repeats person zhu-daoan/);
+  duplicateMigrationPerson.migration.routes[0].stops
+    .find((stop) => stop.id === "zhu-grandfather-zhecheng")
+    .personIds.push("zhu-shouzhi-grandfather");
+  assert.throws(
+    () => validateFamilyDocument(duplicateMigrationPerson),
+    /repeats person zhu-shouzhi-grandfather/,
+  );
 
   const insecureMapStyle = structuredClone(document);
   insecureMapStyle.migration.map.styleUrl = "http://tiles.example.com/style";

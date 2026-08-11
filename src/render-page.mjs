@@ -82,7 +82,7 @@ function renderMigrationMap(map) {
       <div class="family-map-view-controls" data-family-map-view-controls role="group" aria-label="选择地图范围">
         ${viewControls}
       </div>
-      <div class="family-map-canvas" data-family-map-canvas role="region" aria-label="李家与朱家迁徙交互地图"></div>
+      <div class="family-map-canvas" data-family-map-canvas role="region" aria-label="李家迁徙与朱家足迹交互地图"></div>
       <p class="family-map-status" data-family-map-status aria-live="polite" aria-atomic="true">正在加载OpenFreeMap底图。下方迁徙记录无需地图即可阅读。</p>
       <p class="visually-hidden" data-family-map-announcement aria-live="polite" aria-atomic="true"></p>
     </div>
