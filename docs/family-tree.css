@@ -70,6 +70,8 @@ main {
 .site-updated,
 .family-panel-heading p,
 .family-chart-toolbar,
+.history-heading p,
+.history-period,
 .migration-heading p,
 .migration-map-heading,
 .family-map-status,
@@ -455,6 +457,80 @@ a:focus-visible {
 .family-chart-children > .family-chart-branch:only-child::before,
 .family-chart-children > .family-chart-branch:only-child::after {
   display: none;
+}
+
+.history-section {
+  width: min(900px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: 68px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.history-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 1.5fr);
+  align-items: end;
+  gap: 48px;
+}
+
+.history-heading h2 {
+  margin: 0;
+  font-size: clamp(30px, 3.8vw, 50px);
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.history-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.history-entries {
+  margin-top: 48px;
+  border-top: 1px solid var(--ink);
+}
+
+.history-entry {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  gap: 36px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--rule);
+  break-inside: avoid;
+}
+
+.history-period {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+
+.history-copy {
+  min-width: 0;
+}
+
+.history-copy h3 {
+  margin: 0 0 14px;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.history-copy p {
+  max-width: 68ch;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.95;
+  overflow-wrap: anywhere;
+}
+
+.history-copy p + p {
+  margin-top: 14px;
 }
 
 .migration-section {
@@ -1130,6 +1206,42 @@ footer p {
     display: none;
   }
 
+  .history-section {
+    width: calc(100% - 36px);
+    padding: 46px 0;
+  }
+
+  .history-heading {
+    display: block;
+  }
+
+  .history-heading p {
+    margin-top: 14px;
+  }
+
+  .history-entries {
+    margin-top: 36px;
+  }
+
+  .history-entry {
+    display: block;
+    padding: 24px 0;
+  }
+
+  .history-period {
+    margin: 0 0 8px;
+  }
+
+  .history-copy h3 {
+    margin-bottom: 12px;
+    font-size: 22px;
+  }
+
+  .history-copy p {
+    font-size: 15.5px;
+    line-height: 1.9;
+  }
+
   .migration-section {
     width: calc(100% - 36px);
     padding: 46px 0;
@@ -1246,6 +1358,9 @@ footer p {
     border-color: CanvasText;
   }
 
+  .history-section,
+  .history-entries,
+  .history-entry,
   .migration-section,
   .migration-stops,
   .migration-stop,
@@ -1277,6 +1392,7 @@ footer p {
 
   .site-header,
   .family-panel-heading,
+  .history-section,
   .migration-section,
   footer {
     width: 100%;
@@ -1291,6 +1407,10 @@ footer p {
   }
 
   .migration-map-block {
+    break-inside: avoid;
+  }
+
+  .history-entry {
     break-inside: avoid;
   }
 }

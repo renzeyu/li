@@ -84,6 +84,19 @@ test("builds the complete normalized Li family genealogy", async () => {
   assert.match(html, /淮北市商务局会计师/);
   assert.match(html, /昆山市中医医院护士/);
   assert.match(html, /淮南市公交公司工作/);
+  assert.match(html, /id="family-history"/);
+  assert.match(html, />家族历史</);
+  assert.equal(countMatches(html, /data-family-history-id=/g), 5);
+  assert.match(html, /清末民初，朱守芝的爷爷曾任河南省商丘市柘城县县令/);
+  assert.match(html, /双胞胎长女李克珍也因饥饿去世，时年4岁/);
+  assert.match(html, /李玉珍和李坤曾在农村生活和劳动约4年/);
+  assert.match(html, /李玉霞、李平和李惠参加中考、高考时，都曾返回淮北报名和应考/);
+  assert.match(html, /几名子女分别在人事、财会和医疗岗位任职/);
+  assert.doesNotMatch(
+    visibleText(html),
+    /掌上明珠|人命如草芥|终身性格心结|野蛮岁月|低三下四|生死命脉|体制飞地|两地嫌弃|混子|白菜|铁血死命令|硬核专业方阵|神圣不可侵犯|底层的历史合流|地下堡垒|死死/,
+  );
+  assert.doesNotMatch(visibleText(html), /[—–]/);
   assert.match(html, /id="family-migration"/);
   assert.match(html, />家族迁徙</);
   assert.match(html, /data-migration-stop-id="li-ming-migration"/);
@@ -105,7 +118,8 @@ test("builds the complete normalized Li family genealogy", async () => {
   assert.match(html, /淮南市谢家集区建井西村63号楼西头第二户/);
   assert.match(html, /宿州市埇桥区汴河东路27号中煤三建第三十三工程处/);
   assert.match(html, /东城康居苑北区北侧约230米/);
-  assert.ok(html.indexOf('id="family-tree"') < html.indexOf('id="family-migration"'));
+  assert.ok(html.indexOf('id="family-tree"') < html.indexOf('id="family-history"'));
+  assert.ok(html.indexOf('id="family-history"') < html.indexOf('id="family-migration"'));
   assert.ok(html.indexOf('id="family-migration"') < html.indexOf("<footer>"));
   assert.match(html, /href="https:\/\/renzeyu\.github\.io\/li\/"/);
   assert.match(html, /src="\.\/family-tree\.js"/);
@@ -144,26 +158,43 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(people.get("li-kaixun-father")?.note, "40多岁去世");
   assert.equal(people.get("li-kaixun-mother")?.name, "李开训的母亲");
   assert.equal(people.get("li-kaixun-mother")?.note, "活到80多岁");
-  assert.equal(people.get("li-kaixun")?.note, "出生于安徽省淮南市寿县堰口镇；井下采煤30年");
+  assert.equal(
+    people.get("li-kaixun")?.note,
+    "出生于安徽省淮南市寿县堰口镇；井下采煤30年；后随单位迁居宿州",
+  );
   assert.equal(people.get("zhu-shouzhi-grandfather")?.name, "朱守芝的爷爷");
   assert.equal(
     people.get("zhu-shouzhi-grandfather")?.note,
-    "曾任河南省商丘市柘城县县令",
+    "清末民初曾任河南省商丘市柘城县县令",
   );
-  assert.equal(people.get("zhu-daoan")?.note, "曾在淮南市谢家集区朱家岗任职");
+  assert.equal(
+    people.get("zhu-daoan")?.note,
+    "曾在淮南市谢家集区朱家岗任职；1960年去世",
+  );
+  assert.equal(people.get("zhu-liushi")?.note, "1960年去世");
   assert.equal(
     people.get("zhu-shouzhi")?.note,
-    "出生于淮南市谢家集区朱家岗；幼年读过4年私塾",
+    "出生于淮南市谢家集区朱家岗；家中长女，幼年读过4年私塾",
   );
   assert.equal(people.has("li-kaixun-grandmother"), false);
   assert.equal(people.get("li-kexia")?.note, "李玉珍的双胞胎姐姐；1960年去世，时年4岁");
+  assert.equal(
+    people.get("li-yuzhen")?.note,
+    "李克珍的双胞胎妹妹；曾下乡约4年；后在淮北面粉厂从事劳资工作；现居昆山",
+  );
+  assert.equal(people.get("wu-qinghua")?.note, "与李玉珍在少年时期相识");
+  assert.equal(people.get("li-kun")?.note, "家中长子；曾下乡约4年；现居昆山");
+  assert.equal(
+    people.get("li-yuxia")?.note,
+    "毕业于徐州煤矿工业学校；从事会计工作；近年居住在宿州安装处",
+  );
   assert.match(people.get("li-kaiting")?.note ?? "", /老叔.*好姥爷.*电焊工/);
   assert.equal(people.get("li-kaiting-wife")?.note, "在淮南市公交公司工作");
   assert.equal(
     people.get("li-ping")?.note,
-    "1965年生；淮北市商务局会计师；目前安居苏州昆山",
+    "1965年生；淮北市商务局会计师；现居昆山",
   );
-  assert.equal(people.get("li-hui")?.note, "昆山市中医医院护士；目前安居苏州昆山");
+  assert.equal(people.get("li-hui")?.note, "曾自费就读卫校；昆山市中医医院护士；现居昆山");
   assert.match(people.get("li-keli")?.note ?? "", /银行/);
   assert.match(people.get("li-kelei-son")?.note ?? "", /江淮汽车制造厂/);
 
@@ -223,6 +254,42 @@ test("ships one validated schema v2 genealogy graph", async () => {
   const docsData = await readFile(new URL("family-tree.json", docs), "utf8");
   assert.equal(docsData, dataSource);
   assert.doesNotMatch(dataSource, /李克霞|信息不公开|家人口述补名|存活排行/);
+});
+
+test("records an objective family history linked to stable people", async () => {
+  const document = await readFamilyDocument();
+  const history = document.history;
+
+  assert.equal(history.title, "家族历史");
+  assert.equal(history.sections.length, 5);
+  assert.deepEqual(
+    history.sections.map((section) => section.id),
+    [
+      "family-background-and-marriage",
+      "famine-and-bereavement",
+      "countryside-and-work-transfer",
+      "suzhou-life-and-exams",
+      "education-and-careers",
+    ],
+  );
+  assert.equal(
+    history.sections.find((section) => section.id === "family-background-and-marriage")
+      ?.period,
+    "清末民初至1955年",
+  );
+  assert.deepEqual(
+    history.sections.find((section) => section.id === "countryside-and-work-transfer")
+      ?.personIds,
+    ["li-kaixun", "li-yuzhen", "wu-qinghua", "li-kun"],
+  );
+  assert.match(JSON.stringify(history), /1960年饥荒期间/);
+  assert.match(JSON.stringify(history), /时年4岁/);
+  assert.match(JSON.stringify(history), /徐州煤矿工业学校/);
+  assert.match(JSON.stringify(history), /昆山市中医医院护士/);
+  assert.doesNotMatch(
+    JSON.stringify(history),
+    /时年6岁|昆山胸科医院|逃难到了安徽淮南|掌上明珠|终身性格心结|体制飞地|两地嫌弃|混子|白菜|铁血|硬核|神圣不可侵犯|[—–]/,
+  );
 });
 
 test("records the family migration without duplicating genealogy identities", async () => {
@@ -567,6 +634,34 @@ test("rejects invalid normalized genealogy data", async () => {
     /repeats person zhu-shouzhi-grandfather/,
   );
 
+  const duplicateHistorySection = structuredClone(document);
+  duplicateHistorySection.history.sections[1].id = duplicateHistorySection.history.sections[0].id;
+  assert.throws(
+    () => validateFamilyDocument(duplicateHistorySection),
+    /duplicate history section id/,
+  );
+
+  const emptyHistoryParagraph = structuredClone(document);
+  emptyHistoryParagraph.history.sections[0].paragraphs[0] = "";
+  assert.throws(
+    () => validateFamilyDocument(emptyHistoryParagraph),
+    /paragraph 0 must be a non-empty string/,
+  );
+
+  const unknownHistoryPerson = structuredClone(document);
+  unknownHistoryPerson.history.sections[0].personIds.push("missing-person");
+  assert.throws(
+    () => validateFamilyDocument(unknownHistoryPerson),
+    /history section.*references unknown person missing-person/,
+  );
+
+  const duplicateHistoryPerson = structuredClone(document);
+  duplicateHistoryPerson.history.sections[0].personIds.push("zhu-shouzhi");
+  assert.throws(
+    () => validateFamilyDocument(duplicateHistoryPerson),
+    /history section.*repeats person zhu-shouzhi/,
+  );
+
   const insecureMapStyle = structuredClone(document);
   insecureMapStyle.migration.map.styleUrl = "http://tiles.example.com/style";
   assert.throws(() => validateFamilyDocument(insecureMapStyle), /styleUrl must use https/);
@@ -634,6 +729,10 @@ test("ships a reusable, progressively enhanced renderer", async () => {
   assert.match(css, /\[data-li-family-tree\]/);
   assert.match(css, /@media \(max-width: 700px\)/);
   assert.match(css, /prefers-reduced-motion: reduce/);
+  assert.match(css, /\.history-section/);
+  assert.match(css, /\.history-entry\s*\{[\s\S]*?break-inside:\s*avoid;/);
+  assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.history-entry/);
+  assert.match(css, /@media print[\s\S]*?\.history-entry/);
   assert.match(css, /\.migration-section/);
   assert.match(css, /\.migration-stop\s*\{[\s\S]*?break-inside:\s*avoid;/);
   assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.migration-stop/);

@@ -152,6 +152,34 @@ ${relatedPeople}
   </section>`;
 }
 
+function renderHistory(history) {
+  if (!history?.sections?.length) return "";
+
+  const sections = history.sections
+    .map((section) => {
+      const paragraphs = section.paragraphs
+        .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+        .join("");
+
+      return `<article class="history-entry" data-family-history-id="${escapeHtml(section.id)}">
+        <p class="history-period">${escapeHtml(section.period)}</p>
+        <div class="history-copy">
+          <h3>${escapeHtml(section.title)}</h3>
+          ${paragraphs}
+        </div>
+      </article>`;
+    })
+    .join("");
+
+  return `<section class="history-section" id="family-history" aria-labelledby="history-title">
+    <div class="history-heading">
+      <h2 id="history-title">${escapeHtml(history.title)}</h2>
+      <p>${escapeHtml(history.intro)}</p>
+    </div>
+    <div class="history-entries">${sections}</div>
+  </section>`;
+}
+
 export function renderPage(document) {
   const viewId = "li-family";
   const treeId = `${viewId}-interactive-tree`;
@@ -220,6 +248,8 @@ export function renderPage(document) {
         </div>
       </div>
     </section>
+
+    ${renderHistory(document.history)}
 
     ${renderMigration(document.migration, peopleById)}
 

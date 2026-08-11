@@ -258,6 +258,65 @@ function validateMigration(migration, errors, personIds) {
   validateMigrationMap(migration.map, errors, stopPlaceReferences);
 }
 
+function validateHistory(history, errors, personIds) {
+  if (!history || typeof history !== "object" || Array.isArray(history)) {
+    errors.push("history must be an object");
+    return;
+  }
+  for (const field of ["title", "intro"]) {
+    if (!isNonEmptyString(history[field])) errors.push(`history requires ${field}`);
+  }
+
+  const sections = Array.isArray(history.sections) ? history.sections : [];
+  if (!Array.isArray(history.sections) || sections.length === 0) {
+    errors.push("history sections must be a non-empty array");
+  }
+  const sectionIds = new Set();
+  for (const [sectionIndex, section] of sections.entries()) {
+    const context = `history section at index ${sectionIndex}`;
+    if (!section || typeof section !== "object" || Array.isArray(section)) {
+      errors.push(`${context} must be an object`);
+      continue;
+    }
+    for (const field of ["id", "period", "title"]) {
+      if (!isNonEmptyString(section[field])) errors.push(`${context} requires ${field}`);
+    }
+    if (isNonEmptyString(section.id)) {
+      if (sectionIds.has(section.id)) errors.push(`duplicate history section id: ${section.id}`);
+      sectionIds.add(section.id);
+    }
+
+    const paragraphs = Array.isArray(section.paragraphs) ? section.paragraphs : [];
+    if (!Array.isArray(section.paragraphs) || paragraphs.length === 0) {
+      errors.push(`${context} paragraphs must be a non-empty array`);
+    }
+    for (const [paragraphIndex, paragraph] of paragraphs.entries()) {
+      if (!isNonEmptyString(paragraph)) {
+        errors.push(`${context} paragraph ${paragraphIndex} must be a non-empty string`);
+      }
+    }
+
+    if (!Array.isArray(section.personIds) || section.personIds.length === 0) {
+      errors.push(`${context} personIds must be a non-empty array`);
+      continue;
+    }
+    const sectionPersonIds = new Set();
+    for (const personId of section.personIds) {
+      if (!isNonEmptyString(personId)) {
+        errors.push(`${context} has an invalid person id`);
+        continue;
+      }
+      if (sectionPersonIds.has(personId)) {
+        errors.push(`${context} repeats person ${personId}`);
+      }
+      sectionPersonIds.add(personId);
+      if (!personIds.has(personId)) {
+        errors.push(`${context} references unknown person ${personId}`);
+      }
+    }
+  }
+}
+
 export function validateFamilyDocument(document) {
   const errors = [];
   const personIds = new Set();
@@ -314,9 +373,8 @@ export function validateFamilyDocument(document) {
     }
   }
 
-  if (document.migration !== undefined) {
-    validateMigration(document.migration, errors, personIds);
-  }
+  validateHistory(document.history, errors, personIds);
+  if (document.migration !== undefined) validateMigration(document.migration, errors, personIds);
 
   const families = Array.isArray(document.families) ? document.families : [];
   if (!Array.isArray(document.families) || families.length === 0) {
