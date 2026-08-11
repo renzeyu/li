@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "treeId": "li-zhu-family",
+  "title": "李家族谱",
+  "subtitle": "李开训与朱守芝一家",
+  "updatedAt": "2026-08-10",
+  "revision": "2026.08.10.1",
+  "defaultFocusPersonId": "li-ping",
+  "intro": "现有族谱从朱道安与朱刘氏一代开始。两人的女儿朱守芝与李开训育有五女一子，依次为李克霞、李玉珍、李坤、李玉霞、李平和李惠；朱守荣为朱守芝的妹妹。",
+  "root": {
+    "id": "zhu-daoan-family",
+    "people": [
+      {
+        "id": "zhu-daoan",
+        "relation": "第一代",
+        "name": "朱道安"
+      },
+      {
+        "id": "zhu-liushi",
+        "relation": "配偶",
+        "name": "朱刘氏"
+      }
+    ],
+    "children": [
+      {
+        "id": "zhu-shouzhi-li-kaixun-family",
+        "people": [
+          {
+            "id": "zhu-shouzhi",
+            "relation": "长女",
+            "name": "朱守芝",
+            "note": "幼年读过4年私塾"
+          },
+          {
+            "id": "li-kaixun",
+            "relation": "配偶",
+            "name": "李开训",
+            "note": "井下采煤30年"
+          }
+        ],
+        "children": [
+          {
+            "id": "li-kexia",
+            "people": [
+              {
+                "id": "li-kexia",
+                "relation": "长女",
+                "name": "李克霞",
+                "note": "李玉珍的双胞胎姐姐；1960年去世，时年6岁"
+              }
+            ]
+          },
+          {
+            "id": "li-yuzhen",
+            "people": [
+              {
+                "id": "li-yuzhen",
+                "relation": "次女",
+                "name": "李玉珍",
+                "note": "李克霞的双胞胎妹妹"
+              }
+            ]
+          },
+          {
+            "id": "li-kun",
+            "people": [
+              {
+                "id": "li-kun",
+                "relation": "长子",
+                "name": "李坤",
+                "note": "出生在李玉珍之后；李平的哥哥"
+              }
+            ]
+          },
+          {
+            "id": "li-yuxia",
+            "people": [
+              {
+                "id": "li-yuxia",
+                "relation": "三女",
+                "name": "李玉霞"
+              }
+            ]
+          },
+          {
+            "id": "li-ping-ren-dongfeng-family",
+            "people": [
+              {
+                "id": "li-ping",
+                "relation": "四女",
+                "name": "李平",
+                "note": "1965年生",
+                "href": "https://renzeyu.github.io/liping/"
+              },
+              {
+                "id": "ren-dongfeng",
+                "relation": "配偶",
+                "name": "任东风",
+                "note": "1993年与李平结婚",
+                "href": "https://renzeyu.github.io/rendongfeng/"
+              }
+            ],
+            "children": [
+              {
+                "id": "ren-zeyu",
+                "people": [
+                  {
+                    "id": "ren-zeyu",
+                    "relation": "儿子",
+                    "name": "任泽宇"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "li-hui",
+            "people": [
+              {
+                "id": "li-hui",
+                "relation": "五女",
+                "name": "李惠"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "zhu-shourong",
+        "people": [
+          {
+            "id": "zhu-shourong",
+            "relation": "次女",
+            "name": "朱守荣",
+            "note": "朱守芝的妹妹"
+          }
+        ]
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "id": "li-kexia-li-yuzhen-twins",
+      "type": "twin",
+      "people": [
+        "li-kexia",
+        "li-yuzhen"
+      ],
+      "olderPersonId": "li-kexia"
+    }
+  ]
+}
