@@ -4,7 +4,7 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-12",
-  "revision": "2026.08.12.6",
+  "revision": "2026.08.12.7",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。",
@@ -600,6 +600,7 @@
     {
       "id": "li-zirong",
       "name": "李自荣",
+      "note": "宿州第三人民医院护士",
       "portrait": {
         "src": "./images/portraits/li-zirong.avif",
         "width": 640,
@@ -655,7 +656,7 @@
     {
       "id": "peng-xuejian",
       "name": "彭学俭",
-      "note": "与李玉霞两家为邻，二人青梅竹马"
+      "note": "安徽省体校毕业；安徽省排球队队员；濉溪二中老师；安装处公安科科长；与李玉霞两家为邻，二人青梅竹马"
     },
     {
       "id": "peng-peng",
@@ -684,7 +685,7 @@
     {
       "id": "li-hui",
       "name": "李惠",
-      "note": "曾自费就读卫校；昆山市中医医院护士；现居昆山",
+      "note": "昆山中医院护士；华师大研究生；心理咨询师",
       "portrait": {
         "src": "./images/portraits/li-hui.avif",
         "width": 640,

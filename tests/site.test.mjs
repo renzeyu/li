@@ -218,6 +218,15 @@ test("ships one validated schema v2 genealogy graph", async () => {
     people.get("li-kaixun")?.note,
     "出生于安徽省淮南市寿县堰口集；井下采煤30多年；后随单位迁居宿州",
   );
+  assert.equal(people.get("li-zirong")?.note, "宿州第三人民医院护士");
+  assert.equal(
+    people.get("peng-xuejian")?.note,
+    "安徽省体校毕业；安徽省排球队队员；濉溪二中老师；安装处公安科科长；与李玉霞两家为邻，二人青梅竹马",
+  );
+  assert.equal(
+    people.get("li-hui")?.note,
+    "昆山中医院护士；华师大研究生；心理咨询师",
+  );
   const expectedPortraits = new Map([
     ["li-kaixun", "li-kaixun"],
     ["zhu-shouzhi", "zhu-shouzhi"],
@@ -282,7 +291,11 @@ test("ships one validated schema v2 genealogy graph", async () => {
     people.get("li-yuxia")?.note,
     "接父亲的班进入安装处；毕业于徐州煤矿工业学校；从事会计工作至退休；近年居住在宿州市埇桥区建设路安装处小区",
   );
-  assert.equal(people.get("peng-xuejian")?.note, "与李玉霞两家为邻，二人青梅竹马");
+  assert.equal(people.get("li-zirong")?.note, "宿州第三人民医院护士");
+  assert.equal(
+    people.get("peng-xuejian")?.note,
+    "安徽省体校毕业；安徽省排球队队员；濉溪二中老师；安装处公安科科长；与李玉霞两家为邻，二人青梅竹马",
+  );
   assert.equal(people.get("li-kaigong")?.name, "李开功");
   assert.match(people.get("li-kaiting")?.note ?? "", /老叔.*好姥爷.*电焊工/);
   assert.equal(people.get("li-kaiting-wife")?.name, "王秀云");
@@ -291,7 +304,8 @@ test("ships one validated schema v2 genealogy graph", async () => {
     people.get("li-ping")?.note,
     "1965年生；淮北市商务局会计师；现居昆山",
   );
-  assert.equal(people.get("li-hui")?.note, "曾自费就读卫校；昆山市中医医院护士；现居昆山");
+  assert.equal(people.get("li-hui")?.note, "昆山中医院护士；华师大研究生；心理咨询师");
+  assert.doesNotMatch(html, /李慧/);
   assert.equal(people.get("ren-dongfeng")?.note, "1992年与李平结婚");
   assert.equal(people.get("li-kelei")?.note, "在江淮汽修公司工作");
   assert.equal(people.get("wang-mei")?.name, "王梅");
