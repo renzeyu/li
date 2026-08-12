@@ -282,7 +282,14 @@ test("ships one validated schema v2 genealogy graph", async () => {
     people.get("li-yuzhen")?.note,
     "李克珍的双胞胎妹妹；曾下乡约4年；后在淮北矿务局一机厂从事劳动工资工作；现居昆山",
   );
-  assert.equal(people.get("wu-qinghua")?.note, "李父与吴父是同乡好友");
+  assert.equal(
+    people.get("wu-qinghua")?.note,
+    "李父与吴父是同乡好友；在淮北矿务局一机厂从事物流工作",
+  );
+  assert.equal(people.get("wu-fang")?.note, "石头科技苏州分公司行政");
+  assert.equal(people.get("xu-dapeng")?.note, "合肥新能源电池公司合伙人");
+  assert.equal(people.get("xu-jinghan")?.note, "苏州实验中学");
+  assert.equal(people.get("xu-lingxi")?.note, "苏州星海小学");
   assert.equal(
     people.get("li-kun")?.note,
     "家中长子；曾下乡7个月；在三十四处钻井队工作至退休；现居昆山",
@@ -292,6 +299,11 @@ test("ships one validated schema v2 genealogy graph", async () => {
     "接父亲的班进入安装处；毕业于徐州煤矿工业学校；从事会计工作至退休；近年居住在宿州市埇桥区建设路安装处小区",
   );
   assert.equal(people.get("li-zirong")?.note, "宿州第三人民医院护士");
+  assert.equal(people.get("li-jiqing")?.note, "安徽医科大学毕业；昆山卫生中心");
+  assert.equal(
+    people.get("li-bulong")?.note,
+    "安徽医科大学毕业；昆山卫生中心某院副院长",
+  );
   assert.equal(
     people.get("peng-xuejian")?.note,
     "安徽省体校毕业；安徽省排球队队员；濉溪二中老师；安装处公安科科长；与李玉霞两家为邻，二人青梅竹马",
@@ -306,7 +318,13 @@ test("ships one validated schema v2 genealogy graph", async () => {
   );
   assert.equal(people.get("li-hui")?.note, "昆山中医院护士；华师大研究生；心理咨询师");
   assert.doesNotMatch(html, /李慧/);
-  assert.equal(people.get("ren-dongfeng")?.note, "1992年与李平结婚");
+  assert.equal(people.get("peng-peng")?.note, "宿州安装处财务");
+  assert.equal(people.get("peng-peng-spouse")?.note, "宿州矿工医院护士");
+  assert.equal(
+    people.get("ren-dongfeng")?.note,
+    "1992年与李平结婚；中国石化长城润滑油江苏省分公司书记兼总经理",
+  );
+  assert.equal(people.get("ren-zeyu")?.note, "美国上市公司设计师");
   assert.equal(people.get("li-kelei")?.note, "在江淮汽修公司工作");
   assert.equal(people.get("wang-mei")?.name, "王梅");
   assert.match(people.get("li-keli")?.note ?? "", /银行/);

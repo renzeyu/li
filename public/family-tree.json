@@ -4,7 +4,7 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-12",
-  "revision": "2026.08.12.7",
+  "revision": "2026.08.12.8",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。",
@@ -556,11 +556,12 @@
     {
       "id": "wu-qinghua",
       "name": "吴庆华",
-      "note": "李父与吴父是同乡好友"
+      "note": "李父与吴父是同乡好友；在淮北矿务局一机厂从事物流工作"
     },
     {
       "id": "wu-fang",
       "name": "吴芳",
+      "note": "石头科技苏州分公司行政",
       "portrait": {
         "src": "./images/portraits/wu-fang.avif",
         "width": 640,
@@ -570,15 +571,18 @@
     },
     {
       "id": "xu-dapeng",
-      "name": "许大鹏"
+      "name": "许大鹏",
+      "note": "合肥新能源电池公司合伙人"
     },
     {
       "id": "xu-jinghan",
-      "name": "许婧涵"
+      "name": "许婧涵",
+      "note": "苏州实验中学"
     },
     {
       "id": "xu-lingxi",
       "name": "许灵熙",
+      "note": "苏州星海小学",
       "portrait": {
         "src": "./images/portraits/xu-lingxi.avif",
         "width": 640,
@@ -611,6 +615,7 @@
     {
       "id": "li-jiqing",
       "name": "李季晴",
+      "note": "安徽医科大学毕业；昆山卫生中心",
       "portrait": {
         "src": "./images/portraits/li-jiqing.avif",
         "width": 640,
@@ -621,6 +626,7 @@
     {
       "id": "li-bulong",
       "name": "李部龙",
+      "note": "安徽医科大学毕业；昆山卫生中心某院副院长",
       "portrait": {
         "src": "./images/portraits/li-bulong.avif",
         "width": 640,
@@ -660,11 +666,13 @@
     },
     {
       "id": "peng-peng",
-      "name": "彭鹏"
+      "name": "彭鹏",
+      "note": "宿州安装处财务"
     },
     {
       "id": "peng-peng-spouse",
-      "name": "王新楠"
+      "name": "王新楠",
+      "note": "宿州矿工医院护士"
     },
     {
       "id": "peng-peng-daughter",
@@ -696,7 +704,7 @@
     {
       "id": "ren-dongfeng",
       "name": "任东风",
-      "note": "1992年与李平结婚",
+      "note": "1992年与李平结婚；中国石化长城润滑油江苏省分公司书记兼总经理",
       "href": "https://renzeyu.github.io/rendongfeng/",
       "portrait": {
         "src": "./images/portraits/ren-dongfeng.avif",
@@ -708,6 +716,7 @@
     {
       "id": "ren-zeyu",
       "name": "任泽宇",
+      "note": "美国上市公司设计师",
       "portrait": {
         "src": "./images/portraits/ren-zeyu.avif",
         "width": 640,
