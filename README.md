@@ -10,6 +10,8 @@
 
 数据采用规范化的家族图结构：`people` 中每个人只定义一次，`families` 记录配偶与子女关系，`rootFamilyIds` 指定李氏与朱氏两条祖源。页面会从这份数据生成可展开的族谱；同一个人出现在娘家与成家两处时，仍使用同一个稳定人物 ID。
 
+人物肖像使用 `people[].portrait` 关联 `public/images/portraits/` 中的本地图片；包含 `src`、`width`、`height` 与客观的 `alt` 文本。没有肖像的人不显示占位图，已确认的肖像会同时进入静态族谱与浏览器更新后的族谱。
+
 `history.sections[]` 保存按时期整理的家族历史。每节使用段落数组，并通过 `personIds` 关联已有的重要人物；史料照片通过可选的 `media[]` 关联本地图片，也可用 `personIds` 关联画面人物，已知拍摄地点时再用可选的 `placeId` 关联地图地点。人物卡片只保留简短事实，完整经历集中在家族历史中。
 
 `migration.routes[].stops[]` 保存家族出生地、迁居与单位沿革。`personIds` 只引用 `people` 中已有的稳定 ID，页面据此生成相关人物姓名，不另存第二份姓名。

@@ -180,7 +180,10 @@ test("builds the complete normalized Li family genealogy", async () => {
 });
 
 test("ships one validated schema v2 genealogy graph", async () => {
-  const dataSource = await readFile(new URL("family-tree.json", publicRoot), "utf8");
+  const [dataSource, html] = await Promise.all([
+    readFile(new URL("family-tree.json", publicRoot), "utf8"),
+    readFile(new URL("index.html", docs), "utf8"),
+  ]);
   const document = JSON.parse(dataSource);
   const counts = validateFamilyDocument(document);
 
@@ -214,6 +217,31 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(
     people.get("li-kaixun")?.note,
     "出生于安徽省淮南市寿县堰口集；井下采煤30多年；后随单位迁居宿州",
+  );
+  const expectedPortraits = new Map([
+    ["li-kaixun", "li-kaixun"],
+    ["zhu-shouzhi", "zhu-shouzhi"],
+    ["li-ping", "li-ping"],
+    ["ren-zeyu", "ren-zeyu"],
+  ]);
+  for (const [personId, fileStem] of expectedPortraits) {
+    const portrait = people.get(personId)?.portrait;
+    assert.deepEqual(portrait, {
+      src: `./images/portraits/${fileStem}.avif`,
+      width: 640,
+      height: 640,
+      alt: `${people.get(personId).name}肖像。`,
+    });
+    assert.match(
+      html,
+      new RegExp(
+        `<img class="family-chart-portrait" src="\\./images/portraits/${fileStem}\\.avif" width="640" height="640" alt="${people.get(personId).name}肖像。" loading="lazy" decoding="async">`,
+      ),
+    );
+  }
+  assert.equal(
+    [...people.values()].filter((person) => person.portrait).length,
+    expectedPortraits.size,
   );
   assert.equal(people.get("zhu-shouzhi-grandfather")?.name, "朱守芝的爷爷");
   assert.equal(
@@ -854,6 +882,21 @@ test("rejects invalid normalized genealogy data", async () => {
     /src must be a safe local image path/,
   );
 
+  const unsafePortraitPath = structuredClone(document);
+  unsafePortraitPath.people.find((person) => person.id === "li-ping").portrait.src =
+    "https://example.com/li-ping.png";
+  assert.throws(
+    () => validateFamilyDocument(unsafePortraitPath),
+    /portrait src must be a safe local portrait path/,
+  );
+
+  const invalidPortraitWidth = structuredClone(document);
+  invalidPortraitWidth.people.find((person) => person.id === "li-ping").portrait.width = 0;
+  assert.throws(
+    () => validateFamilyDocument(invalidPortraitWidth),
+    /portrait width must be a positive integer/,
+  );
+
   const invalidHistoryMediaWidth = structuredClone(document);
   invalidHistoryMediaWidth.history.sections[3].media[0].width = 0;
   assert.throws(
@@ -952,6 +995,8 @@ test("ships a reusable, progressively enhanced renderer", async () => {
   assert.match(script, /centerHorizontally/);
   assert.match(script, /fetch\(/);
   assert.match(script, /li-family-tree:ready/);
+  assert.match(script, /family-chart-portrait/);
+  assert.match(script, /portraitBaseUrl/);
   assert.doesNotMatch(script, /innerHTML|setHTML\(/);
   assert.match(css, /\[data-li-family-tree\]/);
   assert.match(css, /@media \(max-width: 700px\)/);
@@ -979,6 +1024,8 @@ test("ships a reusable, progressively enhanced renderer", async () => {
   assert.match(css, /\.family-map-unlocated li:last-child\s*\{[^}]*border-bottom:\s*0;/);
   assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.migration-stop/);
   assert.match(css, /family-chart-details:not\(\[open\]\) > \.family-chart-children/);
+  assert.match(css, /\.family-chart-portrait\s*\{[^}]*width:\s*88px;[^}]*height:\s*88px;/);
+  assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.family-chart-portrait\s*\{[^}]*width:\s*68px;[^}]*height:\s*68px;/);
   assert.match(
     css,
     /family-chart-branch:last-child::after\s*\{[\s\S]*?border-left:\s*0;/,
@@ -1031,6 +1078,10 @@ test("includes every GitHub Pages artifact", async () => {
       "og.svg",
       "images/suzhou-anzhuangchu-xiaoqu.jpg",
       "images/li-ping-li-hui-young.jpg",
+      "images/portraits/li-kaixun.avif",
+      "images/portraits/zhu-shouzhi.avif",
+      "images/portraits/li-ping.avif",
+      "images/portraits/ren-zeyu.avif",
     ].map((path) => access(new URL(path, docs))),
   );
   assert.deepEqual(
@@ -1041,4 +1092,10 @@ test("includes every GitHub Pages artifact", async () => {
     await readFile(new URL("images/li-ping-li-hui-young.jpg", docs)),
     await readFile(new URL("images/li-ping-li-hui-young.jpg", publicRoot)),
   );
+  for (const portrait of ["li-kaixun", "zhu-shouzhi", "li-ping", "ren-zeyu"]) {
+    assert.deepEqual(
+      await readFile(new URL(`images/portraits/${portrait}.avif`, docs)),
+      await readFile(new URL(`images/portraits/${portrait}.avif`, publicRoot)),
+    );
+  }
 });

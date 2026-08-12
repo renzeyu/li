@@ -16,10 +16,10 @@
     return node;
   }
 
-  function safeUrl(value) {
+  function safeUrl(value, base = window.location.href) {
     if (!value) return null;
     try {
-      const url = new URL(value, window.location.href);
+      const url = new URL(value, base);
       return url.protocol === "http:" || url.protocol === "https:" ? url.href : null;
     } catch {
       return null;
@@ -140,9 +140,25 @@
     return ids;
   }
 
-  function renderPerson(person, showProfileLinks) {
-    const personNode = element("span", "family-chart-person");
+  function renderPerson(person, showProfileLinks, portraitBaseUrl) {
+    const personNode = element(
+      "span",
+      `family-chart-person${person.portrait ? " family-chart-person-has-portrait" : ""}`,
+    );
     personNode.dataset.familyPersonId = person.id;
+
+    const portraitSrc = safeUrl(person.portrait?.src, portraitBaseUrl);
+    if (portraitSrc) {
+      const portrait = element("img", "family-chart-portrait");
+      portrait.src = portraitSrc;
+      portrait.width = person.portrait.width;
+      portrait.height = person.portrait.height;
+      portrait.alt = person.portrait.alt;
+      portrait.loading = "lazy";
+      portrait.decoding = "async";
+      personNode.append(portrait);
+    }
+
     personNode.append(element("span", "family-chart-relation", person.relation));
 
     const nameNode = element("span", "family-chart-name");
@@ -163,13 +179,18 @@
     return personNode;
   }
 
-  function renderPeople(node, showProfileLinks) {
-    const peopleNode = element("span", "family-chart-people");
-    node.people.forEach((person) => peopleNode.append(renderPerson(person, showProfileLinks)));
+  function renderPeople(node, showProfileLinks, portraitBaseUrl) {
+    const peopleNode = element(
+      "span",
+      `family-chart-people${node.people.some((person) => person.portrait) ? " family-chart-people-has-portrait" : ""}`,
+    );
+    node.people.forEach((person) =>
+      peopleNode.append(renderPerson(person, showProfileLinks, portraitBaseUrl)),
+    );
     return peopleNode;
   }
 
-  function renderBranch(node, expandedIds, viewId, showProfileLinks) {
+  function renderBranch(node, expandedIds, viewId, showProfileLinks, portraitBaseUrl) {
     const hasChildren = Boolean(node.children?.length);
     const familyLabel = node.people.map((person) => person.name).join("与");
     const branch = element(
@@ -184,7 +205,7 @@
       const unit = element("div", unitClassName);
       unit.setAttribute("role", "group");
       unit.setAttribute("aria-label", familyLabel);
-      unit.append(renderPeople(node, showProfileLinks));
+      unit.append(renderPeople(node, showProfileLinks, portraitBaseUrl));
       branch.append(unit);
       return branch;
     }
@@ -194,7 +215,7 @@
     details.open = expandedIds.has(node.id);
 
     const summary = element("summary", `${unitClassName} family-chart-summary`);
-    summary.append(renderPeople(node, showProfileLinks));
+    summary.append(renderPeople(node, showProfileLinks, portraitBaseUrl));
     const toggle = element("span", "family-chart-toggle");
     toggle.setAttribute("aria-hidden", "true");
     summary.append(toggle);
@@ -207,7 +228,9 @@
     children.id = `${viewId}-${node.id}-children`;
     children.setAttribute("aria-label", `${familyLabel}的后代`);
     node.children.forEach((child) =>
-      children.append(renderBranch(child, expandedIds, viewId, showProfileLinks)),
+      children.append(
+        renderBranch(child, expandedIds, viewId, showProfileLinks, portraitBaseUrl),
+      ),
     );
     details.append(children);
     branch.append(details);
@@ -323,6 +346,7 @@
           expandedIds,
           tree.dataset.familyTreeId || documentData.treeId,
           showProfileLinks,
+          sourceUrl,
         ),
       ),
     );

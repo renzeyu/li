@@ -10,8 +10,13 @@ function escapeHtml(value) {
 }
 
 function renderPerson(person) {
+  const portrait = person.portrait
+    ? `  <img class="family-chart-portrait" src="${escapeHtml(person.portrait.src)}" width="${escapeHtml(person.portrait.width)}" height="${escapeHtml(person.portrait.height)}" alt="${escapeHtml(person.portrait.alt)}" loading="lazy" decoding="async">`
+    : "";
+
   return [
-    `<span class="family-chart-person" data-family-person-id="${escapeHtml(person.id)}">`,
+    `<span class="family-chart-person${person.portrait ? " family-chart-person-has-portrait" : ""}" data-family-person-id="${escapeHtml(person.id)}">`,
+    portrait,
     `  <span class="family-chart-relation">${escapeHtml(person.relation)}</span>`,
     `  <span class="family-chart-name">${escapeHtml(person.name)}</span>`,
     person.note
@@ -27,7 +32,8 @@ function renderBranch(node, viewId) {
   const hasChildren = Boolean(node.children?.length);
   const familyLabel = node.people.map((person) => person.name).join("与");
   const unitClass = `family-chart-unit${node.people.length > 1 ? " family-chart-unit-couple" : ""}`;
-  const people = `<span class="family-chart-people">${node.people.map(renderPerson).join("")}</span>`;
+  const peopleClass = `family-chart-people${node.people.some((person) => person.portrait) ? " family-chart-people-has-portrait" : ""}`;
+  const people = `<span class="${peopleClass}">${node.people.map(renderPerson).join("")}</span>`;
 
   if (!hasChildren) {
     return `<li class="family-chart-branch family-chart-branch-leaf" data-family-node-id="${escapeHtml(node.id)}">

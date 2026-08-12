@@ -431,6 +431,36 @@ export function validateFamilyDocument(document) {
     if (person.href !== undefined && !/^https:\/\//.test(person.href)) {
       errors.push(`person ${person.id ?? index} href must use https`);
     }
+    if (person.portrait !== undefined) {
+      const portraitContext = `person ${person.id ?? index} portrait`;
+      if (
+        !person.portrait ||
+        typeof person.portrait !== "object" ||
+        Array.isArray(person.portrait)
+      ) {
+        errors.push(`${portraitContext} must be an object`);
+      } else {
+        for (const field of ["src", "alt"]) {
+          if (!isNonEmptyString(person.portrait[field])) {
+            errors.push(`${portraitContext} requires ${field}`);
+          }
+        }
+        if (
+          isNonEmptyString(person.portrait.src) &&
+          (!/^\.\/images\/portraits\/[a-z0-9][a-z0-9._/-]*\.(?:avif|jpe?g|png|webp)$/i.test(
+            person.portrait.src,
+          ) ||
+            person.portrait.src.includes(".."))
+        ) {
+          errors.push(`${portraitContext} src must be a safe local portrait path`);
+        }
+        for (const field of ["width", "height"]) {
+          if (!Number.isInteger(person.portrait[field]) || person.portrait[field] <= 0) {
+            errors.push(`${portraitContext} ${field} must be a positive integer`);
+          }
+        }
+      }
+    }
   }
 
   const mapPlaceIds = new Set(

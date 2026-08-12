@@ -4,7 +4,7 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-12",
-  "revision": "2026.08.12.3",
+  "revision": "2026.08.12.4",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。",
@@ -484,7 +484,13 @@
     {
       "id": "li-kaixun",
       "name": "李开训",
-      "note": "出生于安徽省淮南市寿县堰口集；井下采煤30多年；后随单位迁居宿州"
+      "note": "出生于安徽省淮南市寿县堰口集；井下采煤30多年；后随单位迁居宿州",
+      "portrait": {
+        "src": "./images/portraits/li-kaixun.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "李开训肖像。"
+      }
     },
     {
       "id": "li-nianiang",
@@ -524,7 +530,13 @@
     {
       "id": "zhu-shouzhi",
       "name": "朱守芝",
-      "note": "出生于淮南市谢家集区朱家岗；家中长女，幼年读过4年私塾"
+      "note": "出生于淮南市谢家集区朱家岗；家中长女，幼年读过4年私塾",
+      "portrait": {
+        "src": "./images/portraits/zhu-shouzhi.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "朱守芝肖像。"
+      }
     },
     {
       "id": "zhu-shourong",
@@ -613,7 +625,13 @@
       "id": "li-ping",
       "name": "李平",
       "note": "1965年生；淮北市商务局会计师；现居昆山",
-      "href": "https://renzeyu.github.io/liping/"
+      "href": "https://renzeyu.github.io/liping/",
+      "portrait": {
+        "src": "./images/portraits/li-ping.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "李平肖像。"
+      }
     },
     {
       "id": "li-hui",
@@ -628,7 +646,13 @@
     },
     {
       "id": "ren-zeyu",
-      "name": "任泽宇"
+      "name": "任泽宇",
+      "portrait": {
+        "src": "./images/portraits/ren-zeyu.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "任泽宇肖像。"
+      }
     },
     {
       "id": "li-kehuai",
