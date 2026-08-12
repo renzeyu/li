@@ -11,7 +11,7 @@ import {
 const docs = new URL("../docs/", import.meta.url);
 const publicRoot = new URL("../public/", import.meta.url);
 const expectedSiteIntro =
-  "李氏先祖于明初由山东迁至寿县堰口镇，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。";
+  "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。";
 
 function countMatches(value, pattern) {
   return value.match(pattern)?.length ?? 0;
@@ -73,7 +73,8 @@ test("builds the complete normalized Li family genealogy", async () => {
     countMatches(html, /class="family-chart-name">李克珍<\/span>/g),
     2,
   );
-  assert.match(html, /李开训的母亲/);
+  assert.match(html, /李云举/);
+  assert.match(html, /李魏氏/);
   assert.match(html, /1960年去世，时年4岁/);
   assert.doesNotMatch(visibleText(html), /李克霞/);
   assert.doesNotMatch(visibleText(html), /李开训的奶奶|时年6岁/);
@@ -95,7 +96,10 @@ test("builds the complete normalized Li family genealogy", async () => {
   assert.equal(countMatches(html, /data-family-history-id=/g), 5);
   assert.match(html, /清末民初，朱守芝的爷爷曾任河南省商丘市柘城县县令/);
   assert.match(html, /双胞胎长女李克珍也因饥饿去世，时年4岁/);
-  assert.match(html, /李玉珍和李坤曾在农村生活和劳动约4年/);
+  assert.match(html, /李玉珍曾在农村生活和劳动约4年，李坤下乡7个月/);
+  assert.match(html, /李父与吴父是同乡好友/);
+  assert.match(html, /淮北矿务局一机厂/);
+  assert.match(html, /李玉霞与彭学俭两家为邻，二人自幼相识/);
   assert.match(html, /李玉霞、李平和李惠参加中考、高考时，都曾返回淮北报名和应考/);
   assert.match(html, /几名子女分别在人事、财会和医疗岗位任职/);
   assert.doesNotMatch(
@@ -110,7 +114,7 @@ test("builds the complete normalized Li family genealogy", async () => {
   assert.match(html, /data-migration-stop-id="zhu-daoan-zhujiagang"/);
   assert.match(html, /data-migration-stop-id="zhu-grandfather-zhecheng"/);
   assert.match(html, /data-migration-stop-id="zhu-home-seized"/);
-  assert.match(html, /山东老鸹巷至安徽省淮南市寿县堰口镇/);
+  assert.match(html, /山东老鸹巷至安徽省淮南市寿县堰口集/);
   assert.match(html, /朱守芝的爷爷曾任河南省商丘市柘城县县令/);
   assert.match(html, /朱氏先祖迁入淮南市谢家集区朱家岗/);
   assert.match(html, /朱道安曾在此任职/);
@@ -119,7 +123,7 @@ test("builds the complete normalized Li family genealogy", async () => {
     html,
     /zhu-ming-migration|zhu-ancestral-route|henan-shouxian-yankouji-yangjiagang|huainan-shouxian-yankouji-yangjiagang|河南寿县|晏口集|堰口集杨家岗|杨家岗|朱氏先祖由山东|朱道安[^<]*县令|朱守芝的父亲[^<]*县令|并没有迁徙|单位旧址尚待确认|尚未确认其与旧址的空间关系|公开地图尚不能核实具体楼幢|具体位置未在公开地图上标注/,
   );
-  assert.match(html, /安徽省淮南市寿县堰口镇/);
+  assert.match(html, /安徽省淮南市寿县堰口集/);
   assert.match(html, /淮南市谢家集区朱家岗/);
   assert.match(html, /淮南市谢家集区建井西村63号楼西头第二户/);
   assert.match(html, /宿州市埇桥区汴河东路27号中煤三建第三十三工程处/);
@@ -165,8 +169,8 @@ test("ships one validated schema v2 genealogy graph", async () => {
   const counts = validateFamilyDocument(document);
 
   assert.deepEqual(counts, {
-    personCount: 49,
-    familyCount: 15,
+    personCount: 52,
+    familyCount: 16,
     rootFamilyCount: 2,
     relationshipCount: 1,
   });
@@ -185,12 +189,13 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(people.get("li-kezhen-kaigong")?.name, "李克珍");
   assert.notEqual("li-kexia", "li-kezhen-kaigong");
   assert.equal([...people.values()].filter((person) => person.name === "李克珍").length, 2);
+  assert.equal(people.get("li-kaixun-father")?.name, "李云举");
   assert.equal(people.get("li-kaixun-father")?.note, "40多岁去世");
-  assert.equal(people.get("li-kaixun-mother")?.name, "李开训的母亲");
+  assert.equal(people.get("li-kaixun-mother")?.name, "李魏氏");
   assert.equal(people.get("li-kaixun-mother")?.note, "活到80多岁");
   assert.equal(
     people.get("li-kaixun")?.note,
-    "出生于安徽省淮南市寿县堰口镇；井下采煤30多年；后随单位迁居宿州",
+    "出生于安徽省淮南市寿县堰口集；井下采煤30多年；后随单位迁居宿州",
   );
   assert.equal(people.get("zhu-shouzhi-grandfather")?.name, "朱守芝的爷爷");
   assert.equal(
@@ -210,22 +215,31 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(people.get("li-kexia")?.note, "李玉珍的双胞胎姐姐；1960年去世，时年4岁");
   assert.equal(
     people.get("li-yuzhen")?.note,
-    "李克珍的双胞胎妹妹；曾下乡约4年；后在淮北面粉厂从事劳资工作；现居昆山",
+    "李克珍的双胞胎妹妹；曾下乡约4年；后在淮北矿务局一机厂从事劳动工资工作；现居昆山",
   );
-  assert.equal(people.get("wu-qinghua")?.note, "与李玉珍在少年时期相识");
-  assert.equal(people.get("li-kun")?.note, "家中长子；曾下乡约4年；现居昆山");
+  assert.equal(people.get("wu-qinghua")?.note, "李父与吴父是同乡好友");
+  assert.equal(people.get("li-kun")?.note, "家中长子；曾下乡7个月；现居昆山");
   assert.equal(
     people.get("li-yuxia")?.note,
-    "毕业于徐州煤矿工业学校；从事会计工作；近年居住在宿州市埇桥区建设路安装处小区",
+    "接父亲的班进入安装处；毕业于徐州煤矿工业学校；从事会计工作至退休；近年居住在宿州市埇桥区建设路安装处小区",
   );
+  assert.equal(people.get("peng-xuejian")?.note, "与李玉霞两家为邻，二人青梅竹马");
+  assert.equal(people.get("li-kaigong")?.name, "李开功");
   assert.match(people.get("li-kaiting")?.note ?? "", /老叔.*好姥爷.*电焊工/);
+  assert.equal(people.get("li-kaiting-wife")?.name, "王秀云");
   assert.equal(people.get("li-kaiting-wife")?.note, "在淮南市公交公司工作");
   assert.equal(
     people.get("li-ping")?.note,
     "1965年生；淮北市商务局会计师；现居昆山",
   );
   assert.equal(people.get("li-hui")?.note, "曾自费就读卫校；昆山市中医医院护士；现居昆山");
+  assert.equal(people.get("ren-dongfeng")?.note, "1992年与李平结婚");
+  assert.equal(people.get("li-kelei")?.note, "在江淮汽修公司工作");
+  assert.equal(people.get("wang-mei")?.name, "王梅");
   assert.match(people.get("li-keli")?.note ?? "", /银行/);
+  assert.equal(people.get("fang-hao")?.name, "方浩");
+  assert.equal(people.get("fang-runtian")?.name, "方润田");
+  assert.equal(people.get("li-kelei-son")?.name, "李烁维");
   assert.match(people.get("li-kelei-son")?.note ?? "", /江淮汽车制造厂/);
 
   const twinRelationship = document.relationships.find(
@@ -256,15 +270,14 @@ test("ships one validated schema v2 genealogy graph", async () => {
     ),
     ["zhu-daoan"],
   );
-  const kaigongSons = childGroup(families.get("li-kaigong-family"), "li-kaigong-sons");
-  const kaigongDaughters = childGroup(
+  const kaigongChildren = childGroup(
     families.get("li-kaigong-family"),
-    "li-kaigong-daughters",
+    "li-kaigong-children",
   );
-  assert.equal(kaigongSons.ordered, false);
-  assert.deepEqual(personIds(kaigongSons.children), ["li-kehuai", "li-kenan"]);
-  assert.equal(kaigongDaughters.ordered, true);
-  assert.deepEqual(personIds(kaigongDaughters.children), [
+  assert.equal(kaigongChildren.ordered, true);
+  assert.deepEqual(personIds(kaigongChildren.children), [
+    "li-kehuai",
+    "li-kenan",
     "li-kelan",
     "li-kezhen-kaigong",
     "li-kemei",
@@ -273,17 +286,38 @@ test("ships one validated schema v2 genealogy graph", async () => {
     "li-keling",
   ]);
   assert.deepEqual(
+    kaigongChildren.children.map((child) => child.relation),
+    ["长子", "次子", "长女", "次女", "三女", "四女", "五女", "六女"],
+  );
+  assert.deepEqual(
     personIds(childGroup(families.get("li-kaiting-family"), "li-kaiting-children").children),
     ["li-kelei", "li-keli"],
+  );
+  assert.deepEqual(
+    personIds(families.get("li-kelei-family").partners),
+    ["li-kelei", "wang-mei"],
   );
   assert.deepEqual(
     personIds(childGroup(families.get("li-kelei-family"), "li-kelei-children").children),
     ["li-kelei-son"],
   );
+  assert.deepEqual(
+    personIds(families.get("li-keli-fang-hao-family").partners),
+    ["li-keli", "fang-hao"],
+  );
+  assert.deepEqual(
+    personIds(
+      childGroup(families.get("li-keli-fang-hao-family"), "li-keli-children").children,
+    ),
+    ["fang-runtian"],
+  );
 
   const docsData = await readFile(new URL("family-tree.json", docs), "utf8");
   assert.equal(docsData, dataSource);
-  assert.doesNotMatch(dataSource, /李克霞|信息不公开|家人口述补名|存活排行/);
+  assert.doesNotMatch(
+    dataSource,
+    /李克霞|信息不公开|家人口述补名|存活排行|李开工|淮北面粉厂|1993年与李平结婚/,
+  );
 });
 
 test("records an objective family history linked to stable people", async () => {
@@ -310,7 +344,7 @@ test("records an objective family history linked to stable people", async () => 
   assert.deepEqual(
     history.sections.find((section) => section.id === "countryside-and-work-transfer")
       ?.personIds,
-    ["li-kaixun", "li-yuzhen", "wu-qinghua", "li-kun"],
+    ["li-kaixun", "li-yuzhen", "wu-qinghua", "li-kun", "li-yuxia", "peng-xuejian"],
   );
   assert.match(JSON.stringify(history), /1960年饥荒期间/);
   assert.match(JSON.stringify(history), /时年4岁/);
@@ -359,8 +393,8 @@ test("records the family migration without duplicating genealogy identities", as
   const stops = new Map(migration.routes[0].stops.map((stop) => [stop.id, stop]));
   const mingMigration = stops.get("li-ming-migration");
   assert.equal(mingMigration.period, "明初大移民");
-  assert.equal(mingMigration.place, "山东老鸹巷至安徽省淮南市寿县堰口镇");
-  assert.equal(mingMigration.summary, "李氏先祖由山东老鸹巷迁至安徽省淮南市寿县堰口镇。");
+  assert.equal(mingMigration.place, "山东老鸹巷至安徽省淮南市寿县堰口集");
+  assert.equal(mingMigration.summary, "李氏先祖由山东老鸹巷迁至安徽省淮南市寿县堰口集。");
   assert.equal(Object.hasOwn(mingMigration, "personIds"), false);
   assert.deepEqual(mingMigration.placeIds, [
     "shandong-region",
@@ -389,7 +423,7 @@ test("records the family migration without duplicating genealogy identities", as
   assert.equal(zhuHomeSeized.summary, "朱家在打地主时期被人抢夺了宅邸。");
   assert.deepEqual(zhuHomeSeized.placeIds, ["huainan-zhujiagang"]);
 
-  assert.equal(stops.get("li-kaixun-birthplace").place, "安徽省淮南市寿县堰口镇");
+  assert.equal(stops.get("li-kaixun-birthplace").place, "安徽省淮南市寿县堰口集");
   assert.deepEqual(stops.get("li-kaixun-birthplace").placeIds, ["shouxian-yankou-region"]);
   assert.deepEqual(stops.get("li-kaixun-birthplace").personIds, ["li-kaixun"]);
   assert.equal(stops.get("zhu-shouzhi-birthplace").place, "淮南市谢家集区朱家岗");
@@ -533,7 +567,7 @@ test("renders a progressive OpenFreeMap migration map without replacing the writ
   assert.match(html, />具体地点</);
   assert.match(html, />区域锚点</);
   assert.doesNotMatch(html, />尚待定位的地点|地点待定位</);
-  assert.match(html, />安徽省淮南市寿县堰口镇</);
+  assert.match(html, />安徽省淮南市寿县堰口集</);
   assert.match(html, />淮南市谢家集区朱家岗</);
   assert.ok(html.indexOf('class="migration-map-block"') < html.indexOf('class="migration-directory"'));
   assert.ok(html.indexOf('class="migration-directory"') < html.indexOf('class="migration-route"'));
