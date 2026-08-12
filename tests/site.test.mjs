@@ -223,6 +223,16 @@ test("ships one validated schema v2 genealogy graph", async () => {
     ["zhu-shouzhi", "zhu-shouzhi"],
     ["li-ping", "li-ping"],
     ["ren-zeyu", "ren-zeyu"],
+    ["ren-dongfeng", "ren-dongfeng"],
+    ["wu-fang", "wu-fang"],
+    ["xu-lingxi", "xu-lingxi"],
+    ["li-kun", "li-kun"],
+    ["li-zirong", "li-zirong"],
+    ["li-jiqing", "li-jiqing"],
+    ["li-bulong", "li-bulong"],
+    ["li-yuchen", "li-yuchen"],
+    ["li-jiaying", "li-jiaying"],
+    ["li-hui", "li-hui"],
   ]);
   for (const [personId, fileStem] of expectedPortraits) {
     const portrait = people.get(personId)?.portrait;
@@ -1082,6 +1092,16 @@ test("includes every GitHub Pages artifact", async () => {
       "images/portraits/zhu-shouzhi.avif",
       "images/portraits/li-ping.avif",
       "images/portraits/ren-zeyu.avif",
+      "images/portraits/ren-dongfeng.avif",
+      "images/portraits/wu-fang.avif",
+      "images/portraits/xu-lingxi.avif",
+      "images/portraits/li-kun.avif",
+      "images/portraits/li-zirong.avif",
+      "images/portraits/li-jiqing.avif",
+      "images/portraits/li-bulong.avif",
+      "images/portraits/li-yuchen.avif",
+      "images/portraits/li-jiaying.avif",
+      "images/portraits/li-hui.avif",
     ].map((path) => access(new URL(path, docs))),
   );
   assert.deepEqual(
@@ -1092,7 +1112,22 @@ test("includes every GitHub Pages artifact", async () => {
     await readFile(new URL("images/li-ping-li-hui-young.jpg", docs)),
     await readFile(new URL("images/li-ping-li-hui-young.jpg", publicRoot)),
   );
-  for (const portrait of ["li-kaixun", "zhu-shouzhi", "li-ping", "ren-zeyu"]) {
+  for (const portrait of [
+    "li-kaixun",
+    "zhu-shouzhi",
+    "li-ping",
+    "ren-zeyu",
+    "ren-dongfeng",
+    "wu-fang",
+    "xu-lingxi",
+    "li-kun",
+    "li-zirong",
+    "li-jiqing",
+    "li-bulong",
+    "li-yuchen",
+    "li-jiaying",
+    "li-hui",
+  ]) {
     assert.deepEqual(
       await readFile(new URL(`images/portraits/${portrait}.avif`, docs)),
       await readFile(new URL(`images/portraits/${portrait}.avif`, publicRoot)),

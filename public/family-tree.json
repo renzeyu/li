@@ -4,7 +4,7 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-12",
-  "revision": "2026.08.12.5",
+  "revision": "2026.08.12.6",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。",
@@ -560,7 +560,13 @@
     },
     {
       "id": "wu-fang",
-      "name": "吴芳"
+      "name": "吴芳",
+      "portrait": {
+        "src": "./images/portraits/wu-fang.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "吴芳肖像。"
+      }
     },
     {
       "id": "xu-dapeng",
@@ -572,32 +578,74 @@
     },
     {
       "id": "xu-lingxi",
-      "name": "许灵熙"
+      "name": "许灵熙",
+      "portrait": {
+        "src": "./images/portraits/xu-lingxi.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "许灵熙肖像。"
+      }
     },
     {
       "id": "li-kun",
       "name": "李坤",
-      "note": "家中长子；曾下乡7个月；在三十四处钻井队工作至退休；现居昆山"
+      "note": "家中长子；曾下乡7个月；在三十四处钻井队工作至退休；现居昆山",
+      "portrait": {
+        "src": "./images/portraits/li-kun.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "李坤肖像。"
+      }
     },
     {
       "id": "li-zirong",
-      "name": "李自荣"
+      "name": "李自荣",
+      "portrait": {
+        "src": "./images/portraits/li-zirong.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "李自荣肖像。"
+      }
     },
     {
       "id": "li-jiqing",
-      "name": "李季晴"
+      "name": "李季晴",
+      "portrait": {
+        "src": "./images/portraits/li-jiqing.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "李季晴肖像。"
+      }
     },
     {
       "id": "li-bulong",
-      "name": "李部龙"
+      "name": "李部龙",
+      "portrait": {
+        "src": "./images/portraits/li-bulong.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "李部龙肖像。"
+      }
     },
     {
       "id": "li-yuchen",
-      "name": "李宇晨"
+      "name": "李宇晨",
+      "portrait": {
+        "src": "./images/portraits/li-yuchen.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "李宇晨肖像。"
+      }
     },
     {
       "id": "li-jiaying",
-      "name": "李珈莹"
+      "name": "李珈莹",
+      "portrait": {
+        "src": "./images/portraits/li-jiaying.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "李珈莹肖像。"
+      }
     },
     {
       "id": "li-yuxia",
@@ -636,13 +684,25 @@
     {
       "id": "li-hui",
       "name": "李惠",
-      "note": "曾自费就读卫校；昆山市中医医院护士；现居昆山"
+      "note": "曾自费就读卫校；昆山市中医医院护士；现居昆山",
+      "portrait": {
+        "src": "./images/portraits/li-hui.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "李惠肖像。"
+      }
     },
     {
       "id": "ren-dongfeng",
       "name": "任东风",
       "note": "1992年与李平结婚",
-      "href": "https://renzeyu.github.io/rendongfeng/"
+      "href": "https://renzeyu.github.io/rendongfeng/",
+      "portrait": {
+        "src": "./images/portraits/ren-dongfeng.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "任东风肖像。"
+      }
     },
     {
       "id": "ren-zeyu",
