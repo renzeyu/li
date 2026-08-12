@@ -307,7 +307,7 @@ function validateHistory(history, errors, personIds, mapPlaceIds) {
             errors.push(`${mediaContext} must be an object`);
             continue;
           }
-          for (const field of ["id", "src", "alt", "caption", "placeId"]) {
+          for (const field of ["id", "src", "alt", "caption"]) {
             if (!isNonEmptyString(item[field])) errors.push(`${mediaContext} requires ${field}`);
           }
           if (isNonEmptyString(item.id)) {
@@ -328,6 +328,29 @@ function validateHistory(history, errors, personIds, mapPlaceIds) {
           }
           if (isNonEmptyString(item.placeId) && !mapPlaceIds.has(item.placeId)) {
             errors.push(`${mediaContext} references unknown map place ${item.placeId}`);
+          }
+          if (item.placeId !== undefined && !isNonEmptyString(item.placeId)) {
+            errors.push(`${mediaContext} placeId must be a non-empty string when provided`);
+          }
+          if (item.personIds !== undefined) {
+            if (!Array.isArray(item.personIds) || item.personIds.length === 0) {
+              errors.push(`${mediaContext} personIds must be a non-empty array when provided`);
+            } else {
+              const mediaPersonIds = new Set();
+              for (const personId of item.personIds) {
+                if (!isNonEmptyString(personId)) {
+                  errors.push(`${mediaContext} personIds must contain non-empty strings`);
+                  continue;
+                }
+                if (mediaPersonIds.has(personId)) {
+                  errors.push(`${mediaContext} repeats person ${personId}`);
+                }
+                mediaPersonIds.add(personId);
+                if (!personIds.has(personId)) {
+                  errors.push(`${mediaContext} references unknown person ${personId}`);
+                }
+              }
+            }
           }
         }
       }

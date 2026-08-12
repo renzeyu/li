@@ -99,6 +99,7 @@ test("builds the complete normalized Li family genealogy", async () => {
   assert.match(html, /李玉珍曾在农村生活和劳动约4年，李坤下乡7个月/);
   assert.match(html, /李父与吴父是同乡好友/);
   assert.match(html, /淮北矿务局一机厂/);
+  assert.match(html, /李坤在三十四处钻井队工作至退休/);
   assert.match(html, /李玉霞与彭学俭两家为邻，二人自幼相识/);
   assert.match(html, /李玉霞、李平和李惠参加中考、高考时，都曾返回淮北报名和应考/);
   assert.match(html, /几名子女分别在人事、财会和医疗岗位任职/);
@@ -140,6 +141,15 @@ test("builds the complete normalized Li family genealogy", async () => {
     /<img src="\.\/images\/suzhou-anzhuangchu-xiaoqu\.jpg" width="1800" height="988" alt="安装处小区入口，左侧建筑屋顶标有“工人俱乐部”，右侧为住宅楼。" loading="lazy" decoding="async">/,
   );
   assert.match(html, /宿州市埇桥区建设路安装处小区入口。图像来源：百度地图全景。/);
+  assert.equal(
+    countMatches(html, /data-family-history-media-id="li-ping-li-hui-young-photo"/g),
+    1,
+  );
+  assert.match(
+    html,
+    /<img src="\.\/images\/li-ping-li-hui-young\.jpg" width="1632" height="1224" alt="李平与李惠年轻时并肩拍摄的黑白合影。" loading="lazy" decoding="async">/,
+  );
+  assert.match(html, /李平与李惠年轻时的合影。/);
   const historyPhotoIndex = html.indexOf(
     'data-family-history-media-id="suzhou-anzhuangchu-xiaoqu-entrance"',
   );
@@ -152,6 +162,12 @@ test("builds the complete normalized Li family genealogy", async () => {
   );
   assert.ok(installationHistoryIndex < historyPhotoIndex);
   assert.ok(historyPhotoIndex < nextHistoryIndex);
+  const siblingPhotoIndex = html.indexOf(
+    'data-family-history-media-id="li-ping-li-hui-young-photo"',
+  );
+  const migrationIndex = html.indexOf('id="family-migration"');
+  assert.ok(nextHistoryIndex < siblingPhotoIndex);
+  assert.ok(siblingPhotoIndex < migrationIndex);
   assert.ok(html.indexOf('id="family-tree"') < html.indexOf('id="family-history"'));
   assert.ok(html.indexOf('id="family-history"') < html.indexOf('id="family-migration"'));
   assert.ok(html.indexOf('id="family-migration"') < html.indexOf("<footer>"));
@@ -193,6 +209,8 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(people.get("li-kaixun-father")?.note, "40多岁去世");
   assert.equal(people.get("li-kaixun-mother")?.name, "李魏氏");
   assert.equal(people.get("li-kaixun-mother")?.note, "活到80多岁");
+  assert.equal(people.get("li-nianiang")?.name, "嬢嬢");
+  assert.equal(people.get("li-nianiang")?.note, "家中对姑姑的称呼");
   assert.equal(
     people.get("li-kaixun")?.note,
     "出生于安徽省淮南市寿县堰口集；井下采煤30多年；后随单位迁居宿州",
@@ -218,7 +236,10 @@ test("ships one validated schema v2 genealogy graph", async () => {
     "李克珍的双胞胎妹妹；曾下乡约4年；后在淮北矿务局一机厂从事劳动工资工作；现居昆山",
   );
   assert.equal(people.get("wu-qinghua")?.note, "李父与吴父是同乡好友");
-  assert.equal(people.get("li-kun")?.note, "家中长子；曾下乡7个月；现居昆山");
+  assert.equal(
+    people.get("li-kun")?.note,
+    "家中长子；曾下乡7个月；在三十四处钻井队工作至退休；现居昆山",
+  );
   assert.equal(
     people.get("li-yuxia")?.note,
     "接父亲的班进入安装处；毕业于徐州煤矿工业学校；从事会计工作至退休；近年居住在宿州市埇桥区建设路安装处小区",
@@ -330,7 +351,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(docsData, dataSource);
   assert.doesNotMatch(
     dataSource,
-    /李克霞|信息不公开|家人口述补名|存活排行|李开工|淮北面粉厂|1993年与李平结婚/,
+    /李克霞|信息不公开|家人口述补名|存活排行|李开工|淮北面粉厂|1993年与李平结婚|小名；李开训的妹妹|彭鹏的配偶|彭鹏的女儿/,
   );
 });
 
@@ -376,6 +397,7 @@ test("records an objective family history linked to stable people", async () => 
   assert.equal(bereavementSection.personIds.includes("li-ping"), false);
   assert.match(JSON.stringify(history), /徐州煤矿工业学校/);
   assert.match(JSON.stringify(history), /昆山市中医医院护士/);
+  assert.match(JSON.stringify(history), /三十四处钻井队工作至退休/);
   const installationSection = history.sections.find(
     (section) => section.id === "suzhou-life-and-exams",
   );
@@ -389,6 +411,21 @@ test("records an objective family history linked to stable people", async () => 
     caption: "宿州市埇桥区建设路安装处小区入口。图像来源：百度地图全景。",
     placeId: "suzhou-installation-residence",
   });
+  const careersSection = history.sections.find(
+    (section) => section.id === "education-and-careers",
+  );
+  assert.ok(careersSection.personIds.includes("li-kun"));
+  assert.deepEqual(careersSection.media, [
+    {
+      id: "li-ping-li-hui-young-photo",
+      src: "./images/li-ping-li-hui-young.jpg",
+      width: 1632,
+      height: 1224,
+      alt: "李平与李惠年轻时并肩拍摄的黑白合影。",
+      caption: "李平与李惠年轻时的合影。",
+      personIds: ["li-ping", "li-hui"],
+    },
+  ]);
   assert.doesNotMatch(
     JSON.stringify(history),
     /时年6岁|昆山胸科医院|逃难到了安徽淮南|掌上明珠|终身性格心结|体制飞地|两地嫌弃|混子|白菜|铁血|硬核|神圣不可侵犯|[—–]/,
@@ -623,8 +660,8 @@ test("preserves the confirmed Wu, Xu, Li Kun, Peng, and Zhao branches", async ()
     ["li-jiaying", "李珈莹"],
     ["peng-xuejian", "彭学俭"],
     ["peng-peng", "彭鹏"],
-    ["peng-peng-spouse", "彭鹏的配偶"],
-    ["peng-peng-daughter", "彭鹏的女儿"],
+    ["peng-peng-spouse", "王新楠"],
+    ["peng-peng-daughter", "彭莜婷"],
     ["zhao-jingwen", "赵景文"],
     ["zhao-xinhua", "赵新华"],
     ["zhao-xiaomei", "赵小梅"],
@@ -831,6 +868,27 @@ test("rejects invalid normalized genealogy data", async () => {
     /references unknown map place missing-place/,
   );
 
+  const emptyHistoryMediaPlace = structuredClone(document);
+  emptyHistoryMediaPlace.history.sections[3].media[0].placeId = "";
+  assert.throws(
+    () => validateFamilyDocument(emptyHistoryMediaPlace),
+    /placeId must be a non-empty string when provided/,
+  );
+
+  const unknownHistoryMediaPerson = structuredClone(document);
+  unknownHistoryMediaPerson.history.sections[4].media[0].personIds.push("missing-person");
+  assert.throws(
+    () => validateFamilyDocument(unknownHistoryMediaPerson),
+    /references unknown person missing-person/,
+  );
+
+  const duplicateHistoryMediaPerson = structuredClone(document);
+  duplicateHistoryMediaPerson.history.sections[4].media[0].personIds.push("li-ping");
+  assert.throws(
+    () => validateFamilyDocument(duplicateHistoryMediaPerson),
+    /repeats person li-ping/,
+  );
+
   const insecureMapStyle = structuredClone(document);
   insecureMapStyle.migration.map.styleUrl = "http://tiles.example.com/style";
   assert.throws(() => validateFamilyDocument(insecureMapStyle), /styleUrl must use https/);
@@ -972,10 +1030,15 @@ test("includes every GitHub Pages artifact", async () => {
       "favicon.svg",
       "og.svg",
       "images/suzhou-anzhuangchu-xiaoqu.jpg",
+      "images/li-ping-li-hui-young.jpg",
     ].map((path) => access(new URL(path, docs))),
   );
   assert.deepEqual(
     await readFile(new URL("images/suzhou-anzhuangchu-xiaoqu.jpg", docs)),
     await readFile(new URL("images/suzhou-anzhuangchu-xiaoqu.jpg", publicRoot)),
+  );
+  assert.deepEqual(
+    await readFile(new URL("images/li-ping-li-hui-young.jpg", docs)),
+    await readFile(new URL("images/li-ping-li-hui-young.jpg", publicRoot)),
   );
 });
