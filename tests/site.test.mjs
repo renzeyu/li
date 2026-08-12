@@ -88,7 +88,8 @@ test("builds the complete normalized Li family genealogy", async () => {
     visibleText(html),
     /朱守芝在娘家与成家两处出现|线条表示已经确认|未注明长幼|不作推断|也已纳入|阅读说明|中央数据|稳定人物编号/,
   );
-  assert.match(html, /淮北市商务局会计师/);
+  assert.match(html, /淮北市商务局审计所副所长/);
+  assert.doesNotMatch(html, /淮北市商务局会计师/);
   assert.match(html, /昆山市中医医院护士/);
   assert.match(html, /淮南市公交公司工作/);
   assert.match(html, /id="family-history"/);
@@ -314,7 +315,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(people.get("li-kaiting-wife")?.note, "在淮南市公交公司工作");
   assert.equal(
     people.get("li-ping")?.note,
-    "1965年生；淮北市商务局会计师；现居昆山",
+    "1965年生；淮北市商务局审计所副所长；现居昆山",
   );
   assert.equal(people.get("li-hui")?.note, "昆山中医院护士；华师大研究生；心理咨询师");
   assert.doesNotMatch(html, /李慧/);
