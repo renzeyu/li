@@ -261,6 +261,13 @@ test("ships one validated schema v2 genealogy graph", async () => {
     "li-kaigong",
     "li-kaiting",
   ]);
+  assert.deepEqual(
+    fatherChildren.children.map((child) => child.relation),
+    ["长子", "长女", "次子", "三子"],
+  );
+  assert.equal(families.get("li-kaixun-zhu-shouzhi-family").partners[0].relation, "长子");
+  assert.equal(families.get("li-kaigong-family").partners[0].relation, "次子");
+  assert.equal(families.get("li-kaiting-family").partners[0].relation, "三子");
   assert.deepEqual(personIds(families.get("zhu-grandfather-family").partners), [
     "zhu-shouzhi-grandfather",
   ]);
@@ -294,6 +301,12 @@ test("ships one validated schema v2 genealogy graph", async () => {
     ["li-kelei", "li-keli"],
   );
   assert.deepEqual(
+    childGroup(families.get("li-kaiting-family"), "li-kaiting-children").children.map(
+      (child) => child.relation,
+    ),
+    ["长子", "长女"],
+  );
+  assert.deepEqual(
     personIds(families.get("li-kelei-family").partners),
     ["li-kelei", "wang-mei"],
   );
@@ -305,6 +318,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
     personIds(families.get("li-keli-fang-hao-family").partners),
     ["li-keli", "fang-hao"],
   );
+  assert.equal(families.get("li-keli-fang-hao-family").partners[0].relation, "长女");
   assert.deepEqual(
     personIds(
       childGroup(families.get("li-keli-fang-hao-family"), "li-keli-children").children,
@@ -633,8 +647,9 @@ test("preserves the confirmed Wu, Xu, Li Kun, Peng, and Zhao branches", async ()
     ["wu-fang", "xu-dapeng"],
   );
   const xuChildren = childGroup(families.get("wu-fang-xu-dapeng-family"), "wu-fang-children");
-  assert.equal(xuChildren.ordered, false);
   assert.deepEqual(personIds(xuChildren.children), ["xu-jinghan", "xu-lingxi"]);
+  assert.equal(xuChildren.ordered, true);
+  assert.deepEqual(xuChildren.children.map((child) => child.relation), ["长女", "次女"]);
 
   assert.deepEqual(
     personIds(families.get("li-kun-li-zirong-family").partners),
@@ -652,8 +667,9 @@ test("preserves the confirmed Wu, Xu, Li Kun, Peng, and Zhao branches", async ()
     families.get("li-jiqing-li-bulong-family"),
     "li-jiqing-children",
   );
-  assert.equal(liJiqingChildren.ordered, false);
+  assert.equal(liJiqingChildren.ordered, true);
   assert.deepEqual(personIds(liJiqingChildren.children), ["li-yuchen", "li-jiaying"]);
+  assert.deepEqual(liJiqingChildren.children.map((child) => child.relation), ["长子", "长女"]);
 
   assert.deepEqual(
     personIds(families.get("li-yuxia-peng-xuejian-family").partners),
@@ -680,13 +696,31 @@ test("preserves the confirmed Wu, Xu, Li Kun, Peng, and Zhao branches", async ()
     families.get("zhu-shourong-zhao-jingwen-family"),
     "zhu-shourong-children",
   );
-  assert.equal(zhaoChildren.ordered, false);
+  assert.equal(zhaoChildren.ordered, true);
   assert.deepEqual(personIds(zhaoChildren.children), [
     "zhao-xinhua",
     "zhao-xiaomei",
     "zhao-xiaohu",
   ]);
+  assert.deepEqual(
+    zhaoChildren.children.map((child) => child.relation),
+    ["长子", "长女", "次子"],
+  );
   assert.equal(people.get("zhao-xiaomei")?.note, "赵新华的妹妹");
+
+  for (const family of document.families) {
+    for (const group of family.childrenGroups ?? []) {
+      if (group.children.length < 2) continue;
+      assert.equal(group.ordered, true, `${group.id} must preserve the confirmed age order`);
+      for (const child of group.children) {
+        assert.match(
+          child.relation,
+          /^(?:长|次|[三四五六七八九十]+)[子女]$/,
+          `${child.personId} requires a sibling rank in ${group.id}`,
+        );
+      }
+    }
+  }
 });
 
 test("rejects invalid normalized genealogy data", async () => {

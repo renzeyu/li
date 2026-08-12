@@ -4,7 +4,7 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-12",
-  "revision": "2026.08.12.1",
+  "revision": "2026.08.12.2",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。",
@@ -713,19 +713,19 @@
           "children": [
             {
               "personId": "li-kaixun",
-              "relation": "儿子"
+              "relation": "长子"
             },
             {
               "personId": "li-nianiang",
-              "relation": "女儿"
+              "relation": "长女"
             },
             {
               "personId": "li-kaigong",
-              "relation": "儿子"
+              "relation": "次子"
             },
             {
               "personId": "li-kaiting",
-              "relation": "儿子"
+              "relation": "三子"
             }
           ]
         }
@@ -788,7 +788,7 @@
       "partners": [
         {
           "personId": "li-kaixun",
-          "relation": "儿子"
+          "relation": "长子"
         },
         {
           "personId": "zhu-shouzhi",
@@ -897,15 +897,15 @@
         {
           "id": "wu-fang-children",
           "label": "子女",
-          "ordered": false,
+          "ordered": true,
           "children": [
             {
               "personId": "xu-jinghan",
-              "relation": "女儿"
+              "relation": "长女"
             },
             {
               "personId": "xu-lingxi",
-              "relation": "女儿"
+              "relation": "次女"
             }
           ]
         }
@@ -953,7 +953,7 @@
         {
           "id": "li-jiqing-children",
           "label": "子女",
-          "ordered": false,
+          "ordered": true,
           "children": [
             {
               "personId": "li-yuchen",
@@ -961,7 +961,7 @@
             },
             {
               "personId": "li-jiaying",
-              "relation": "女儿"
+              "relation": "长女"
             }
           ]
         }
@@ -1035,7 +1035,7 @@
         {
           "id": "zhu-shourong-children",
           "label": "子女",
-          "ordered": false,
+          "ordered": true,
           "children": [
             {
               "personId": "zhao-xinhua",
@@ -1043,11 +1043,11 @@
             },
             {
               "personId": "zhao-xiaomei",
-              "relation": "女儿"
+              "relation": "长女"
             },
             {
               "personId": "zhao-xiaohu",
-              "relation": "儿子"
+              "relation": "次子"
             }
           ]
         }
@@ -1058,7 +1058,7 @@
       "partners": [
         {
           "personId": "li-kaigong",
-          "relation": "儿子"
+          "relation": "次子"
         }
       ],
       "childrenGroups": [
@@ -1108,7 +1108,7 @@
       "partners": [
         {
           "personId": "li-kaiting",
-          "relation": "儿子"
+          "relation": "三子"
         },
         {
           "personId": "li-kaiting-wife",
@@ -1127,7 +1127,7 @@
             },
             {
               "personId": "li-keli",
-              "relation": "女儿"
+              "relation": "长女"
             }
           ]
         }
@@ -1164,7 +1164,7 @@
       "partners": [
         {
           "personId": "li-keli",
-          "relation": "女儿"
+          "relation": "长女"
         },
         {
           "personId": "fang-hao",
