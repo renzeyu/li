@@ -243,6 +243,9 @@ test("ships one validated schema v2 genealogy graph", async () => {
     ["li-yuchen", "li-yuchen"],
     ["li-jiaying", "li-jiaying"],
     ["li-hui", "li-hui"],
+    ["li-yuzhen", "li-yuzhen"],
+    ["xu-dapeng", "xu-dapeng"],
+    ["xu-jinghan", "xu-jinghan"],
   ]);
   for (const [personId, fileStem] of expectedPortraits) {
     const portrait = people.get(personId)?.portrait;
@@ -1135,6 +1138,9 @@ test("includes every GitHub Pages artifact", async () => {
       "images/portraits/li-yuchen.avif",
       "images/portraits/li-jiaying.avif",
       "images/portraits/li-hui.avif",
+      "images/portraits/li-yuzhen.avif",
+      "images/portraits/xu-dapeng.avif",
+      "images/portraits/xu-jinghan.avif",
     ].map((path) => access(new URL(path, docs))),
   );
   assert.deepEqual(
@@ -1160,6 +1166,9 @@ test("includes every GitHub Pages artifact", async () => {
     "li-yuchen",
     "li-jiaying",
     "li-hui",
+    "li-yuzhen",
+    "xu-dapeng",
+    "xu-jinghan",
   ]) {
     assert.deepEqual(
       await readFile(new URL(`images/portraits/${portrait}.avif`, docs)),
