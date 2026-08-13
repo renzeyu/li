@@ -231,7 +231,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
   const expectedPortraits = new Map([
     ["li-kaixun", "li-kaixun"],
     ["zhu-shouzhi", "zhu-shouzhi"],
-    ["li-ping", "li-ping"],
+    ["li-ping", "li-ping-v2"],
     ["ren-zeyu", "ren-zeyu"],
     ["ren-dongfeng", "ren-dongfeng"],
     ["wu-fang", "wu-fang"],
@@ -246,6 +246,9 @@ test("ships one validated schema v2 genealogy graph", async () => {
     ["li-yuzhen", "li-yuzhen"],
     ["xu-dapeng", "xu-dapeng"],
     ["xu-jinghan", "xu-jinghan"],
+    ["li-yuxia", "li-yuxia"],
+    ["peng-xuejian", "peng-xuejian"],
+    ["peng-peng", "peng-peng"],
   ]);
   for (const [personId, fileStem] of expectedPortraits) {
     const portrait = people.get(personId)?.portrait;
@@ -1126,7 +1129,7 @@ test("includes every GitHub Pages artifact", async () => {
       "images/li-ping-li-hui-young.jpg",
       "images/portraits/li-kaixun.avif",
       "images/portraits/zhu-shouzhi.avif",
-      "images/portraits/li-ping.avif",
+      "images/portraits/li-ping-v2.avif",
       "images/portraits/ren-zeyu.avif",
       "images/portraits/ren-dongfeng.avif",
       "images/portraits/wu-fang.avif",
@@ -1141,6 +1144,9 @@ test("includes every GitHub Pages artifact", async () => {
       "images/portraits/li-yuzhen.avif",
       "images/portraits/xu-dapeng.avif",
       "images/portraits/xu-jinghan.avif",
+      "images/portraits/li-yuxia.avif",
+      "images/portraits/peng-xuejian.avif",
+      "images/portraits/peng-peng.avif",
     ].map((path) => access(new URL(path, docs))),
   );
   assert.deepEqual(
@@ -1154,7 +1160,7 @@ test("includes every GitHub Pages artifact", async () => {
   for (const portrait of [
     "li-kaixun",
     "zhu-shouzhi",
-    "li-ping",
+    "li-ping-v2",
     "ren-zeyu",
     "ren-dongfeng",
     "wu-fang",
@@ -1169,6 +1175,9 @@ test("includes every GitHub Pages artifact", async () => {
     "li-yuzhen",
     "xu-dapeng",
     "xu-jinghan",
+    "li-yuxia",
+    "peng-xuejian",
+    "peng-peng",
   ]) {
     assert.deepEqual(
       await readFile(new URL(`images/portraits/${portrait}.avif`, docs)),

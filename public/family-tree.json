@@ -4,7 +4,7 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-12",
-  "revision": "2026.08.12.10",
+  "revision": "2026.08.12.11",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。",
@@ -675,17 +675,35 @@
     {
       "id": "li-yuxia",
       "name": "李玉霞",
-      "note": "接父亲的班进入安装处；毕业于徐州煤矿工业学校；从事会计工作至退休；近年居住在宿州市埇桥区建设路安装处小区"
+      "note": "接父亲的班进入安装处；毕业于徐州煤矿工业学校；从事会计工作至退休；近年居住在宿州市埇桥区建设路安装处小区",
+      "portrait": {
+        "src": "./images/portraits/li-yuxia.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "李玉霞肖像。"
+      }
     },
     {
       "id": "peng-xuejian",
       "name": "彭学俭",
-      "note": "安徽省体校毕业；安徽省排球队队员；濉溪二中老师；安装处公安科科长；与李玉霞两家为邻，二人青梅竹马"
+      "note": "安徽省体校毕业；安徽省排球队队员；濉溪二中老师；安装处公安科科长；与李玉霞两家为邻，二人青梅竹马",
+      "portrait": {
+        "src": "./images/portraits/peng-xuejian.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "彭学俭肖像。"
+      }
     },
     {
       "id": "peng-peng",
       "name": "彭鹏",
-      "note": "宿州安装处财务"
+      "note": "宿州安装处财务",
+      "portrait": {
+        "src": "./images/portraits/peng-peng.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "彭鹏肖像。"
+      }
     },
     {
       "id": "peng-peng-spouse",
@@ -702,7 +720,7 @@
       "note": "1965年生；淮北市商务局审计所副所长；现居昆山",
       "href": "https://renzeyu.github.io/liping/",
       "portrait": {
-        "src": "./images/portraits/li-ping.avif",
+        "src": "./images/portraits/li-ping-v2.avif",
         "width": 640,
         "height": 640,
         "alt": "李平肖像。"
