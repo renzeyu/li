@@ -4,7 +4,7 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-13",
-  "revision": "2026.08.13.1",
+  "revision": "2026.08.13.2",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。",
@@ -562,14 +562,20 @@
     {
       "id": "wu-qinghua",
       "name": "吴庆华",
-      "note": "李父与吴父是同乡好友；在淮北矿务局一机厂从事物流工作"
+      "note": "李父与吴父是同乡好友；在淮北矿务局一机厂从事物流工作",
+      "portrait": {
+        "src": "./images/portraits/wu-qinghua.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "吴庆华肖像。"
+      }
     },
     {
       "id": "wu-fang",
       "name": "吴芳",
       "note": "石头科技苏州分公司行政",
       "portrait": {
-        "src": "./images/portraits/wu-fang.avif",
+        "src": "./images/portraits/wu-fang-v2.avif",
         "width": 640,
         "height": 640,
         "alt": "吴芳肖像。"
@@ -591,7 +597,7 @@
       "name": "许婧涵",
       "note": "苏州实验中学",
       "portrait": {
-        "src": "./images/portraits/xu-jinghan.avif",
+        "src": "./images/portraits/xu-jinghan-v2.avif",
         "width": 640,
         "height": 640,
         "alt": "许婧涵肖像。"
@@ -708,11 +714,23 @@
     {
       "id": "peng-peng-spouse",
       "name": "王新楠",
-      "note": "宿州矿工医院护士"
+      "note": "宿州矿工医院护士",
+      "portrait": {
+        "src": "./images/portraits/wang-xinnan.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "王新楠肖像。"
+      }
     },
     {
       "id": "peng-peng-daughter",
-      "name": "彭莜婷"
+      "name": "彭莜婷",
+      "portrait": {
+        "src": "./images/portraits/peng-youting.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "彭莜婷肖像。"
+      }
     },
     {
       "id": "li-ping",
@@ -731,7 +749,7 @@
       "name": "李惠",
       "note": "昆山中医院护士；华师大研究生；心理咨询师",
       "portrait": {
-        "src": "./images/portraits/li-hui.avif",
+        "src": "./images/portraits/li-hui-v2.avif",
         "width": 640,
         "height": 640,
         "alt": "李惠肖像。"
