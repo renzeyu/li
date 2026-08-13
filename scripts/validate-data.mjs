@@ -377,6 +377,52 @@ function validateHistory(history, errors, personIds, mapPlaceIds) {
   }
 }
 
+function validatePhotoArchive(photoArchive, errors) {
+  if (!photoArchive || typeof photoArchive !== "object" || Array.isArray(photoArchive)) {
+    errors.push("photoArchive must be an object");
+    return;
+  }
+  for (const field of ["title", "intro"]) {
+    if (!isNonEmptyString(photoArchive[field])) errors.push(`photoArchive requires ${field}`);
+  }
+
+  const photos = Array.isArray(photoArchive.photos) ? photoArchive.photos : [];
+  if (!Array.isArray(photoArchive.photos) || photos.length === 0) {
+    errors.push("photoArchive photos must be a non-empty array");
+  }
+  const photoIds = new Set();
+  for (const [index, photo] of photos.entries()) {
+    const context = `photoArchive photo at index ${index}`;
+    if (!photo || typeof photo !== "object" || Array.isArray(photo)) {
+      errors.push(`${context} must be an object`);
+      continue;
+    }
+    for (const field of ["id", "previewSrc", "src", "alt", "caption"]) {
+      if (!isNonEmptyString(photo[field])) errors.push(`${context} requires ${field}`);
+    }
+    if (isNonEmptyString(photo.id)) {
+      if (photoIds.has(photo.id)) errors.push(`duplicate photoArchive photo id: ${photo.id}`);
+      photoIds.add(photo.id);
+    }
+    for (const field of ["previewSrc", "src"]) {
+      if (
+        isNonEmptyString(photo[field]) &&
+        (!/^\.\/images\/old-photos\/[a-z0-9][a-z0-9._-]*\.(?:avif|jpe?g|png|webp)$/i.test(
+          photo[field],
+        ) ||
+          photo[field].includes(".."))
+      ) {
+        errors.push(`${context} ${field} must be a safe local archive image path`);
+      }
+    }
+    for (const field of ["previewWidth", "previewHeight", "width", "height"]) {
+      if (!Number.isInteger(photo[field]) || photo[field] <= 0) {
+        errors.push(`${context} ${field} must be a positive integer`);
+      }
+    }
+  }
+}
+
 export function validateFamilyDocument(document) {
   const errors = [];
   const personIds = new Set();
@@ -470,6 +516,7 @@ export function validateFamilyDocument(document) {
   );
   validateHistory(document.history, errors, personIds, mapPlaceIds);
   if (document.migration !== undefined) validateMigration(document.migration, errors, personIds);
+  validatePhotoArchive(document.photoArchive, errors);
 
   const families = Array.isArray(document.families) ? document.families : [];
   if (!Array.isArray(document.families) || families.length === 0) {

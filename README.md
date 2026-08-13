@@ -14,6 +14,8 @@
 
 `history.sections[]` 保存按时期整理的家族历史。每节使用段落数组，并通过 `personIds` 关联已有的重要人物；史料照片通过可选的 `media[]` 关联本地图片，也可用 `personIds` 关联画面人物，已知拍摄地点时再用可选的 `placeId` 关联地图地点。人物卡片只保留简短事实，完整经历集中在家族历史中。
 
+`photoArchive.photos[]` 保存页面底部的老照片档案。每张照片使用独立的预览图和大图，网格只加载预览图，打开灯箱时才加载大图；人物、年代或地点没有确认时只写客观画面说明，不从照片推测身份。
+
 `migration.routes[].stops[]` 保存家族出生地、迁居与单位沿革。`personIds` 只引用 `people` 中已有的稳定 ID，页面据此生成相关人物姓名，不另存第二份姓名。
 
 迁徙地图也读取同一份文件。`migration.map.places` 用`located`、`regional-anchor`与`unlocated`区分具体地点、区域锚点和尚待定位的地点，`stops[].placeIds` 把故事连接到地点，`migration.map.views` 控制地图范围。坐标必须使用WGS84，并记录`coordinateSource`；城市或行政区中心只能标为区域锚点，不能写成具体住址。地图使用本地保存的MapLibre运行时与OpenFreeMap底图，底图不可用时，迁徙文字记录仍会完整显示。

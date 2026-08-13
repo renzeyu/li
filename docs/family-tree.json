@@ -4,7 +4,7 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-13",
-  "revision": "2026.08.13.2",
+  "revision": "2026.08.13.3",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。",
@@ -463,6 +463,78 @@
             ]
           }
         ]
+      }
+    ]
+  },
+  "photoArchive": {
+    "title": "老照片",
+    "intro": "这里集中保存家人提供的家庭影像。尚未确认的人物、时间与地点，可以在家人补充后继续完善。",
+    "photos": [
+      {
+        "id": "young-women-and-boy",
+        "previewSrc": "./images/old-photos/young-women-and-boy-preview.avif",
+        "src": "./images/old-photos/young-women-and-boy.avif",
+        "previewWidth": 675,
+        "previewHeight": 900,
+        "width": 1800,
+        "height": 2400,
+        "alt": "两位青年女性与一名男孩在布景前合影。",
+        "caption": "两位青年女性与一名男孩合影。"
+      },
+      {
+        "id": "four-young-women",
+        "previewSrc": "./images/old-photos/four-young-women-preview.avif",
+        "src": "./images/old-photos/four-young-women.avif",
+        "previewWidth": 900,
+        "previewHeight": 675,
+        "width": 2400,
+        "height": 1800,
+        "alt": "四位青年女性在水边并肩合影。",
+        "caption": "四位青年女性合影。"
+      },
+      {
+        "id": "woman-and-girl",
+        "previewSrc": "./images/old-photos/woman-and-girl-preview.avif",
+        "src": "./images/old-photos/woman-and-girl.avif",
+        "previewWidth": 900,
+        "previewHeight": 675,
+        "width": 2400,
+        "height": 1800,
+        "alt": "一位女性与一名女孩在室外合影。",
+        "caption": "一位女性与一名女孩合影。"
+      },
+      {
+        "id": "family-gathering-01",
+        "previewSrc": "./images/old-photos/family-gathering-01-preview.avif",
+        "src": "./images/old-photos/family-gathering-01.avif",
+        "previewWidth": 900,
+        "previewHeight": 600,
+        "width": 2400,
+        "height": 1600,
+        "alt": "家人在室外并排拍摄的多人合影。",
+        "caption": "家人合影（一）。"
+      },
+      {
+        "id": "family-gathering-02",
+        "previewSrc": "./images/old-photos/family-gathering-02-preview.avif",
+        "src": "./images/old-photos/family-gathering-02.avif",
+        "previewWidth": 900,
+        "previewHeight": 600,
+        "width": 2400,
+        "height": 1600,
+        "alt": "家人在建筑入口前拍摄的多人合影。",
+        "caption": "家人合影（二）。"
+      },
+      {
+        "id": "child-with-drawing",
+        "previewSrc": "./images/old-photos/child-with-drawing-preview.avif",
+        "src": "./images/old-photos/child-with-drawing.avif",
+        "previewWidth": 675,
+        "previewHeight": 900,
+        "width": 1800,
+        "height": 2400,
+        "alt": "一名孩子手持画作站在室内。",
+        "caption": "孩子与画作。"
       }
     ]
   },

@@ -12,6 +12,14 @@ const docs = new URL("../docs/", import.meta.url);
 const publicRoot = new URL("../public/", import.meta.url);
 const expectedSiteIntro =
   "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。";
+const expectedArchivePhotos = [
+  "young-women-and-boy",
+  "four-young-women",
+  "woman-and-girl",
+  "family-gathering-01",
+  "family-gathering-02",
+  "child-with-drawing",
+];
 
 function countMatches(value, pattern) {
   return value.match(pattern)?.length ?? 0;
@@ -170,13 +178,72 @@ test("builds the complete normalized Li family genealogy", async () => {
   assert.ok(siblingPhotoIndex < migrationIndex);
   assert.ok(html.indexOf('id="family-tree"') < html.indexOf('id="family-history"'));
   assert.ok(html.indexOf('id="family-history"') < html.indexOf('id="family-migration"'));
-  assert.ok(html.indexOf('id="family-migration"') < html.indexOf("<footer>"));
+  assert.ok(html.indexOf('id="family-migration"') < html.indexOf('id="old-photos"'));
+  assert.ok(html.indexOf('id="old-photos"') < html.indexOf("<footer>"));
   assert.match(html, /href="https:\/\/renzeyu\.github\.io\/li\/"/);
   assert.match(html, /src="\.\/family-tree\.js"/);
   assert.match(html, /src="\.\/family-map\.mjs"/);
+  assert.match(html, /src="\.\/photo-lightbox\.js"/);
   assert.match(html, /href="\.\/maplibre-gl\.css"/);
   assert.match(html, /href="\.\/family-tree\.css"/);
   assert.doesNotMatch(html, /(?:src|href)="\/(?!\/)/);
+});
+
+test("renders a progressively enhanced old-photo archive with an accessible lightbox", async () => {
+  const [html, document, script, css] = await Promise.all([
+    readFile(new URL("index.html", docs), "utf8"),
+    readFamilyDocument(),
+    readFile(new URL("photo-lightbox.js", publicRoot), "utf8"),
+    readFile(new URL("family-tree.css", publicRoot), "utf8"),
+  ]);
+  const archive = document.photoArchive;
+
+  assert.equal(archive.title, "老照片");
+  assert.equal(archive.photos.length, 6);
+  assert.deepEqual(archive.photos.map((photo) => photo.id), expectedArchivePhotos);
+  assert.equal(new Set(archive.photos.map((photo) => photo.id)).size, 6);
+  assert.match(html, /<section class="photo-archive-section" id="old-photos" aria-labelledby="old-photos-title" data-photo-archive>/);
+  assert.equal(countMatches(html, /data-photo-archive-id=/g), 6);
+  assert.equal(countMatches(html, /data-photo-lightbox-item/g), 6);
+  assert.match(html, /<dialog class="photo-lightbox" data-photo-lightbox/);
+  assert.match(html, /data-photo-lightbox-close aria-label="关闭大图"/);
+  assert.match(html, /data-photo-lightbox-previous aria-label="查看上一张照片"/);
+  assert.match(html, /data-photo-lightbox-next aria-label="查看下一张照片"/);
+
+  for (const photo of archive.photos) {
+    assert.match(photo.previewSrc, /^\.\/images\/old-photos\/[a-z0-9-]+-preview\.avif$/);
+    assert.match(photo.src, /^\.\/images\/old-photos\/[a-z0-9-]+\.avif$/);
+    assert.ok(photo.previewWidth > 0 && photo.previewHeight > 0);
+    assert.ok(photo.width > 0 && photo.height > 0);
+    assert.ok(photo.alt.length > 0 && photo.caption.length > 0);
+    assert.ok(
+      html.includes(`href="${photo.src}"`),
+      `${photo.id} requires a no-script link to its large image`,
+    );
+    assert.ok(
+      html.includes(
+        `<img src="${photo.previewSrc}" width="${photo.previewWidth}" height="${photo.previewHeight}" alt="${photo.alt}" loading="lazy" decoding="async">`,
+      ),
+      `${photo.id} requires a lazy preview image`,
+    );
+  }
+
+  assert.match(script, /__LI_FAMILY_PHOTO_LIGHTBOX_V1__/);
+  assert.match(script, /showModal\(\)/);
+  assert.match(script, /event\.key === "ArrowLeft"/);
+  assert.match(script, /event\.key === "ArrowRight"/);
+  assert.match(script, /dialog\.addEventListener\("cancel"/);
+  assert.match(script, /event\.preventDefault\(\);[\s\S]*?dialog\.close\(\);/);
+  assert.match(script, /dialog\.addEventListener\("close"/);
+  assert.match(script, /opener\?\.isConnected/);
+  assert.match(script, /event\.metaKey|event\.ctrlKey|event\.shiftKey/);
+  assert.doesNotMatch(script, /innerHTML|setHTML\(/);
+  assert.match(css, /\.photo-archive-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3,/);
+  assert.match(css, /\.photo-lightbox-stage img\s*\{[\s\S]*?object-fit:\s*contain;/);
+  assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.photo-archive-grid/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.photo-archive-link img/);
+  assert.match(css, /@media \(forced-colors: active\)[\s\S]*?\.photo-lightbox button/);
+  assert.match(css, /@media print[\s\S]*?\.photo-lightbox/);
 });
 
 test("ships one validated schema v2 genealogy graph", async () => {
@@ -986,6 +1053,27 @@ test("rejects invalid normalized genealogy data", async () => {
     /repeats person li-ping/,
   );
 
+  const duplicateArchivePhoto = structuredClone(document);
+  duplicateArchivePhoto.photoArchive.photos.push({ ...duplicateArchivePhoto.photoArchive.photos[0] });
+  assert.throws(
+    () => validateFamilyDocument(duplicateArchivePhoto),
+    /duplicate photoArchive photo id/,
+  );
+
+  const unsafeArchivePath = structuredClone(document);
+  unsafeArchivePath.photoArchive.photos[0].src = "/images/old-photos/photo.avif";
+  assert.throws(
+    () => validateFamilyDocument(unsafeArchivePath),
+    /src must be a safe local archive image path/,
+  );
+
+  const invalidArchiveDimension = structuredClone(document);
+  invalidArchiveDimension.photoArchive.photos[0].previewWidth = 0;
+  assert.throws(
+    () => validateFamilyDocument(invalidArchiveDimension),
+    /previewWidth must be a positive integer/,
+  );
+
   const insecureMapStyle = structuredClone(document);
   insecureMapStyle.migration.map.styleUrl = "http://tiles.example.com/style";
   assert.throws(() => validateFamilyDocument(insecureMapStyle), /styleUrl must use https/);
@@ -1122,6 +1210,7 @@ test("includes every GitHub Pages artifact", async () => {
       "family-tree.json",
       "family-tree.js",
       "family-tree.css",
+      "photo-lightbox.js",
       "family-map.mjs",
       "maplibre-gl.mjs",
       "maplibre-gl-shared.mjs",
@@ -1132,6 +1221,10 @@ test("includes every GitHub Pages artifact", async () => {
       "og.svg",
       "images/suzhou-anzhuangchu-xiaoqu.jpg",
       "images/li-ping-li-hui-young.jpg",
+      ...expectedArchivePhotos.flatMap((photo) => [
+        `images/old-photos/${photo}.avif`,
+        `images/old-photos/${photo}-preview.avif`,
+      ]),
       "images/portraits/li-kaixun.avif",
       "images/portraits/zhu-shouzhi.avif",
       "images/portraits/li-ping-v2.avif",
@@ -1165,6 +1258,15 @@ test("includes every GitHub Pages artifact", async () => {
     await readFile(new URL("images/li-ping-li-hui-young.jpg", docs)),
     await readFile(new URL("images/li-ping-li-hui-young.jpg", publicRoot)),
   );
+  for (const photo of expectedArchivePhotos) {
+    for (const suffix of ["", "-preview"]) {
+      const path = `images/old-photos/${photo}${suffix}.avif`;
+      assert.deepEqual(
+        await readFile(new URL(path, docs)),
+        await readFile(new URL(path, publicRoot)),
+      );
+    }
+  }
   for (const portrait of [
     "li-kaixun",
     "zhu-shouzhi",

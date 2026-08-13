@@ -81,6 +81,10 @@ main {
 .migration-period,
 .migration-summary,
 .migration-people,
+.photo-archive-heading p,
+.photo-archive-item figcaption,
+.photo-archive-open,
+.photo-lightbox,
 footer {
   font-family: var(--sans);
 }
@@ -1096,6 +1100,201 @@ a:focus-visible {
   font-weight: 600;
 }
 
+.photo-archive-section {
+  width: min(1180px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: 68px 0 84px;
+}
+
+.photo-archive-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 1.5fr);
+  align-items: end;
+  gap: 48px;
+  max-width: 900px;
+}
+
+.photo-archive-heading h2 {
+  margin: 0;
+  font-size: clamp(30px, 3.8vw, 50px);
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.photo-archive-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.photo-archive-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 38px 24px;
+  margin: 48px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.photo-archive-item,
+.photo-archive-item figure {
+  min-width: 0;
+  margin: 0;
+}
+
+.photo-archive-link {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--paper) 88%, var(--rule));
+}
+
+.photo-archive-link img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  object-fit: cover;
+  transition: opacity 160ms ease;
+}
+
+.photo-archive-link:hover img {
+  opacity: 0.82;
+}
+
+.photo-archive-link:focus-visible,
+.photo-lightbox button:focus-visible,
+.photo-lightbox a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.photo-archive-open {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 7px 9px;
+  background: rgb(23 23 23 / 86%);
+  color: var(--paper);
+  font-size: 10px;
+  line-height: 1;
+}
+
+.photo-archive-item figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.photo-lightbox {
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgb(12 12 12 / 96%);
+  color: var(--paper);
+}
+
+.photo-lightbox[open] {
+  display: block;
+}
+
+.photo-lightbox::backdrop {
+  background: rgb(12 12 12 / 92%);
+}
+
+.photo-lightbox-open {
+  overflow: hidden;
+}
+
+.photo-lightbox-panel {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right))
+    max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+  flex-direction: column;
+}
+
+.photo-lightbox-toolbar {
+  display: flex;
+  width: min(1180px, 100%);
+  margin: 0 auto 14px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.photo-lightbox-count {
+  margin: 0;
+  color: #c9c9c4;
+  font-size: 12px;
+}
+
+.photo-lightbox-close,
+.photo-lightbox-nav {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #666662;
+  border-radius: 0;
+  background: transparent;
+  color: var(--paper);
+  font: 600 12px/1 var(--sans);
+  cursor: pointer;
+}
+
+.photo-lightbox-close:hover,
+.photo-lightbox-nav:hover {
+  border-color: var(--paper);
+}
+
+.photo-lightbox-figure {
+  display: flex;
+  min-height: 0;
+  margin: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.photo-lightbox-stage {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-template-columns: 90px minmax(0, 1fr) 90px;
+  align-items: center;
+  gap: 18px;
+}
+
+.photo-lightbox-stage img {
+  display: block;
+  width: 100%;
+  height: min(76vh, calc(100dvh - 150px));
+  object-fit: contain;
+}
+
+.photo-lightbox-figure figcaption,
+.photo-lightbox-fallback {
+  width: min(900px, 100%);
+  margin: 12px auto 0;
+  color: #e2e2dd;
+  font-size: 12px;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.photo-lightbox-fallback[hidden] {
+  display: none;
+}
+
+.photo-lightbox-fallback a {
+  margin-left: 4px;
+}
+
 footer {
   display: flex;
   justify-content: space-between;
@@ -1123,6 +1322,10 @@ footer p {
 
   .migration-directory {
     margin-top: 52px;
+  }
+
+  .photo-archive-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1439,6 +1642,51 @@ footer p {
     font-size: 19px;
   }
 
+  .photo-archive-section {
+    width: calc(100% - 36px);
+    padding: 46px 0 56px;
+  }
+
+  .photo-archive-heading {
+    display: block;
+  }
+
+  .photo-archive-heading p {
+    margin-top: 14px;
+  }
+
+  .photo-archive-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 30px;
+    margin-top: 36px;
+  }
+
+  .photo-lightbox-panel {
+    padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right))
+      max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+  }
+
+  .photo-lightbox-toolbar {
+    margin-bottom: 8px;
+  }
+
+  .photo-lightbox-stage {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
+  .photo-lightbox-stage img {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    height: min(70vh, calc(100dvh - 190px));
+  }
+
+  .photo-lightbox-previous,
+  .photo-lightbox-next {
+    grid-row: 2;
+  }
+
   footer {
     width: calc(100% - 36px);
     padding-bottom: 34px;
@@ -1451,6 +1699,10 @@ footer p {
   }
 
   .family-chart-toggle::after {
+    transition: none;
+  }
+
+  .photo-archive-link img {
     transition: none;
   }
 }
@@ -1477,6 +1729,12 @@ footer p {
     border-color: CanvasText;
   }
 
+  .photo-archive-link,
+  .photo-lightbox,
+  .photo-lightbox button {
+    border-color: CanvasText;
+  }
+
   .family-map-dot,
   .family-map-marker-dot {
     border-color: CanvasText;
@@ -1492,6 +1750,9 @@ footer p {
   .family-map-meta,
   .migration-map-actions,
   .migration-section > script,
+  .photo-archive-section > script,
+  .photo-lightbox,
+  .photo-archive-open,
   footer a {
     display: none !important;
   }
@@ -1500,6 +1761,7 @@ footer p {
   .family-panel-heading,
   .history-section,
   .migration-section,
+  .photo-archive-section,
   footer {
     width: 100%;
   }
@@ -1526,6 +1788,15 @@ footer p {
   }
 
   .history-photo {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .photo-archive-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .photo-archive-item {
     break-inside: avoid;
     page-break-inside: avoid;
   }

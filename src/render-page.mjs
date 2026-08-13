@@ -199,6 +199,61 @@ function renderHistory(history) {
   </section>`;
 }
 
+function renderPhotoArchive(photoArchive) {
+  if (!photoArchive?.photos?.length) return "";
+
+  const photos = photoArchive.photos
+    .map(
+      (photo, index) => `<li class="photo-archive-item" data-photo-archive-id="${escapeHtml(photo.id)}">
+        <figure>
+          <a
+            class="photo-archive-link"
+            href="${escapeHtml(photo.src)}"
+            data-photo-lightbox-item
+            data-photo-index="${index}"
+            data-photo-src="${escapeHtml(photo.src)}"
+            data-photo-width="${escapeHtml(photo.width)}"
+            data-photo-height="${escapeHtml(photo.height)}"
+            data-photo-alt="${escapeHtml(photo.alt)}"
+            data-photo-caption="${escapeHtml(photo.caption)}"
+            aria-describedby="photo-archive-caption-${escapeHtml(photo.id)}"
+          >
+            <img src="${escapeHtml(photo.previewSrc)}" width="${escapeHtml(photo.previewWidth)}" height="${escapeHtml(photo.previewHeight)}" alt="${escapeHtml(photo.alt)}" loading="lazy" decoding="async">
+            <span class="photo-archive-open" aria-hidden="true">查看大图</span>
+          </a>
+          <figcaption id="photo-archive-caption-${escapeHtml(photo.id)}">${escapeHtml(photo.caption)}</figcaption>
+        </figure>
+      </li>`,
+    )
+    .join("");
+
+  return `<section class="photo-archive-section" id="old-photos" aria-labelledby="old-photos-title" data-photo-archive>
+    <div class="photo-archive-heading">
+      <h2 id="old-photos-title">${escapeHtml(photoArchive.title)}</h2>
+      <p>${escapeHtml(photoArchive.intro)}</p>
+    </div>
+    <ol class="photo-archive-grid" role="list">${photos}</ol>
+    <dialog class="photo-lightbox" data-photo-lightbox aria-labelledby="photo-lightbox-caption">
+      <div class="photo-lightbox-panel">
+        <div class="photo-lightbox-toolbar">
+          <p class="photo-lightbox-count" data-photo-lightbox-count aria-live="polite" aria-atomic="true"></p>
+          <button class="photo-lightbox-close" type="button" data-photo-lightbox-close aria-label="关闭大图">关闭</button>
+        </div>
+        <figure class="photo-lightbox-figure">
+          <div class="photo-lightbox-stage">
+            <button class="photo-lightbox-nav photo-lightbox-previous" type="button" data-photo-lightbox-previous aria-label="查看上一张照片">上一张</button>
+            <img data-photo-lightbox-image alt="">
+            <button class="photo-lightbox-nav photo-lightbox-next" type="button" data-photo-lightbox-next aria-label="查看下一张照片">下一张</button>
+          </div>
+          <figcaption id="photo-lightbox-caption" data-photo-lightbox-caption></figcaption>
+        </figure>
+        <p class="photo-lightbox-fallback" data-photo-lightbox-fallback hidden>图片暂时无法加载。<a data-photo-lightbox-original>直接打开图片</a></p>
+      </div>
+    </dialog>
+    <script src="./photo-lightbox.js" defer data-static-interaction></script>
+  </section>`;
+}
+
 export function renderPage(document) {
   const viewId = "li-family";
   const treeId = `${viewId}-interactive-tree`;
@@ -271,6 +326,8 @@ export function renderPage(document) {
     ${renderHistory(document.history)}
 
     ${renderMigration(document.migration, peopleById)}
+
+    ${renderPhotoArchive(document.photoArchive)}
 
     <footer>
       <p>李家族谱</p>
