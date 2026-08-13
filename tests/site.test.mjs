@@ -88,8 +88,7 @@ test("builds the complete normalized Li family genealogy", async () => {
     visibleText(html),
     /朱守芝在娘家与成家两处出现|线条表示已经确认|未注明长幼|不作推断|也已纳入|阅读说明|中央数据|稳定人物编号/,
   );
-  assert.match(html, /淮北市商务局审计所副所长/);
-  assert.doesNotMatch(html, /淮北市商务局会计师/);
+  assert.match(html, /李平原为淮北市商务局会计师，后任审计所副所长/);
   assert.match(html, /昆山市中医医院护士/);
   assert.match(html, /淮南市公交公司工作/);
   assert.match(html, /id="family-history"/);
@@ -243,7 +242,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
     ["li-yuchen", "li-yuchen"],
     ["li-jiaying", "li-jiaying"],
     ["li-hui", "li-hui"],
-    ["li-yuzhen", "li-yuzhen"],
+    ["li-yuzhen", "li-yuzhen-v2"],
     ["xu-dapeng", "xu-dapeng"],
     ["xu-jinghan", "xu-jinghan"],
     ["li-yuxia", "li-yuxia"],
@@ -294,7 +293,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
     "李父与吴父是同乡好友；在淮北矿务局一机厂从事物流工作",
   );
   assert.equal(people.get("wu-fang")?.note, "石头科技苏州分公司行政");
-  assert.equal(people.get("xu-dapeng")?.note, "合肥新能源电池公司合伙人");
+  assert.equal(people.get("xu-dapeng")?.note, "合肥某新能源电池公司合伙人");
   assert.equal(people.get("xu-jinghan")?.note, "苏州实验中学");
   assert.equal(people.get("xu-lingxi")?.note, "苏州星海小学");
   assert.equal(
@@ -306,7 +305,10 @@ test("ships one validated schema v2 genealogy graph", async () => {
     "接父亲的班进入安装处；毕业于徐州煤矿工业学校；从事会计工作至退休；近年居住在宿州市埇桥区建设路安装处小区",
   );
   assert.equal(people.get("li-zirong")?.note, "宿州第三人民医院护士");
-  assert.equal(people.get("li-jiqing")?.note, "安徽医科大学毕业；昆山卫生中心");
+  assert.equal(
+    people.get("li-jiqing")?.note,
+    "安徽医科大学毕业；昆山卫生中心妇幼科副科长",
+  );
   assert.equal(
     people.get("li-bulong")?.note,
     "安徽医科大学毕业；昆山卫生中心某院副院长",
@@ -321,7 +323,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(people.get("li-kaiting-wife")?.note, "在淮南市公交公司工作");
   assert.equal(
     people.get("li-ping")?.note,
-    "1965年生；淮北市商务局审计所副所长；现居昆山",
+    "1965年生；原淮北市商务局会计师，审计所副所长；现居昆山",
   );
   assert.equal(people.get("li-hui")?.note, "昆山中医院护士；华师大研究生；心理咨询师");
   assert.doesNotMatch(html, /李慧/);
@@ -1141,7 +1143,7 @@ test("includes every GitHub Pages artifact", async () => {
       "images/portraits/li-yuchen.avif",
       "images/portraits/li-jiaying.avif",
       "images/portraits/li-hui.avif",
-      "images/portraits/li-yuzhen.avif",
+      "images/portraits/li-yuzhen-v2.avif",
       "images/portraits/xu-dapeng.avif",
       "images/portraits/xu-jinghan.avif",
       "images/portraits/li-yuxia.avif",
@@ -1172,7 +1174,7 @@ test("includes every GitHub Pages artifact", async () => {
     "li-yuchen",
     "li-jiaying",
     "li-hui",
-    "li-yuzhen",
+    "li-yuzhen-v2",
     "xu-dapeng",
     "xu-jinghan",
     "li-yuxia",
