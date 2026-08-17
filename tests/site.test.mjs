@@ -13,12 +13,21 @@ const publicRoot = new URL("../public/", import.meta.url);
 const expectedSiteIntro =
   "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。";
 const expectedArchivePhotos = [
+  "li-ping-li-hui-young-photo",
   "young-women-and-boy",
   "four-young-women",
   "woman-and-girl",
   "family-gathering-01",
   "family-gathering-02",
   "child-with-drawing",
+];
+const expectedArchiveAssets = [
+  "li-ping-li-hui-young.jpg",
+  "li-ping-li-hui-young-preview.avif",
+  ...expectedArchivePhotos.slice(1).flatMap((photo) => [
+    `${photo}.avif`,
+    `${photo}-preview.avif`,
+  ]),
 ];
 
 function countMatches(value, pattern) {
@@ -97,7 +106,9 @@ test("builds the complete normalized Li family genealogy", async () => {
     /朱守芝在娘家与成家两处出现|线条表示已经确认|未注明长幼|不作推断|也已纳入|阅读说明|中央数据|稳定人物编号/,
   );
   assert.match(html, /李平原为淮北市商务局会计师，后任审计所副所长/);
-  assert.match(html, /昆山市中医医院护士/);
+  assert.match(html, /昆山中医院护士/);
+  assert.match(html, /利用业余时间学习心理学/);
+  assert.match(html, /完成华师大研究生阶段学习，目前从事心理咨询工作/);
   assert.match(html, /淮南市公交公司工作/);
   assert.match(html, /id="family-history"/);
   assert.match(html, />家族历史</);
@@ -149,13 +160,11 @@ test("builds the complete normalized Li family genealogy", async () => {
     /<img src="\.\/images\/suzhou-anzhuangchu-xiaoqu\.jpg" width="1800" height="988" alt="安装处小区入口，左侧建筑屋顶标有“工人俱乐部”，右侧为住宅楼。" loading="lazy" decoding="async">/,
   );
   assert.match(html, /宿州市埇桥区建设路安装处小区入口。图像来源：百度地图全景。/);
-  assert.equal(
-    countMatches(html, /data-family-history-media-id="li-ping-li-hui-young-photo"/g),
-    1,
-  );
+  assert.equal(countMatches(html, /data-family-history-media-id="li-ping-li-hui-young-photo"/g), 0);
+  assert.equal(countMatches(html, /data-photo-archive-id="li-ping-li-hui-young-photo"/g), 1);
   assert.match(
     html,
-    /<img src="\.\/images\/li-ping-li-hui-young\.jpg" width="1632" height="1224" alt="李平与李惠年轻时并肩拍摄的黑白合影。" loading="lazy" decoding="async">/,
+    /<img src="\.\/images\/old-photos\/li-ping-li-hui-young-preview\.avif" width="900" height="675" alt="李平与李惠年轻时并肩拍摄的黑白合影。" loading="lazy" decoding="async">/,
   );
   assert.match(html, /李平与李惠年轻时的合影。/);
   const historyPhotoIndex = html.indexOf(
@@ -170,12 +179,11 @@ test("builds the complete normalized Li family genealogy", async () => {
   );
   assert.ok(installationHistoryIndex < historyPhotoIndex);
   assert.ok(historyPhotoIndex < nextHistoryIndex);
-  const siblingPhotoIndex = html.indexOf(
-    'data-family-history-media-id="li-ping-li-hui-young-photo"',
-  );
   const migrationIndex = html.indexOf('id="family-migration"');
-  assert.ok(nextHistoryIndex < siblingPhotoIndex);
-  assert.ok(siblingPhotoIndex < migrationIndex);
+  const archivePhotoIndex = html.indexOf(
+    'data-photo-archive-id="li-ping-li-hui-young-photo"',
+  );
+  assert.ok(migrationIndex < archivePhotoIndex);
   assert.ok(html.indexOf('id="family-tree"') < html.indexOf('id="family-history"'));
   assert.ok(html.indexOf('id="family-history"') < html.indexOf('id="family-migration"'));
   assert.ok(html.indexOf('id="family-migration"') < html.indexOf('id="old-photos"'));
@@ -199,12 +207,12 @@ test("renders a progressively enhanced old-photo archive with an accessible ligh
   const archive = document.photoArchive;
 
   assert.equal(archive.title, "老照片");
-  assert.equal(archive.photos.length, 6);
+  assert.equal(archive.photos.length, 7);
   assert.deepEqual(archive.photos.map((photo) => photo.id), expectedArchivePhotos);
-  assert.equal(new Set(archive.photos.map((photo) => photo.id)).size, 6);
+  assert.equal(new Set(archive.photos.map((photo) => photo.id)).size, 7);
   assert.match(html, /<section class="photo-archive-section" id="old-photos" aria-labelledby="old-photos-title" data-photo-archive>/);
-  assert.equal(countMatches(html, /data-photo-archive-id=/g), 6);
-  assert.equal(countMatches(html, /data-photo-lightbox-item/g), 6);
+  assert.equal(countMatches(html, /data-photo-archive-id=/g), 7);
+  assert.equal(countMatches(html, /data-photo-lightbox-item/g), 7);
   assert.match(html, /<dialog class="photo-lightbox" data-photo-lightbox/);
   assert.match(html, /data-photo-lightbox-close aria-label="关闭大图"/);
   assert.match(html, /data-photo-lightbox-previous aria-label="查看上一张照片"/);
@@ -212,7 +220,7 @@ test("renders a progressively enhanced old-photo archive with an accessible ligh
 
   for (const photo of archive.photos) {
     assert.match(photo.previewSrc, /^\.\/images\/old-photos\/[a-z0-9-]+-preview\.avif$/);
-    assert.match(photo.src, /^\.\/images\/old-photos\/[a-z0-9-]+\.avif$/);
+    assert.match(photo.src, /^\.\/images\/old-photos\/[a-z0-9-]+\.(?:avif|jpe?g|png|webp)$/);
     assert.ok(photo.previewWidth > 0 && photo.previewHeight > 0);
     assert.ok(photo.width > 0 && photo.height > 0);
     assert.ok(photo.alt.length > 0 && photo.caption.length > 0);
@@ -227,6 +235,19 @@ test("renders a progressively enhanced old-photo archive with an accessible ligh
       `${photo.id} requires a lazy preview image`,
     );
   }
+
+  assert.deepEqual(archive.photos[0], {
+    id: "li-ping-li-hui-young-photo",
+    previewSrc: "./images/old-photos/li-ping-li-hui-young-preview.avif",
+    src: "./images/old-photos/li-ping-li-hui-young.jpg",
+    previewWidth: 900,
+    previewHeight: 675,
+    width: 1632,
+    height: 1224,
+    alt: "李平与李惠年轻时并肩拍摄的黑白合影。",
+    caption: "李平与李惠年轻时的合影。",
+    personIds: ["li-ping", "li-hui"],
+  });
 
   assert.match(script, /__LI_FAMILY_PHOTO_LIGHTBOX_V1__/);
   assert.match(script, /showModal\(\)/);
@@ -545,7 +566,10 @@ test("records an objective family history linked to stable people", async () => 
   assert.equal(bereavementSection.paragraphs.length, 1);
   assert.equal(bereavementSection.personIds.includes("li-ping"), false);
   assert.match(JSON.stringify(history), /徐州煤矿工业学校/);
-  assert.match(JSON.stringify(history), /昆山市中医医院护士/);
+  assert.match(JSON.stringify(history), /昆山中医院护士/);
+  assert.match(JSON.stringify(history), /利用业余时间学习心理学/);
+  assert.match(JSON.stringify(history), /完成华师大研究生阶段学习/);
+  assert.match(JSON.stringify(history), /目前从事心理咨询工作/);
   assert.match(JSON.stringify(history), /三十四处钻井队工作至退休/);
   const installationSection = history.sections.find(
     (section) => section.id === "suzhou-life-and-exams",
@@ -564,17 +588,7 @@ test("records an objective family history linked to stable people", async () => 
     (section) => section.id === "education-and-careers",
   );
   assert.ok(careersSection.personIds.includes("li-kun"));
-  assert.deepEqual(careersSection.media, [
-    {
-      id: "li-ping-li-hui-young-photo",
-      src: "./images/li-ping-li-hui-young.jpg",
-      width: 1632,
-      height: 1224,
-      alt: "李平与李惠年轻时并肩拍摄的黑白合影。",
-      caption: "李平与李惠年轻时的合影。",
-      personIds: ["li-ping", "li-hui"],
-    },
-  ]);
+  assert.equal(Object.hasOwn(careersSection, "media"), false);
   assert.doesNotMatch(
     JSON.stringify(history),
     /时年6岁|昆山胸科医院|逃难到了安徽淮南|掌上明珠|终身性格心结|体制飞地|两地嫌弃|混子|白菜|铁血|硬核|神圣不可侵犯|[—–]/,
@@ -1040,14 +1054,20 @@ test("rejects invalid normalized genealogy data", async () => {
   );
 
   const unknownHistoryMediaPerson = structuredClone(document);
-  unknownHistoryMediaPerson.history.sections[4].media[0].personIds.push("missing-person");
+  unknownHistoryMediaPerson.history.sections[3].media[0].personIds = [
+    "li-ping",
+    "missing-person",
+  ];
   assert.throws(
     () => validateFamilyDocument(unknownHistoryMediaPerson),
     /references unknown person missing-person/,
   );
 
   const duplicateHistoryMediaPerson = structuredClone(document);
-  duplicateHistoryMediaPerson.history.sections[4].media[0].personIds.push("li-ping");
+  duplicateHistoryMediaPerson.history.sections[3].media[0].personIds = [
+    "li-ping",
+    "li-ping",
+  ];
   assert.throws(
     () => validateFamilyDocument(duplicateHistoryMediaPerson),
     /repeats person li-ping/,
@@ -1072,6 +1092,41 @@ test("rejects invalid normalized genealogy data", async () => {
   assert.throws(
     () => validateFamilyDocument(invalidArchiveDimension),
     /previewWidth must be a positive integer/,
+  );
+
+  const unknownArchivePerson = structuredClone(document);
+  unknownArchivePerson.photoArchive.photos[0].personIds.push("missing-person");
+  assert.throws(
+    () => validateFamilyDocument(unknownArchivePerson),
+    /references unknown person missing-person/,
+  );
+
+  const duplicateArchivePerson = structuredClone(document);
+  duplicateArchivePerson.photoArchive.photos[0].personIds.push("li-ping");
+  assert.throws(
+    () => validateFamilyDocument(duplicateArchivePerson),
+    /repeats person li-ping/,
+  );
+
+  const emptyArchivePeople = structuredClone(document);
+  emptyArchivePeople.photoArchive.photos[0].personIds = [];
+  assert.throws(
+    () => validateFamilyDocument(emptyArchivePeople),
+    /personIds must be a non-empty array when provided/,
+  );
+
+  const nonArrayArchivePeople = structuredClone(document);
+  nonArrayArchivePeople.photoArchive.photos[0].personIds = "li-ping";
+  assert.throws(
+    () => validateFamilyDocument(nonArrayArchivePeople),
+    /personIds must be a non-empty array when provided/,
+  );
+
+  const invalidArchivePerson = structuredClone(document);
+  invalidArchivePerson.photoArchive.photos[0].personIds = [""];
+  assert.throws(
+    () => validateFamilyDocument(invalidArchivePerson),
+    /personIds must contain non-empty strings/,
   );
 
   const insecureMapStyle = structuredClone(document);
@@ -1220,11 +1275,7 @@ test("includes every GitHub Pages artifact", async () => {
       "favicon.svg",
       "og.svg",
       "images/suzhou-anzhuangchu-xiaoqu.jpg",
-      "images/li-ping-li-hui-young.jpg",
-      ...expectedArchivePhotos.flatMap((photo) => [
-        `images/old-photos/${photo}.avif`,
-        `images/old-photos/${photo}-preview.avif`,
-      ]),
+      ...expectedArchiveAssets.map((photo) => `images/old-photos/${photo}`),
       "images/portraits/li-kaixun.avif",
       "images/portraits/zhu-shouzhi.avif",
       "images/portraits/li-ping-v2.avif",
@@ -1254,18 +1305,18 @@ test("includes every GitHub Pages artifact", async () => {
     await readFile(new URL("images/suzhou-anzhuangchu-xiaoqu.jpg", docs)),
     await readFile(new URL("images/suzhou-anzhuangchu-xiaoqu.jpg", publicRoot)),
   );
-  assert.deepEqual(
-    await readFile(new URL("images/li-ping-li-hui-young.jpg", docs)),
-    await readFile(new URL("images/li-ping-li-hui-young.jpg", publicRoot)),
-  );
-  for (const photo of expectedArchivePhotos) {
-    for (const suffix of ["", "-preview"]) {
-      const path = `images/old-photos/${photo}${suffix}.avif`;
-      assert.deepEqual(
-        await readFile(new URL(path, docs)),
-        await readFile(new URL(path, publicRoot)),
-      );
-    }
+  await assert.rejects(access(new URL("images/li-ping-li-hui-young.jpg", docs)), {
+    code: "ENOENT",
+  });
+  await assert.rejects(access(new URL("images/li-ping-li-hui-young.jpg", publicRoot)), {
+    code: "ENOENT",
+  });
+  for (const photo of expectedArchiveAssets) {
+    const path = `images/old-photos/${photo}`;
+    assert.deepEqual(
+      await readFile(new URL(path, docs)),
+      await readFile(new URL(path, publicRoot)),
+    );
   }
   for (const portrait of [
     "li-kaixun",

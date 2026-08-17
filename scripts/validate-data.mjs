@@ -377,7 +377,7 @@ function validateHistory(history, errors, personIds, mapPlaceIds) {
   }
 }
 
-function validatePhotoArchive(photoArchive, errors) {
+function validatePhotoArchive(photoArchive, errors, personIds) {
   if (!photoArchive || typeof photoArchive !== "object" || Array.isArray(photoArchive)) {
     errors.push("photoArchive must be an object");
     return;
@@ -418,6 +418,26 @@ function validatePhotoArchive(photoArchive, errors) {
     for (const field of ["previewWidth", "previewHeight", "width", "height"]) {
       if (!Number.isInteger(photo[field]) || photo[field] <= 0) {
         errors.push(`${context} ${field} must be a positive integer`);
+      }
+    }
+    if (photo.personIds !== undefined) {
+      if (!Array.isArray(photo.personIds) || photo.personIds.length === 0) {
+        errors.push(`${context} personIds must be a non-empty array when provided`);
+      } else {
+        const photoPersonIds = new Set();
+        for (const personId of photo.personIds) {
+          if (!isNonEmptyString(personId)) {
+            errors.push(`${context} personIds must contain non-empty strings`);
+            continue;
+          }
+          if (photoPersonIds.has(personId)) {
+            errors.push(`${context} repeats person ${personId}`);
+          }
+          photoPersonIds.add(personId);
+          if (!personIds.has(personId)) {
+            errors.push(`${context} references unknown person ${personId}`);
+          }
+        }
       }
     }
   }
@@ -516,7 +536,7 @@ export function validateFamilyDocument(document) {
   );
   validateHistory(document.history, errors, personIds, mapPlaceIds);
   if (document.migration !== undefined) validateMigration(document.migration, errors, personIds);
-  validatePhotoArchive(document.photoArchive, errors);
+  validatePhotoArchive(document.photoArchive, errors, personIds);
 
   const families = Array.isArray(document.families) ? document.families : [];
   if (!Array.isArray(document.families) || families.length === 0) {

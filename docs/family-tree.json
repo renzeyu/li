@@ -3,8 +3,8 @@
   "treeId": "li-zhu-family",
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
-  "updatedAt": "2026-08-13",
-  "revision": "2026.08.13.3",
+  "updatedAt": "2026-08-17",
+  "revision": "2026.08.17.1",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。",
@@ -95,7 +95,7 @@
         "title": "教育与职业道路",
         "paragraphs": [
           "当时，正式工与临时工在就业保障和待遇方面存在较大差别，教育和专业训练因此成为家庭的重要选择。李开训提前退休后，李玉霞按当时的接班政策进入安装处，随后考入徐州煤矿工业学校学习会计，并在安装处从事会计工作至退休。",
-          "在家庭经济紧张的情况下，家里筹集1200元学费，支持李惠自费就读卫校。她在校期间曾任班长和毕业实习队长，后来成为昆山市中医医院护士。李玉珍在淮北矿务局一机厂从事劳动工资工作，李坤在三十四处钻井队工作至退休，李平原为淮北市商务局会计师，后任审计所副所长。几名子女分别在人事、财会和医疗岗位任职，逐步建立起较稳定的职业生活。"
+          "在家庭经济紧张的情况下，家里筹集1200元学费，支持李惠自费就读卫校。她在校期间曾任班长和毕业实习队长，后来成为昆山中医院护士。她利用业余时间学习心理学，完成华师大研究生阶段学习，目前从事心理咨询工作。李玉珍在淮北矿务局一机厂从事劳动工资工作，李坤在三十四处钻井队工作至退休，李平原为淮北市商务局会计师，后任审计所副所长。几名子女分别在人事、财会和医疗岗位任职，逐步建立起较稳定的职业生活。"
         ],
         "personIds": [
           "li-kaixun",
@@ -105,20 +105,6 @@
           "li-yuxia",
           "li-ping",
           "li-hui"
-        ],
-        "media": [
-          {
-            "id": "li-ping-li-hui-young-photo",
-            "src": "./images/li-ping-li-hui-young.jpg",
-            "width": 1632,
-            "height": 1224,
-            "alt": "李平与李惠年轻时并肩拍摄的黑白合影。",
-            "caption": "李平与李惠年轻时的合影。",
-            "personIds": [
-              "li-ping",
-              "li-hui"
-            ]
-          }
         ]
       }
     ]
@@ -470,6 +456,21 @@
     "title": "老照片",
     "intro": "这里集中保存家人提供的家庭影像。尚未确认的人物、时间与地点，可以在家人补充后继续完善。",
     "photos": [
+      {
+        "id": "li-ping-li-hui-young-photo",
+        "previewSrc": "./images/old-photos/li-ping-li-hui-young-preview.avif",
+        "src": "./images/old-photos/li-ping-li-hui-young.jpg",
+        "previewWidth": 900,
+        "previewHeight": 675,
+        "width": 1632,
+        "height": 1224,
+        "alt": "李平与李惠年轻时并肩拍摄的黑白合影。",
+        "caption": "李平与李惠年轻时的合影。",
+        "personIds": [
+          "li-ping",
+          "li-hui"
+        ]
+      },
       {
         "id": "young-women-and-boy",
         "previewSrc": "./images/old-photos/young-women-and-boy-preview.avif",
