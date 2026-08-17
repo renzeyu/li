@@ -4,7 +4,7 @@
   "title": "李家族谱",
   "subtitle": "李开训与朱守芝一家",
   "updatedAt": "2026-08-17",
-  "revision": "2026.08.17.1",
+  "revision": "2026.08.17.2",
   "defaultFocusPersonId": "li-ping",
   "focusFamilyId": "li-kaixun-zhu-shouzhi-family",
   "intro": "李氏先祖于明初由山东迁至寿县堰口集，朱氏一支生活在淮南朱家岗。1955年，李开训与朱守芝成家，育有五女一子，一家的生活与两淮煤矿建设紧密相连。家庭经历了1960年的饥荒与丧亲，后来随工作调动由淮南迁居宿州，子女也曾在不同城市求学和工作。几名子女分别从事劳资、财会和医疗工作，近年这一代兄弟姐妹主要生活在宿州和昆山。",
@@ -547,7 +547,13 @@
     {
       "id": "li-kaixun-father",
       "name": "李云举",
-      "note": "40多岁去世"
+      "note": "40多岁去世",
+      "portrait": {
+        "src": "./images/portraits/li-yunju.avif",
+        "width": 640,
+        "height": 640,
+        "alt": "李云举肖像。"
+      }
     },
     {
       "id": "li-kaixun-mother",
@@ -811,7 +817,7 @@
       "note": "1965年生；原淮北市商务局会计师，审计所副所长；现居昆山",
       "href": "https://renzeyu.github.io/liping/",
       "portrait": {
-        "src": "./images/portraits/li-ping-v2.avif",
+        "src": "./images/portraits/li-ping-v3.avif",
         "width": 640,
         "height": 640,
         "alt": "李平肖像。"
@@ -834,7 +840,7 @@
       "note": "1992年与李平结婚；中国石化长城润滑油江苏省分公司书记兼总经理",
       "href": "https://renzeyu.github.io/rendongfeng/",
       "portrait": {
-        "src": "./images/portraits/ren-dongfeng.avif",
+        "src": "./images/portraits/ren-dongfeng-v2.avif",
         "width": 640,
         "height": 640,
         "alt": "任东风肖像。"
@@ -845,7 +851,7 @@
       "name": "任泽宇",
       "note": "美国上市公司设计师",
       "portrait": {
-        "src": "./images/portraits/ren-zeyu.avif",
+        "src": "./images/portraits/ren-zeyu-v2.avif",
         "width": 640,
         "height": 640,
         "alt": "任泽宇肖像。"
