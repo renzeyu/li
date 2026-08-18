@@ -410,6 +410,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
     "安徽省体校毕业；安徽省排球队队员；濉溪二中老师；安装处公安科科长；与李玉霞两家为邻，二人青梅竹马",
   );
   assert.equal(people.get("li-kaigong")?.name, "李开功");
+  assert.equal(people.get("li-keshu")?.name, "李克素");
   assert.match(people.get("li-kaiting")?.note ?? "", /老叔.*好姥爷.*电焊工/);
   assert.equal(people.get("li-kaiting-wife")?.name, "王秀云");
   assert.equal(people.get("li-kaiting-wife")?.note, "在淮南市公交公司工作");
@@ -428,6 +429,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(people.get("ren-zeyu")?.note, "美国上市公司设计师");
   assert.equal(people.get("li-kelei")?.note, "在江淮汽修公司工作");
   assert.equal(people.get("wang-mei")?.name, "王梅");
+  assert.equal(people.get("li-keli")?.name, "李克莉");
   assert.match(people.get("li-keli")?.note ?? "", /银行/);
   assert.equal(people.get("fang-hao")?.name, "方浩");
   assert.equal(people.get("fang-runtian")?.name, "方润田");
@@ -522,7 +524,7 @@ test("ships one validated schema v2 genealogy graph", async () => {
   assert.equal(docsData, dataSource);
   assert.doesNotMatch(
     dataSource,
-    /李克霞|信息不公开|家人口述补名|存活排行|李开工|淮北面粉厂|1993年与李平结婚|小名；李开训的妹妹|彭鹏的配偶|彭鹏的女儿/,
+    /李克霞|李克树|李克丽|信息不公开|家人口述补名|存活排行|李开工|淮北面粉厂|1993年与李平结婚|小名；李开训的妹妹|彭鹏的配偶|彭鹏的女儿/,
   );
 });
 
